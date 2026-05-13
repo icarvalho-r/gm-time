@@ -96,6 +96,15 @@ Leva menos de um minuto.
 - `/copy-editing` — edição/revisão de copy
 - `/ad-creative` — criativos pra anúncios
 
+**SEO/Análise (instaladas via skills.sh):**
+- `/seo-audit` — auditoria de SEO em um site
+- `/programmatic-seo` — estratégia de páginas em escala pra long-tail
+- `/ai-seo` — SEO pra aparecer em ChatGPT, Perplexity, Google AI Overviews
+- `/schema-markup` — gera schema/JSON-LD pra rich snippets
+- `/analytics-tracking` — plano de eventos GA4/pixel
+- `/competitor-alternatives` — análise de concorrentes e comparativos
+- `/audit-website` — auditoria geral (performance, UX, técnico)
+
 ---
 
 ## O que já vem pré-configurado
