@@ -1,0 +1,59 @@
+# Checklist de Diagnostico Rapido
+# Para identificar rapidamente onde esta o problema no funil
+
+checklist:
+  name: "Diagnostico Rapido do Funil"
+  description: "Arvore de decisao para identificar gargalo em menos de 5 minutos"
+  agent: "perpetuo-white-chief"
+
+  passo_1_roi:
+    pergunta: "Qual o ROI geral do front (investimento vs faturamento)?"
+    respostas:
+      negativo_ou_empate: "ROI < 1.2 → Problema GRAVE. Ir para passo_2_conversao."
+      baixo: "ROI 1.2-1.5 → Problema MODERADO. Ir para passo_2_conversao."
+      ok: "ROI 1.5-1.8 → Front saudavel. Ir para passo_3_ascensao."
+      bom: "ROI > 1.8 → Front excelente. Ir para passo_4_escala."
+
+  passo_2_conversao:
+    pergunta: "Qual a conversao da VSL?"
+    respostas:
+      muito_baixa: "< 1% → VSL precisa reescrita completa. Agent: vsl-architect."
+      baixa: "1-2% → Checar metricas intermediarias:"
+      subperguntas:
+        - "Play rate < 40%? → Headline/thumbnail ruim. Agent: creative-engineer."
+        - "Retencao 1min < 55%? → Lead ruim. Agent: vsl-architect (*escrever-lead)."
+        - "Retencao pitch < 30%? → Mecanismo fraco. Agent: vsl-architect (*escrever-mecanismo)."
+        - "Retencao ok mas nao compra? → Oferta fraca. Agent: offer-architect."
+      media: "2-3% → OK, melhorar leads e oferta incrementalmente."
+      boa: "> 3% → VSL boa. Problema esta nos criativos ou trafego."
+
+  passo_2b_criativos:
+    pergunta: "Quantos criativos foram testados?"
+    respostas:
+      poucos: "< 10 → Produzir mais. NAO culpar VSL. Agent: creative-engineer."
+      suficientes: "> 10 e nenhum validou → VSL provavelmente ruim. Agent: vsl-architect."
+      validaram: "Alguns validaram mas ROI baixo → Checar ticket medio e upsell."
+
+  passo_3_ascensao:
+    pergunta: "ROI front+upsell vs ROI final?"
+    respostas:
+      sem_upsell: "Nao tem upsell → IMPLEMENTAR AGORA. Agent: offer-architect."
+      upsell_baixo: "Upsell < 10% conversao → Mudar para produto PRONTO. Agent: offer-architect."
+      upsell_ok_mas_final_baixo: "Upsell ok mas ROI final < 2.5 → Ascensoes fracas. Agent: ascension-builder."
+      tudo_ok: "ROI final > 3.0 → Saudavel. Ir para escala."
+
+  passo_4_escala:
+    pergunta: "Investimento diario atual vs desejado?"
+    respostas:
+      quer_escalar: "Escalar 20-30%/dia. Agent: traffic-scaler."
+      criativos_morrem: "Volume cai porque criativos morrem → Produzir mais. Agent: creative-engineer."
+      saturado: "Publico saturado → Worldwide + novos formatos. Agent: traffic-scaler + creative-engineer."
+
+  resumo_roteamento:
+    vsl_ruim: "vsl-architect"
+    lead_ruim: "vsl-architect (*escrever-lead)"
+    oferta_fraca: "offer-architect"
+    criativos_fracos: "creative-engineer"
+    trafego_problematico: "traffic-scaler"
+    ascensao_fraca: "ascension-builder"
+    tudo_ok_escalar: "traffic-scaler + creative-engineer"

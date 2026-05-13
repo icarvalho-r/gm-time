@@ -1,0 +1,181 @@
+pack:
+  name: niche-scout
+  version: 1.1.0
+  short-title: Niche Scout Squad
+  description: >-
+    Squad especializado em pesquisar, identificar, analisar e ranquear os maiores
+    e melhores perfis de especialistas brasileiros em qualquer nicho nas redes sociais
+    (Instagram e TikTok). Combina discovery de perfis, validacao de autoridade,
+    analise de engajamento, auditoria de conteudo e compilacao de relatorios ranqueados.
+  author: Squad Architect
+  icon: "🔍"
+  slashPrefix: nicheScout
+  language: pt-BR
+  geo_focus: Brazil
+
+# Pattern Library (NS-xxx)
+pattern_library:
+  prefix: NS
+  naming_convention:
+    format: "{PREFIX}-{CATEGORY}-{NUMBER}"
+    example: "NS-TP-001"
+  categories:
+    - id: TP
+      name: "Task Patterns"
+      description: "Patterns for profile research task structure"
+    - id: EP
+      name: "Executor Patterns"
+      description: "Patterns for executor types and selection"
+    - id: PP
+      name: "Process Patterns"
+      description: "Patterns for research workflow processes"
+    - id: IP
+      name: "Integration Patterns"
+      description: "Patterns for social media platform integrations"
+    - id: AP
+      name: "Automation Patterns"
+      description: "Patterns for automated data collection"
+    - id: DP
+      name: "Documentation Patterns"
+      description: "Patterns for report and documentation structure"
+  patterns: []
+
+# Task Standards (NS-TP-001 inspired)
+task_standards:
+  enforce_anatomy: true
+  validator: "NS-TP-001"
+  required_fields:
+    - task_name
+    - status
+    - responsible_executor
+    - execution_type
+    - input
+    - output
+    - action_items
+    - acceptance_criteria
+  optional_fields:
+    - estimated_time
+    - dependencies
+    - templates
+    - quality_gate
+    - handoff
+
+# Executor Types
+executor_types:
+  human:
+    id: "NS-EP-001"
+    name: "Human Executor"
+    use_for:
+      - "Validacao final de relevancia"
+      - "Decisoes sobre incluir/excluir perfil"
+      - "Contato direto com especialistas"
+  agent:
+    id: "NS-EP-002"
+    name: "Agent Executor (AI)"
+    use_for:
+      - "Pesquisa de perfis"
+      - "Analise de conteudo"
+      - "Geracao de relatorios"
+      - "Classificacao de autoridade"
+  hybrid:
+    id: "NS-EP-003"
+    name: "Hybrid Executor"
+    use_for:
+      - "Validacao de autoridade com revisao humana"
+      - "Curadoria de lista final"
+  worker:
+    id: "NS-EP-004"
+    name: "Worker Executor"
+    use_for:
+      - "Coleta de metricas publicas"
+      - "Formatacao de relatorios"
+
+# Workflow Configuration
+workflow_config:
+  checkpoint_policy: always_active
+  fail_fast: true
+  allow_manual_override: false
+
+# Agents
+agents:
+  - id: scout-chief
+    file: agents/scout-chief.md
+    tier: orchestrator
+    role: "Coordena o squad, recebe nicho-alvo, distribui tarefas"
+
+  - id: profile-hunter
+    file: agents/profile-hunter.md
+    tier: 1
+    role: "Descobre perfis via hashtags, mencoes, listas, ferramentas"
+
+  - id: authority-validator
+    file: agents/authority-validator.md
+    tier: 0
+    role: "Valida se o perfil e realmente autoridade no nicho"
+
+  - id: engagement-analyst
+    file: agents/engagement-analyst.md
+    tier: 2
+    role: "Analisa metricas de engajamento, crescimento, formatos"
+
+  - id: content-auditor
+    file: agents/content-auditor.md
+    tier: 2
+    role: "Avalia qualidade e profundidade do conteudo"
+
+  - id: report-compiler
+    file: agents/report-compiler.md
+    tier: 3
+    role: "Compila relatorio final ranqueado com scorecards"
+
+# Workflows
+workflows:
+  - id: wf-niche-scan
+    file: workflows/wf-niche-scan.yaml
+    description: "Pipeline completo de pesquisa de nicho"
+
+  - id: wf-profile-deep-dive
+    file: workflows/wf-profile-deep-dive.yaml
+    description: "Analise profunda de um perfil especifico"
+
+# Tasks
+tasks:
+  - id: compile-report
+    file: tasks/compile-report.md
+    description: "Compilar relatorio final ranqueado com scorecards"
+    command: "*compile"
+    agent: report-compiler
+
+  - id: generate-scorecard
+    file: tasks/generate-scorecard.md
+    description: "Gerar scorecard individual de um perfil"
+    command: "*scorecard"
+    agent: report-compiler
+
+  - id: generate-ranking
+    file: tasks/generate-ranking.md
+    description: "Gerar tabela de ranking por Score Final"
+    command: "*ranking"
+    agent: report-compiler
+
+  - id: export-report
+    file: tasks/export-report.md
+    description: "Exportar relatorio em MD, CSV ou JSON"
+    command: "*export"
+    agent: report-compiler
+
+# Templates
+templates:
+  - id: report-template
+    file: templates/report-template.md
+    description: "Template do relatorio executivo completo"
+
+  - id: scorecard-template
+    file: templates/scorecard-template.md
+    description: "Template de scorecard individual"
+
+# Checklists
+checklists:
+  - id: report-quality-checklist
+    file: checklists/report-quality-checklist.md
+    description: "Checklist de qualidade antes de entregar o relatorio"

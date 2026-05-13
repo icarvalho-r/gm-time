@@ -1,0 +1,80 @@
+name: "Perpetuo White"
+version: "1.0.0"
+description: "Sistema de Perpetuo White — Escalar infoprodutos com VSL + Trafego Direto + Ascensoes. 100% baseado no framework Lucas Ramos (R$2M+/mes lucro)."
+source_mind: "Lucas Ramos"
+source_extraction: "outputs/extracted/lucas-ramos-perpetuo-white-vsl-frameworks.md"
+
+tier_architecture:
+  tier_0:
+    role: "Orquestrador + Diagnostico"
+    agents: ["perpetuo-white-chief"]
+  tier_1:
+    role: "Especialistas Core (5 Pilares)"
+    agents:
+      - "vsl-architect"
+      - "creative-engineer"
+      - "traffic-scaler"
+      - "ascension-builder"
+      - "offer-architect"
+
+use_cases:
+  - id: "UC-01"
+    name: "Pipeline Completo: Lançamento → Perpétuo"
+    description: "Migrar expert de lançamento para perpétuo white com todos os 5 pilares"
+    agents: ["perpetuo-white-chief", "offer-architect", "vsl-architect", "creative-engineer", "traffic-scaler", "ascension-builder"]
+
+  - id: "UC-02"
+    name: "Escrever VSL White"
+    description: "Criar VSL completa (4 blocos + 5 leads) para expert no nicho white"
+    agents: ["perpetuo-white-chief", "vsl-architect"]
+
+  - id: "UC-03"
+    name: "Produzir e Testar Criativos"
+    description: "Criar 10+ criativos, hooks, formatos, método Frankenstein"
+    agents: ["perpetuo-white-chief", "creative-engineer"]
+
+  - id: "UC-04"
+    name: "Escalar Tráfego Meta Ads"
+    description: "Estruturar e escalar campanhas ABO→CBO→Meta de Custo"
+    agents: ["perpetuo-white-chief", "traffic-scaler"]
+
+  - id: "UC-05"
+    name: "Construir Ascensões"
+    description: "Implementar 5 sistemas de ascensão (upsell, webinário, workshop, formulário, lançamento)"
+    agents: ["perpetuo-white-chief", "ascension-builder"]
+
+  - id: "UC-06"
+    name: "Montar Escada de Produtos"
+    description: "Criar front-end, upsell PRONTO, back-end (programa de acompanhamento), high-end"
+    agents: ["perpetuo-white-chief", "offer-architect"]
+
+  - id: "UC-07"
+    name: "Diagnosticar Funil com Problema"
+    description: "Identificar gargalo (criativo? VSL? tráfego? ascensão?) e corrigir"
+    agents: ["perpetuo-white-chief"]
+
+quality_gates:
+  min_score: 7.0
+  blocking:
+    - "Todos os agents seguem 100% o framework Lucas Ramos"
+    - "Heurísticas com SE/ENTÃO documentadas"
+    - "Métricas reais como benchmarks (ROI 1.7, conversão 4.8%, CAC R$90)"
+    - "Zero conflito com framework original"
+
+settings:
+  slash_prefix: "PERPETUO"
+  pattern_prefix: "PW"
+  language: "pt-BR"
+  response_style: "direto, prático, com números"
+
+synergies:
+  - squad: "hormozi"
+    usage: "Equação de Valor para ofertas (resultado × certeza / tempo × esforço)"
+  - squad: "todd"
+    usage: "E5 Method para aprofundar mecanismo único quando necessário"
+  - squad: "derick"
+    usage: "Método Derick para VSLs longas (50K+ palavras de estrutura)"
+  - squad: "brunson"
+    usage: "Funnel architecture e escada de valor conceitual"
+  - squad: "klt"
+    usage: "Conteúdo pago KLT para complementar criativos orgânicos"

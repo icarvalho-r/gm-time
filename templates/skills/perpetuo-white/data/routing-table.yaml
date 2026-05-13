@@ -1,0 +1,85 @@
+# Routing Table — Perpetuo White Squad
+# Mapeia problemas/perguntas para o agent correto
+
+routing:
+  # === POR PROBLEMA ===
+  problemas:
+    - problema: "ROI geral baixo"
+      primeiro_passo: "perpetuo-white-chief (diagnosticar)"
+      diagnostico:
+        - sintoma: "Nenhum criativo valida"
+          causa_provavel: "VSL ruim"
+          agent: "vsl-architect"
+        - sintoma: "Play rate baixo"
+          causa_provavel: "Headline/thumbnail"
+          agent: "creative-engineer"
+        - sintoma: "Retencao 1min baixa"
+          causa_provavel: "Lead ruim"
+          agent: "vsl-architect"
+        - sintoma: "Retencao pitch baixa"
+          causa_provavel: "Mecanismo fraco"
+          agent: "vsl-architect"
+        - sintoma: "Conversao VSL baixa"
+          causa_provavel: "Oferta fraca"
+          agent: "offer-architect"
+
+    - problema: "ROI front ok mas ROI final baixo"
+      diagnostico:
+        - sintoma: "Upsell convertendo pouco"
+          causa_provavel: "Upsell e curso (nao pronto)"
+          agent: "offer-architect"
+        - sintoma: "Ascensoes nao funcionam"
+          causa_provavel: "Falta sistema de ascensao"
+          agent: "ascension-builder"
+        - sintoma: "Formulario nao preenchido"
+          causa_provavel: "Copy do formulario fraca"
+          agent: "ascension-builder"
+
+    - problema: "Volume baixo"
+      diagnostico:
+        - sintoma: "Criativos morrendo rapido"
+          causa_provavel: "Falta producao de criativos"
+          agent: "creative-engineer"
+        - sintoma: "Orcamento nao escala"
+          causa_provavel: "Estrutura de trafego inadequada"
+          agent: "traffic-scaler"
+        - sintoma: "Publico saturado"
+          causa_provavel: "Falta worldwide"
+          agent: "traffic-scaler"
+
+  # === POR USE CASE ===
+  use_cases:
+    - intent: "Quero sair do lancamento e criar um perpetuo"
+      pipeline: ["perpetuo-white-chief", "offer-architect", "vsl-architect", "creative-engineer", "traffic-scaler", "ascension-builder"]
+
+    - intent: "Preciso escrever uma VSL"
+      pipeline: ["perpetuo-white-chief", "vsl-architect"]
+
+    - intent: "Meus criativos nao estao performando"
+      pipeline: ["perpetuo-white-chief", "creative-engineer"]
+
+    - intent: "Quero escalar de XK para YK por dia"
+      pipeline: ["perpetuo-white-chief", "traffic-scaler", "creative-engineer"]
+
+    - intent: "Como criar ascensoes"
+      pipeline: ["perpetuo-white-chief", "ascension-builder"]
+
+    - intent: "Minha oferta nao converte"
+      pipeline: ["perpetuo-white-chief", "offer-architect"]
+
+    - intent: "Quero montar a escada de produtos"
+      pipeline: ["perpetuo-white-chief", "offer-architect"]
+
+    - intent: "Preciso de mais upsell"
+      pipeline: ["perpetuo-white-chief", "offer-architect", "ascension-builder"]
+
+  # === POR PILAR ===
+  pilares:
+    trafego: "traffic-scaler"
+    criativos: "creative-engineer"
+    vsl: "vsl-architect"
+    funil: "offer-architect"
+    ascensoes: "ascension-builder"
+    diagnostico: "perpetuo-white-chief"
+    escada_produtos: "offer-architect"
+    metricas: "perpetuo-white-chief"

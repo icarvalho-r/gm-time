@@ -1,0 +1,91 @@
+# Checklist de Validacao do Funil Perpetuo White
+# Baseado no framework Lucas Ramos
+
+checklist:
+  name: "Validacao do Funil Perpetuo White"
+  description: "Verificar se todos os componentes do funil estao configurados corretamente antes de escalar"
+
+  fase_1_produto:
+    nome: "Escada de Produtos"
+    items:
+      - "[ ] Front-end definido com ticket R$150-300"
+      - "[ ] Front-end resolve 1 problema especifico (pilula rapida)"
+      - "[ ] Checklist de 7 dias criado para o aluno"
+      - "[ ] Ultimo item do checklist = chamar suporte (ascensao)"
+      - "[ ] Formulario de matricula no primeiro modulo"
+      - "[ ] IA treinada como suporte do curso"
+      - "[ ] Upsell PRONTO definido (NAO e curso) — ticket R$400-600"
+      - "[ ] Downsell configurado (mesmo produto com desconto)"
+      - "[ ] Back-end renomeado para 'programa de acompanhamento'"
+      - "[ ] Triada criada (conhecimento + recomendacoes + acompanhamento)"
+      - "[ ] High-end com acompanhamento do expert definido"
+      - "[ ] Cashback configurado entre todos os niveis"
+    veto: "NAO escalar sem front-end + upsell PRONTO + back-end definidos"
+
+  fase_2_vsl:
+    nome: "VSL Completa"
+    items:
+      - "[ ] Pesquisa de mercado realizada (3 perguntas: medo, perrengue, sonho)"
+      - "[ ] Pesquisa externa (YouTube mais vistos no nicho)"
+      - "[ ] Oferta escrita (primeiro bloco a ser escrito)"
+      - "[ ] Mecanismo do Problema escrito (historia do expert + dados)"
+      - "[ ] Mecanismo da Solucao escrito (O QUE + POR QUE, logico, 2 caminhos)"
+      - "[ ] 5 leads escritas (1 negativa, 1 positiva, 1 historia, 1 depoimento, 1 autoridade)"
+      - "[ ] VSL gravada (teleprompter para corpo, formatos variados para leads)"
+      - "[ ] Duracao entre 15-25 minutos"
+      - "[ ] Bonus urgencia 60 segundos pos-preco configurado"
+      - "[ ] Botao desconto 15-20% configurado (aparece 1.5-2min apos pitch)"
+      - "[ ] Thumbnail de pausa configurada (muda para cupom apos pitch)"
+      - "[ ] Teste AB de leads configurado na VTurb"
+      - "[ ] VSL de upsell criada"
+    veto: "NAO rodar trafego sem minimo 5 leads para testar"
+
+  fase_3_criativos:
+    nome: "Criativos Iniciais"
+    items:
+      - "[ ] Minimo 10 criativos produzidos"
+      - "[ ] Pelo menos 3 formatos diferentes testados"
+      - "[ ] Congruencia verificada (angulo do criativo = angulo da lead)"
+      - "[ ] Se tem organico viral: cortado + CTA adicionado"
+      - "[ ] Nenhum criativo e teleprompter puro (formatos variados)"
+      - "[ ] Copy extraida dos pontos da VSL (10 angulos diferentes)"
+    veto: "NAO diagnosticar VSL como ruim com menos de 10 criativos testados"
+
+  fase_4_trafego:
+    nome: "Estrutura de Trafego"
+    items:
+      - "[ ] ABO Gaveta criada (campanha de teste)"
+      - "[ ] Orcamento de teste = meio ticket por criativo"
+      - "[ ] Regra de corte definida (1 ticket sem venda = mata)"
+      - "[ ] CBO pre-escala preparada (2 tickets por grupo)"
+      - "[ ] Publico configurado como ABERTO (broad)"
+      - "[ ] Pixel/Conversions API configurado corretamente"
+      - "[ ] Tracking VTurb ↔ Meta verificado"
+    veto: "NAO escalar campanha que nao passou pela ABO Gaveta"
+
+  fase_5_ascensoes:
+    nome: "Sistemas de Ascensao"
+    items:
+      - "[ ] Upsell imediato rodando (VSL pos-checkout)"
+      - "[ ] Automacao Make → ManyChat configurada"
+      - "[ ] Webinario diario gravado e configurado"
+      - "[ ] Condicional de horario (antes/depois 17h) funcionando"
+      - "[ ] Workshop semanal agendado (tema definido, pitch curto)"
+      - "[ ] Formulario de matricula coletando dados"
+      - "[ ] Time comercial treinado com script de abordagem"
+      - "[ ] Aula de boas-vindas com depoimentos + escada"
+      - "[ ] Proximo lancamento planejado (base de front-end inclusa)"
+    veto: "NAO considerar ROI final sem pelo menos upsell imediato + 1 ascensao posterior"
+
+  validacao_final:
+    nome: "Go/No-Go para Escala"
+    items:
+      - "[ ] ROI front >= 1.3 (minimo para nao perder dinheiro)"
+      - "[ ] ROI front+upsell >= 1.8 (saudavel para escalar)"
+      - "[ ] Conversao VSL >= 2% (minimo aceitavel)"
+      - "[ ] Pelo menos 3 criativos validados (venderam com ROI)"
+      - "[ ] Pelo menos 1 lead validada de 5 testadas"
+      - "[ ] Upsell imediato convertendo >= 10%"
+      - "[ ] Nenhum problema tecnico (tracking, pagamento, entrega)"
+    go: "Todos os items acima = iniciar escala 20-30%/dia"
+    no_go: "Qualquer item falhando = corrigir ANTES de escalar"

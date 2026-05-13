@@ -1,0 +1,241 @@
+# =============================================================================
+# BIG IDEA FRAMEWORK — Shared Reference Data
+# =============================================================================
+# Arquivo de referencia compartilhado com o framework de Big Idea (Pergunta
+# Paradoxal) do metodo Derick. Contem definicao, 3 elementos obrigatorios,
+# teste do bar, conexao com mecanismo, regras do nome chiclete e exemplos.
+#
+# USO: Carregado por idea-architect, derick-chief, vsl-assembler e
+# qualquer agente que precise entender como Big Ideas funcionam.
+# NAO inclui o processo completo de criacao (que fica no agent).
+# =============================================================================
+
+# =============================================================================
+# O QUE E BIG IDEA
+# =============================================================================
+definition:
+  what: |
+    Big Idea = a resposta para "por que eu tenho que assistir esse video AGORA?"
+
+    NAO e a promessa (beneficio).
+    NAO e o mecanismo.
+    NAO e o produto.
+
+    E uma MISTURA de curiosidade + beneficio implicito.
+    E o CONTEUDO, o TEMA do video que fica se repetindo.
+    A Big Idea sustenta o mecanismo — da forca extra a argumentacao.
+    NAO e dita de forma explicita — e percebida, esta implicita.
+
+  fundamental_principle: |
+    Big Idea NAO e criatividade. NAO e criacao. Voce nao esta criando algo
+    do zero. Voce esta extraindo do mercado o que ja funcionou e recombinando.
+    Quando voce segue o processo, a matematica trabalha a seu favor.
+
+  preferred_type: "Pergunta Paradoxal"
+  avoided_type:
+    name: "Grande Conspiracao"
+    reason: |
+      Muito dificil de criar. Nao e processual — depende de insight criativo
+      raro. Nao da para ensinar um processo repetivel. O risco de ficar ruim
+      e alto demais.
+
+# =============================================================================
+# FORMULA DA PERGUNTA PARADOXAL
+# =============================================================================
+formula:
+  template: |
+    Como [ENTIDADE/GRUPO] consegue [RESULTADO ESPECIFICO]
+    mesmo [HABITO/COMPORTAMENTO CONTROVERSO]?
+  variation: |
+    Se [FATO CONTRA-INTUITIVO], por que [CONSEQUENCIA LOGICA ESPERADA]?
+
+# =============================================================================
+# 3 ELEMENTOS OBRIGATORIOS
+# =============================================================================
+mandatory_elements:
+
+  element_1:
+    name: "Entidade, cultura ou grupo de pessoas popular"
+    description: |
+      Um grupo reconhecivel que o publico conhece ou pelo menos ja ouviu
+      falar. Quanto mais popular e familiar, melhor.
+    categories:
+      - "Nacionalidade (japonesas, italianas, francesas)"
+      - "Grupo social (celebridades, atores pornos)"
+      - "Profissao (atletas, modelos, cirurgioes)"
+      - "Cultura (monges tibetanos, tribos africanas)"
+    quality_criterion: |
+      A pessoa que ouve precisa imediatamente criar uma imagem mental
+      do grupo. Se precisa explicar quem sao, a entidade e fraca.
+    scoring:
+      low: "0-3: Grupo desconhecido ou que precisa explicacao"
+      medium: "4-6: Grupo conhecido mas sem associacao forte com o resultado"
+      high: "7-9: Grupo popular com associacao natural ao resultado"
+      perfect: "10: Grupo iconico com associacao irresistivel"
+
+  element_2:
+    name: "Resultado especifico"
+    description: |
+      O resultado que o publico-alvo deseja. Deve ser concreto e
+      observavel — nao abstrato. Conecta diretamente com o desejo
+      do avatar.
+    quality_criterion: |
+      O resultado precisa ser algo que o avatar quer para si.
+      "Ser magra" e bom. "Ter bem-estar" e vago demais.
+    scoring:
+      low: "0-3: Resultado vago ou que nao conecta com o desejo do avatar"
+      medium: "4-6: Resultado claro mas generico"
+      high: "7-9: Resultado especifico e desejado pelo avatar"
+      perfect: "10: Resultado que e a obsessao #1 do avatar"
+
+  element_3:
+    name: "Habito ou comportamento controverso"
+    description: |
+      Algo que vai CONTRA o que o publico acredita ser possivel.
+      E o elemento que gera o paradoxo — a contra-intuicao.
+      Deve contradizer uma crenca popular do nicho.
+    quality_criterion: |
+      Precisa gerar a reacao: "Espera, como assim? Isso nao deveria
+      funcionar!" Se nao gera essa reacao, nao e controverso o suficiente.
+    scoring:
+      low: "0-3: Nao gera surpresa nenhuma"
+      medium: "4-6: Gera leve curiosidade"
+      high: "7-9: Gera reacao 'como assim?'"
+      perfect: "10: Gera reacao 'impossivel, preciso saber como'"
+
+  total_scoring:
+    max: 30
+    ranges:
+      ruim: "0-15: descartar"
+      medio: "16-21: refinar ou descartar"
+      bom: "22-27: candidata forte"
+      excelente: "28-30: provavelmente a vencedora"
+    approval_rule: |
+      Todos os 3 elementos precisam estar acima de 6.
+      Uma pergunta com entidade 10 e comportamento 3 e RUIM.
+
+# =============================================================================
+# TESTE DO BAR
+# =============================================================================
+bar_test:
+  description: |
+    A pergunta paradoxal precisa passar no "teste do bar": alguem
+    falaria isso numa conversa casual no bar? Se sim, e forte. Se nao,
+    e fraca demais. A Big Idea precisa ser algo que gruda na cabeca
+    e que a pessoa quer contar pra alguem.
+  criteria:
+    - "A pessoa repetiria essa pergunta pra um amigo?"
+    - "A pergunta gera uma discussao natural?"
+    - "E simples o suficiente pra explicar em 10 segundos?"
+    - "Gera a reacao 'serio? como assim?'"
+
+# =============================================================================
+# CONEXAO BIG IDEA <-> MECANISMO
+# =============================================================================
+mechanism_connection:
+  description: |
+    A Big Idea e o mecanismo sao complementares, mas distintos:
+    - Big Idea: "Por que assistir?" (curiosidade)
+    - Mecanismo: "Por que acreditar?" (esperanca)
+    A pergunta paradoxal SEMPRE conecta com o mecanismo.
+    Se a Big Idea nao alimenta o mecanismo, ela esta desconectada e nao funciona.
+  two_functions:
+    big_idea:
+      function: "Vender o conteudo"
+      what: "Faz a pessoa querer consumir o conteudo do video"
+    mechanism:
+      function: "Vender a esperanca"
+      what: "Vende a solucao, a esperanca de resolver o problema"
+  rule: |
+    A Big Idea alimenta o mecanismo — da contexto e credibilidade
+    para que o mecanismo faca sentido. Sem essa conexao, a Big Idea
+    e apenas uma curiosidade solta.
+
+# =============================================================================
+# NOME CHICLETE
+# =============================================================================
+nome_chiclete:
+  definition: |
+    O nome chiclete e um nomezinho curioso que resume a Big Idea
+    em 2-4 palavras. Ele GRUDA na cabeca da pessoa.
+    Funciona como rotulo mental — a pessoa passa a associar o conceito ao nome.
+
+  types:
+    - type: "Para a pergunta paradoxal"
+      examples: ["Truque das Lesbicas", "Segredo das Japonesas"]
+    - type: "Para o mecanismo de problema"
+      examples: ["Parasita do Acucar", "Inflamacao Silenciosa"]
+    - type: "Para o mecanismo de solucao"
+      examples: ["Banho Emagrecedor", "Habito Noturno"]
+
+  rules:
+    - "Maximo 4 palavras (ideal: 2-3)"
+    - "Deve gerar curiosidade por si so"
+    - "Facil de lembrar e repetir"
+    - "Deve soar como 'segredo revelado' ou 'descoberta'"
+    - "Funciona como rotulo mental"
+
+  formulas:
+    - "[Truque/Segredo/Metodo] + [do/da/dos/das] + [Entidade]"
+    - "[Adjetivo] + [Substantivo] (ex: Banho Emagrecedor)"
+    - "[Substantivo] + [Adjetivo] (ex: Habito Noturno)"
+    - "[Substantivo] + [de/do/da] + [Contexto] (ex: Segredo da Industria)"
+
+# =============================================================================
+# EXEMPLOS DE PERGUNTAS PARADOXAIS
+# =============================================================================
+key_examples:
+
+  - pergunta: "Como as lesbicas conseguem dar prazer uma para outra sem ter um penis?"
+    nome_chiclete: "Truque das Lesbicas"
+    faturamento: "R$26M"
+    autor: "Diogo Gomes"
+    entidade: "Lesbicas — grupo reconhecivel, gera curiosidade imediata"
+    resultado: "Dar prazer sexual — desejo direto do avatar"
+    comportamento_controverso: "Sem ter um penis — contradiz a crenca popular sobre prazer"
+    why_it_works: |
+      O paradoxo e fortissimo. A maioria dos homens acredita que o
+      penis e essencial para o prazer feminino. A pergunta desafia
+      isso diretamente e cria uma curiosidade quase impossivel de
+      ignorar. O nome chiclete resume toda a ideia em 3 palavras.
+
+  - pergunta: "Como as mulheres japonesas conseguem ser magras mesmo comendo arroz e carboidrato todos os dias?"
+    nome_chiclete: "Segredo das Japonesas"
+    entidade: "Mulheres japonesas — reconheciveis, associadas a magreza"
+    resultado: "Ser magras — desejo direto do publico feminino"
+    comportamento_controverso: "Comendo arroz e carboidrato — contradiz a crenca de que carbo engorda"
+    why_it_works: |
+      Toda mulher que faz dieta ouviu que carboidrato engorda.
+      As japonesas comem arroz todos os dias e sao magras. Esse
+      paradoxo e real e observavel — a pessoa sabe que e verdade,
+      e por isso a curiosidade e ainda maior.
+
+  - pergunta: "Como os italianos conseguem ter niveis tao baixos de diabetes mesmo comendo pao e pizza todos os dias?"
+    nome_chiclete: "Segredo dos Italianos"
+    entidade: "Italianos — fortemente associados a comida"
+    resultado: "Niveis baixos de diabetes — desejo de quem sofre com a doenca"
+    comportamento_controverso: "Comendo pao e pizza — alimentos 'proibidos' para diabeticos"
+    why_it_works: |
+      Para quem tem diabetes, pao e pizza sao inimigos. Saber que
+      um povo inteiro come isso diariamente e nao tem diabetes
+      cria um paradoxo irresistivel.
+
+  - pergunta: "Como as celebridades conseguem ter um corpo magro mesmo com rotina agitada e sem tempo para dieta?"
+    nome_chiclete: "Metodo das Celebridades"
+    entidade: "Celebridades — altamente reconheciveis"
+    resultado: "Corpo magro — desejo universal"
+    comportamento_controverso: "Rotina agitada e sem tempo para dieta — a desculpa #1 do avatar"
+    why_it_works: |
+      Atinge a principal objecao do avatar: "nao tenho tempo".
+      Se celebridades que sao mais ocupadas conseguem, deve existir
+      algo que o avatar nao sabe.
+
+  - pergunta: "Se menos de 1% dos homens tem penis grande, por que todos os atores pornos tem?"
+    nome_chiclete: "Segredo da Industria Adulta"
+    entidade: "Atores pornos — reconheciveis no contexto"
+    resultado: "Ter penis grande — desejo direto do avatar masculino"
+    comportamento_controverso: "Estatistica de 1% vs 100% dos atores — paradoxo numerico"
+    why_it_works: |
+      O paradoxo e matematico e inegavel. A pessoa nao consegue
+      explicar logicamente como isso e possivel. A unica explicacao
+      e que existe algo que ela nao sabe.

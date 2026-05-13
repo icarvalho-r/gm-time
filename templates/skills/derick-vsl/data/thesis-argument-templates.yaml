@@ -1,0 +1,210 @@
+# ==============================================================================
+# THESIS ARGUMENT TEMPLATES — Templates Completos dos 3 Argumentos da Tese
+# Squad: derick-vsl
+# Agent: thesis-writer
+# ==============================================================================
+# Referencia canonica para os templates de cada argumento da Tese de Marketing.
+# Contem: estrutura detalhada, exemplos por nicho, regras e tecnicas.
+# ==============================================================================
+
+argumento_1:
+  nome: "Argumento da Causa do Problema"
+  objetivo: >
+    Fazer a pessoa entender que existe uma CAUSA REAL e OCULTA para o
+    problema dela — algo que ela nao sabia, mas que faz todo sentido
+    quando revelado.
+
+  etapas:
+    ponto_de_partida:
+      descricao: "Comece com algo que as pessoas JA SABEM sobre o problema"
+      tecnica: "Use 'Como voce deve saber...' ou 'Voce provavelmente ja ouviu falar que...'"
+      exemplos:
+        emagrecimento: "Como voce deve saber, o que causa o acumulo de gordura e o metabolismo lento..."
+        pele: "Como voce ja deve saber, o que causa o envelhecimento da pele e a perda de colageno..."
+        diabetes: "Como voce provavelmente ja sabe, o que causa o descontrole da glicemia e a resistencia a insulina..."
+        articulacoes: "Como voce ja deve ter ouvido, o que causa as dores nas articulacoes e o desgaste da cartilagem..."
+      regras:
+        - "Sempre use algo que seja CONSENSO no nicho"
+        - "Nao invente — use o que as pessoas realmente acreditam"
+        - "Seja breve — 2 a 3 frases no maximo"
+        - "O tom deve ser de confirmacao, nao de ensino"
+        - "Evite jargoes tecnicos neste momento"
+
+    peca_faltante:
+      descricao: "Aponte que falta uma PECA no quebra-cabeca. Cria GAP de curiosidade"
+      tecnica: "Use 'Porem...' ou 'No entanto...' + tentativas frustradas + descoberta misteriosa"
+      exemplos:
+        emagrecimento: "Porem, mesmo sabendo disso, ninguem ate entao conseguiu encontrar uma solucao definitiva... Ate que em dezembro de 2023, um grupo de pesquisadores..."
+        pele: "No entanto, mesmo com toda essa informacao disponivel, os cremes anti-idade continuam falhando... Ate que um estudo publicado no Journal of Dermatological Science revelou..."
+        calvicie: "Porem, apesar de todos saberem disso, os tratamentos para queda de cabelo continuam sendo ineficazes... Ate que uma pesquisa conduzida em 2024 encontrou..."
+      regras:
+        - "A transicao deve ser SUAVE — nao pode parecer forcada"
+        - "Mencione tentativas frustradas para validar a experiencia da pessoa"
+        - "Introduza a pesquisa/descoberta com MISTERIO"
+        - "Use datas especificas para dar credibilidade (mes + ano)"
+        - "Nunca revele a causa real aqui — apenas insinue que foi encontrada"
+
+    crenca_comum:
+      descricao: "Ancore em algo que a pessoa JA ACREDITA (ponte mental)"
+      tecnica: "Use 'Voce ja deve ter ouvido falar que [crenca], certo?'"
+      exemplos:
+        emagrecimento: "Voce ja deve ter ouvido falar que o intestino e o nosso segundo cerebro, certo?..."
+        pele: "Voce ja deve ter ouvido falar que a pele e o maior orgao do corpo humano, certo?..."
+        energia: "Voce ja deve ter ouvido falar que as mitocondrias sao as 'usinas de energia', certo?..."
+      regras:
+        - "A crenca deve ser AMPLAMENTE conhecida e aceita"
+        - "Use a estrutura de pergunta retorica ('certo?')"
+        - "A crenca deve ter conexao logica com a causa que sera revelada"
+        - "Nao force conexoes"
+        - "Este passo e uma PONTE — deve ser curto e fluido"
+
+    grande_pesquisa:
+      descricao: "CLIMAX do Argumento 1 — revela a CAUSA REAL via estudo cientifico"
+      tecnica: "Narre como historia. Use numeros especificos. Crie suspense. 'Ao que parece...'"
+      exemplos:
+        emagrecimento: >
+          Cientistas da Universidade de Washington analisaram 8 mil pessoas...
+          encontraram bacteria Prevotella... "parasita metabolico" que BLOQUEIA metabolismo
+        pele: >
+          Pesquisadores do MIT analisaram 5 mil mulheres...
+          encontraram enzima MMP-1... "exercito de micro-tesouras" que DEVORA colageno
+      regras:
+        - "Narre como HISTORIA, nao como artigo cientifico"
+        - "Use numeros especificos para dar peso (quantidade de pessoas, anos)"
+        - "Crie suspense antes da revelacao"
+        - "A causa revelada deve ser ESPECIFICA — nao generica"
+        - "Use analogias para tornar a causa compreensivel"
+        - "A causa deve parecer 'obvia em retrospecto'"
+        - "Mencione universidade ou instituicao para credibilidade"
+        - "Use 'Ao que parece...' para a revelacao — cria tom de descoberta"
+
+argumento_2:
+  nome: "Argumento da Funcao"
+  objetivo: >
+    Provar COMO a causa identificada no Argumento 1 realmente funciona.
+    Nao basta dizer qual e a causa — precisa PROVAR que e real.
+
+  etapas:
+    conclusao_do_estudo:
+      descricao: "Reforce a conclusao da pesquisa como SENTENCA definitiva"
+      tecnica: "Use 'Foi nesse momento que os cientistas perceberam que...' + estrutura 'Nao e X. Nao e Y. E Z.'"
+      exemplos:
+        emagrecimento: "Foi nesse momento que os cientistas perceberam que essa bacteria — a Prevotella — e a verdadeira causa... Nao e o metabolismo lento em si. Nao e a genetica. Nao e falta de forca de vontade. E uma bacteria..."
+        insonia: "Foi nesse momento que os pesquisadores compreenderam: a causa real da insonia nao e o estresse, nao e a ansiedade... E um desequilibrio quimico especifico no nucleo supraquiasmatico..."
+      regras:
+        - "Seja DIRETO e INCISIVO"
+        - "Negue as causas populares para reforcar a causa real"
+        - "Use a estrutura 'Nao e X. Nao e Y. E Z.'"
+        - "Traga de volta ao momento presente: 'neste exato momento'"
+        - "A frase deve ter peso — deve soar como um VEREDITO"
+
+    grande_prova:
+      descricao: "Prova IRREFUTAVEL que comprove a causa — 4 tipos disponiveis"
+      tipos:
+        ilustracao:
+          descricao: "Imagem, raio-X, exame que MOSTRA a causa em acao"
+          quando_usar: "Quando e possivel VISUALIZAR a causa (nichos de saude)"
+          regras:
+            - "Descreva a imagem em detalhes para quem esta OUVINDO"
+            - "Use contraste: antes vs depois, saudavel vs doente"
+            - "A imagem deve causar IMPACTO EMOCIONAL"
+
+        demonstracao:
+          descricao: "Experimento ou caso pratico que DEMONSTRA a causa"
+          quando_usar: "Quando existe um experimento famoso ou replicavel"
+          regras:
+            - "Narre como historia com comeco, meio e fim"
+            - "Use numeros especificos (40%, 4 semanas, 3 semanas)"
+            - "O resultado deve ser DRAMATICO e claro"
+            - "Se possivel, mostre a reversao (causa removida = problema resolvido)"
+
+        estudo_grafico:
+          descricao: "Dado estatistico que correlaciona causa com problema em larga escala"
+          quando_usar: "Quando tem dados populacionais com correlacao clara"
+          regras:
+            - "Use porcentagens altas e numeros impressionantes"
+            - "Mostre correlacao temporal se possivel"
+            - "Termine com 'Nao e coincidencia'"
+            - "Simplifique os dados — nao use linguagem academica"
+
+        prova_testavel:
+          descricao: "Teste simples que a pessoa pode fazer AGORA"
+          quando_usar: "Quando e possivel criar um auto-diagnostico simples (mais ENGAJANTE)"
+          regras:
+            - "O teste deve ser SIMPLES — realizavel em segundos"
+            - "Deve ter resultado binario: sim/nao, frio/quente"
+            - "Explique POR QUE o resultado indica a causa"
+            - "Nao pode ser algo que a pessoa possa 'errar'"
+            - "Crie urgencia: 'voce pode verificar isso AGORA MESMO'"
+
+      combinacao_recomendada:
+        ideal: "Combinar 2 ou mais tipos"
+        mais_poderosa: "Demonstracao + Prova Testavel"
+        ordem_recomendada:
+          - "Estudo/Grafico (dados frios, racionais)"
+          - "Demonstracao (experimento, emocional)"
+          - "Ilustracao (visual, impactante)"
+          - "Prova Testavel (participativa, pessoal)"
+
+argumento_3:
+  nome: "Argumento da Solucao"
+  objetivo: >
+    Apresentar a SOLUCAO para a causa identificada e comprovada.
+    Transforma PROBLEMA em ESPERANCA.
+
+  etapas:
+    pergunta_paradoxal:
+      descricao: "Pergunta que leva a pensar em alguem que JA TEM o resultado desejado"
+      conexao_com_big_idea: >
+        A Pergunta Paradoxal NAO e inventada aqui — vem do idea-architect (Fase 3).
+        Formula: "Como [ENTIDADE] consegue [RESULTADO] mesmo [COMPORTAMENTO CONTROVERSO]?"
+        O thesis-writer ADAPTA para o contexto narrativo da Tese.
+      regras:
+        - "A pergunta deve ser GENUINAMENTE intrigante"
+        - "Use exemplos que a pessoa CONHECE e ADMIRA"
+        - "Nao responda imediatamente — deixe no ar por 1-2 frases"
+        - "A resposta DEVE SER a sua solucao"
+        - "Evite perguntas cliches"
+
+    explicacao_rapida:
+      descricao: "Revele COMO encontrou a solucao e O QUE ela e"
+      tecnica: "Micro-historia de descoberta + explicacao com 'primeiro, segundo, terceiro'"
+      regras:
+        - "Historia de descoberta deve ser VEROSSIMIL"
+        - "Mencione especialista/pesquisador para credibilidade"
+        - "Explique em linguagem SIMPLES"
+        - "A solucao deve endercar DIRETAMENTE a causa do Argumento 1"
+        - "Nao mencione nome de produto ainda — apenas mecanismo"
+
+    evidencias_cientificas:
+      descricao: "Estudos e dados que comprovam eficacia da solucao"
+      regras:
+        - "Cite pelo menos 2 estudos/fontes diferentes"
+        - "Use numeros especificos e impressionantes"
+        - "Mencione universidades/journals conhecidos"
+        - "Mostre resultados em PRAZO definido (30 dias, 60 dias)"
+        - "Use 'E nao sou so eu quem esta dizendo' para distanciar"
+
+    teste:
+      descricao: "Teste da solucao com cobaia (depende do tipo de porta-voz)"
+      conexao_com_porta_voz:
+        avatar_transformado: "O cobaia e VOCE MESMO"
+        guru_familiar: "O cobaia e esposa, mae, alguem proximo"
+        guru_paciente: "O cobaia e um paciente"
+      regras:
+        - "O cobaia deve ser alguem com quem a audiencia se IDENTIFICA"
+        - "Mencione frustracoes anteriores (ja tentou tudo)"
+        - "Deixe claro que NAO houve outras mudancas (isola variavel)"
+        - "Crie expectativa para o resultado (nao revele ainda)"
+
+    grande_resultado:
+      descricao: "Resultado progressivo e dramatico do teste"
+      tecnica: "Progressao semana a semana + numeros especificos + reacoes de terceiros"
+      regras:
+        - "Mostre progressao: semana 1, semana 2, semana 3, resultado final"
+        - "Use numeros ESPECIFICOS (1.2 kg, nao 'cerca de 1 kg')"
+        - "Inclua REACOES de terceiros para validacao social"
+        - "Inclua uma FALA da pessoa (citacao direta)"
+        - "Reconecte o resultado com a causa"
+        - "O resultado deve ser IMPRESSIONANTE mas CREDIVEL"
+        - "Finalize com resumo que reforce: 'sem dieta, sem exercicio'"

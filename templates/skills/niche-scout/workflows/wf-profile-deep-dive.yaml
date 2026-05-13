@@ -1,0 +1,463 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW: WF-PROFILE-DEEP-DIVE
+# Análise profunda de um único perfil — sem necessidade de varredura de nicho
+# Squad: niche-scout
+# Padrão: AIOS multi-phase workflow v2
+# VERSION: 1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+workflow:
+  id: wf-profile-deep-dive
+  name: "Profile Deep Dive — Análise Profunda de Perfil Individual"
+  version: "1.0.0"
+  estimated_time: "20-40 minutos"
+  complexity: "média"
+  pack: niche-scout
+  language: pt-BR
+  geo_focus: Brazil
+
+  description: |
+    Pipeline focado para análise aprofundada de um único perfil de especialista
+    brasileiro no Instagram e/ou TikTok.
+
+    Use quando:
+    - O usuário conhece um perfil específico e quer análise completa
+    - É necessário validar um perfil antes de uma parceria
+    - É preciso comparar um perfil com o benchmark do nicho
+    - Não é necessário fazer varredura completa do nicho
+
+    Este workflow aciona 3 agentes especializados em sequência:
+    1. VALIDATION   — Authority Validator analisa autoridade real
+    2. ENGAGEMENT   — Engagement Analyst analisa métricas e crescimento
+    3. CONTENT      — Content Auditor avalia qualidade do conteúdo
+    4. COMPILATION  — Report Compiler gera scorecard individual
+    5. REVIEW       — Scout Chief revisa e apresenta ao usuário
+
+    Foco exclusivo: especialistas brasileiros no Instagram e TikTok.
+    Idioma de saída: Português (Brasil).
+
+  orchestrator: scout-chief
+  orchestrator_file: agents/scout-chief.md
+
+  trigger:
+    command: "*deep-dive"
+    syntax: "*deep-dive [@handle ou URL do perfil]"
+    exemplo: "*deep-dive @catiadamasceno"
+
+  best_for:
+    - "Análise pré-parceria de um especialista específico"
+    - "Validação de autoridade de um único perfil"
+    - "Benchmark individual contra o mercado"
+    - "Due diligence rápida antes de abordagem comercial"
+    - "Investigação de perfil recomendado por terceiro"
+
+  platforms_supported:
+    - id: instagram
+      name: "Instagram"
+    - id: tiktok
+      name: "TikTok"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AGENTES ENVOLVIDOS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agents:
+  - id: scout-chief
+    file: agents/scout-chief.md
+    tier: orchestrator
+    role: "Recebe o perfil-alvo, coordena o pipeline, revisa e entrega o scorecard"
+    phases_active: ["phase_0_intake", "phase_5_review"]
+    always_monitoring: true
+
+  - id: authority-validator
+    file: agents/authority-validator.md
+    tier: 0
+    role: "Valida autoridade real: credenciais, reconhecimento, metodologia própria"
+    phases_active: ["phase_1_validation"]
+
+  - id: engagement-analyst
+    file: agents/engagement-analyst.md
+    tier: 2
+    role: "Analisa métricas de engajamento, crescimento e qualidade de audiência"
+    phases_active: ["phase_2_engagement"]
+
+  - id: content-auditor
+    file: agents/content-auditor.md
+    tier: 2
+    role: "Audita qualidade, profundidade e originalidade do conteúdo"
+    phases_active: ["phase_3_content"]
+
+  - id: report-compiler
+    file: agents/report-compiler.md
+    tier: 3
+    role: "Calcula Score Final Composto e gera scorecard individual"
+    phases_active: ["phase_4_scorecard"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRE-FLIGHT CHECK
+# ═══════════════════════════════════════════════════════════════════════════════
+
+pre_flight:
+  name: "Verificação Inicial"
+  executor: scout-chief
+  checks:
+    - check: "Perfil identificado"
+      validacao: "O @handle ou URL do perfil foi fornecido pelo usuário"
+      acao_falha: "Solicitar handle: 'Qual o @ ou URL do perfil que deseja analisar?'"
+
+    - check: "Plataforma identificada"
+      validacao: "Instagram e/ou TikTok"
+      acao_falha: "Perguntar: 'Analisar no Instagram, TikTok ou ambos?'"
+
+    - check: "Nicho de referência"
+      validacao: "O nicho do especialista é conhecido ou identificável"
+      acao_falha: "Inferir do perfil ou perguntar: 'Qual o nicho/área deste especialista?'"
+
+  output_pre_flight:
+    handle_alvo: "{@handle}"
+    plataformas: ["instagram", "tiktok"]
+    nicho_referencia: "{nicho}"
+    data_inicio: "{timestamp}"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 0: INTAKE E QUALIFICAÇÃO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_0_intake:
+  id: "phase_0"
+  name: "Intake e Qualificação"
+  executor: scout-chief
+  duration_estimate: "2-3 minutos"
+
+  steps:
+    - step: "0.1 — Confirmar perfil e escopo"
+      instrucao: |
+        Confirme com o usuário:
+        - Perfil: @{handle} na(s) plataforma(s) {plataformas}
+        - Nicho de referência: {nicho}
+        - Objetivo da análise: parceria, benchmarking, curiosidade, outro?
+
+        Informe o que será entregue:
+        "Vou acionar 3 agentes especializados para uma análise completa de @{handle}:
+        - Authority Validator: credenciais e autoridade real no nicho
+        - Engagement Analyst: métricas de engajamento e crescimento
+        - Content Auditor: qualidade e profundidade do conteúdo
+        Tempo estimado: 20-40 minutos. Resultado: scorecard completo com Score Final."
+
+    - step: "0.2 — Preparar briefing para os agentes"
+      instrucao: |
+        Prepare o contexto a ser passado para cada agente:
+        - Handle alvo: @{handle}
+        - Plataformas: {plataformas}
+        - Nicho de referência: {nicho}
+        - Objetivo da análise: {objetivo}
+        - Contexto adicional do usuário: {contexto}
+
+  checkpoint_0:
+    criterio: "Perfil, plataforma e nicho confirmados"
+    acao_falha: "Retornar ao usuário para coleta de informações"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 1: VALIDAÇÃO DE AUTORIDADE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_1_validation:
+  id: "phase_1"
+  name: "Validação de Autoridade"
+  executor: authority-validator
+  duration_estimate: "5-10 minutos"
+
+  handoff_from_scout_chief: |
+    Validator, preciso que você analise a autoridade real de @{handle} no nicho
+    de {nicho}.
+
+    Verifique:
+    1. Credenciais formais (formação acadêmica, certificações, CRM/CRO/etc.)
+    2. Produção intelectual (livros, cursos, artigos, pesquisas)
+    3. Metodologia ou framework próprio documentado
+    4. Prática profissional além das redes sociais
+    5. Reconhecimento de pares (menções, convites, prêmios)
+
+    Aplique o Scorecard de Autoridade (0-15 pontos) e detecte red flags.
+    Classifique como: PASS (9+/15) ou FAIL (<9/15).
+    Me retorne o score de autoridade normalizado (0-100) e a justificativa.
+
+  output_esperado:
+    score_autoridade: "0-100 (normalizado de 0-15)"
+    classificacao: "PASS ou FAIL"
+    credenciais_verificadas: "Lista de credenciais encontradas"
+    red_flags: "Lista de red flags identificadas (pode ser vazia)"
+    justificativa: "Texto explicando o score"
+
+  checkpoint_1:
+    criterio: "Score de autoridade calculado e classificação definida"
+    minimo_aceitavel: "Score ≥ 40/100 para continuar (equivalente a ~6/15)"
+    acao_se_fail_critico: |
+      Se score < 40/100 (autoridade muito baixa), notificar scout-chief:
+      "Autoridade insuficiente detectada em @{handle} (score: {score}/100).
+      Recomendo encerrar análise e notificar usuário. Deseja continuar mesmo assim?"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 2: ANÁLISE DE ENGAJAMENTO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_2_engagement:
+  id: "phase_2"
+  name: "Análise de Engajamento"
+  executor: engagement-analyst
+  duration_estimate: "5-10 minutos"
+
+  handoff_from_scout_chief: |
+    Analyst, com os dados de autoridade de @{handle} ({score_autoridade}/100),
+    preciso agora da análise completa de engajamento.
+
+    Colete e analise:
+    1. Total de seguidores (Instagram + TikTok separadamente)
+    2. Taxa de engajamento média (últimos 30 dias)
+    3. Qualidade dos comentários (reais vs. bots)
+    4. Crescimento orgânico vs. pago (últimos 6 meses se disponível)
+    5. Consistência do engajamento
+    6. Formatos predominantes e desempenho
+    7. Presença e atividade no TikTok vs. Instagram
+
+    Retorne o score de engajamento normalizado (0-100) com benchmark do nicho
+    de {nicho} quando disponível.
+
+  output_esperado:
+    score_engajamento: "0-100 (normalizado)"
+    seguidores_instagram: "número"
+    seguidores_tiktok: "número ou null"
+    taxa_engajamento_media: "percentual"
+    classificacao_porte: "Nano/Micro/Médio/Macro/Mega"
+    crescimento_6m: "percentual ou 'não disponível'"
+    formato_principal: "Reels/Carrossel/Stories/Vídeo TikTok"
+    frequencia_postagem: "posts/semana"
+    score_presenca_multi: "0-100"
+    red_flags_engajamento: "lista (pode ser vazia)"
+
+  checkpoint_2:
+    criterio: "Métricas de engajamento coletadas e score calculado"
+    acao_falha: "Se perfil inacessível ou privado, notificar scout-chief"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 3: AUDITORIA DE CONTEÚDO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_3_content:
+  id: "phase_3"
+  name: "Auditoria de Conteúdo"
+  executor: content-auditor
+  duration_estimate: "5-10 minutos"
+
+  handoff_from_scout_chief: |
+    Auditor, temos os dados de autoridade ({score_autoridade}/100) e engajamento
+    ({score_engajamento}/100) de @{handle}. Agora preciso da auditoria de conteúdo.
+
+    Avalie:
+    1. Profundidade do conteúdo (superficial vs. acionável)
+    2. Valor educacional (ensina algo replicável?)
+    3. Originalidade (voz própria vs. cópia de tendências)
+    4. Qualidade de produção (áudio, vídeo, design, legenda)
+    5. Consistência temática com o nicho de {nicho}
+    6. Pilares de conteúdo identificados (3-5 temas principais)
+    7. Estrutura de funil (topo/meio/fundo de funil)
+
+    Aplique o Scorecard de Conteúdo (0-15 pontos) e retorne score normalizado (0-100).
+
+  output_esperado:
+    score_conteudo: "0-100 (normalizado de 0-15)"
+    pilares_conteudo: "lista de 3-5 temas principais"
+    formato_predominante: "tipo de conteúdo mais comum"
+    analise_funil: "topo/meio/fundo — onde concentra conteúdo"
+    originalidade: "Alta/Média/Baixa + justificativa"
+    qualidade_producao: "Alta/Média/Baixa + justificativa"
+    pontos_fortes_conteudo: "lista de 2-3 pontos"
+    pontos_fracos_conteudo: "lista de 2-3 pontos"
+
+  checkpoint_3:
+    criterio: "Score de conteúdo calculado com todos os campos preenchidos"
+    acao_falha: "Se conteúdo insuficiente para análise, notificar scout-chief"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 4: SCORECARD INDIVIDUAL
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_4_scorecard:
+  id: "phase_4"
+  name: "Compilação do Scorecard"
+  executor: report-compiler
+  duration_estimate: "3-5 minutos"
+
+  handoff_from_scout_chief: |
+    Compiler, todos os dados de @{handle} estão prontos:
+    - Autoridade: {score_autoridade}/100
+    - Engajamento: {score_engajamento}/100
+    - Conteúdo: {score_conteudo}/100
+    - Presença Multi: {score_presenca_multi}/100
+
+    Execute *scorecard com esses dados e gere o scorecard completo.
+    Calcule o Score Final Composto e atribua o Tier.
+    Documente Pontos Fortes, Pontos de Atenção e Recomendação.
+
+  instrucao: |
+    Executar task tasks/generate-scorecard.md com todos os dados coletados.
+    O scorecard deve usar o template em templates/scorecard-template.md.
+
+  output_esperado:
+    scorecard_completo: "Scorecard Markdown completo com todos os campos"
+    score_final: "0-100 com 1 casa decimal"
+    tier: "A, B, C ou D"
+    resumo_executivo_perfil: "2-3 frases resumindo o perfil para o scout-chief"
+
+  checkpoint_4:
+    criterio: "Scorecard completo com Score Final e Tier atribuídos"
+    validacao: "Aplicar primeiros 4 blocos do checklists/report-quality-checklist.md"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 5: REVISÃO E ENTREGA
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phase_5_review:
+  id: "phase_5"
+  name: "Revisão Final e Entrega"
+  executor: scout-chief
+  duration_estimate: "2-3 minutos"
+
+  instrucao: |
+    Receba o scorecard do report-compiler e faça a revisão final:
+
+    1. Verificar coerência geral:
+       - Score Final condiz com os dados de cada dimensão?
+       - Tier atribuído está correto?
+       - Pontos Fortes e de Atenção são objetivos e baseados em dados?
+
+    2. Adicionar perspectiva do orquestrador:
+       - Há algo relevante sobre o nicho que contextualiza os dados?
+       - Algum padrão ou anomalia que merece destaque?
+
+    3. Apresentar ao usuário com contexto:
+       - Anunciar o resultado de forma clara
+       - Destacar o Score Final e Tier
+       - Resumir os 2-3 pontos mais relevantes
+       - Perguntar se deseja aprofundar algum aspecto ou comparar com outros perfis
+
+  template_entrega: |
+    Pipeline de análise concluído para **@{handle}**!
+
+    **Resultado:** {score_final}/100 — **Tier {tier}** ({label_tier})
+
+    **Destaques:**
+    1. {destaque_1}
+    2. {destaque_2}
+    3. {destaque_3}
+
+    **Recomendação:** {acao_sugerida}
+
+    O scorecard completo está abaixo 👇
+
+    {scorecard_completo}
+
+    ---
+    Deseja comparar com outros perfis (`*compare`)
+    ou fazer um scan completo do nicho (`*scan {nicho}`)?
+
+  checkpoint_5:
+    criterio: "Scorecard entregue ao usuário com contexto e próximos passos"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRATAMENTO DE ERROS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+error_handling:
+  perfil_nao_encontrado:
+    trigger: "Perfil não existe ou está privado"
+    acao: |
+      Scout Chief notifica usuário:
+      "Não consegui acessar o perfil @{handle}. Possíveis motivos:
+      - Perfil privado ou inexistente
+      - Handle incorreto (verificar ortografia)
+      - Perfil desativado
+      Verifique o @handle e tente novamente."
+
+  autoridade_insuficiente:
+    trigger: "Score de autoridade < 40/100"
+    acao: |
+      Scout Chief informa ao usuário:
+      "Autoridade verificável muito baixa detectada em @{handle} (score: {score}/100).
+      Isso indica que este perfil pode não ter as credenciais para ser considerado
+      um especialista validado no nicho de {nicho}.
+      Deseja continuar a análise mesmo assim? (os dados de engajamento e conteúdo
+      ainda podem ser úteis para outros fins)"
+
+  dados_insuficientes:
+    trigger: "Conteúdo insuficiente para análise (perfil novo ou muito pequeno)"
+    acao: |
+      Scout Chief informa:
+      "Dados insuficientes para análise completa de @{handle}.
+      Possíveis causas: perfil muito novo, poucos posts, ou conta recém-criada.
+      Posso gerar uma análise parcial com os dados disponíveis.
+      Deseja prosseguir com análise parcial?"
+
+  timeout:
+    trigger: "Fase demorou mais de 15 minutos"
+    acao: |
+      Scout Chief notifica:
+      "A análise de @{handle} está demorando mais que o esperado.
+      Verificando status com a equipe..."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RESUMO DO PIPELINE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+pipeline_summary:
+  input: "@handle ou URL do perfil"
+  output: "Scorecard individual completo com Score Final, Tier e Recomendação"
+
+  fases:
+    - "Phase 0: Intake (scout-chief) — 2-3 min"
+    - "Phase 1: Validação de Autoridade (authority-validator) — 5-10 min"
+    - "Phase 2: Análise de Engajamento (engagement-analyst) — 5-10 min"
+    - "Phase 3: Auditoria de Conteúdo (content-auditor) — 5-10 min"
+    - "Phase 4: Scorecard (report-compiler) — 3-5 min"
+    - "Phase 5: Revisão e Entrega (scout-chief) — 2-3 min"
+
+  total_estimado: "22-41 minutos"
+
+  diferencas_vs_wf_niche_scan:
+    - "Sem fase de Discovery (Profile Hunter) — perfil já conhecido"
+    - "Sem ranking comparativo — análise individual"
+    - "Output: scorecard único (não relatório completo)"
+    - "Mais rápido: ~40min vs 2-4h do scan completo"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# QUALIDADE E VALIDAÇÃO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+quality_checklist:
+  - "✅ Score de autoridade calculado e rastreável"
+  - "✅ Score de engajamento com métricas reais"
+  - "✅ Score de conteúdo baseado em análise de posts reais"
+  - "✅ Score Final calculado com fórmula correta"
+  - "✅ Tier atribuído corretamente"
+  - "✅ 3 Pontos Fortes objetivos com dados"
+  - "✅ 3 Pontos de Atenção objetivos sem julgamento"
+  - "✅ Recomendação específica e acionável"
+  - "✅ Scorecard entregue ao usuário com contexto"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# METADATA
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  version: "1.0.0"
+  created: "2026-03-02"
+  squad: "niche-scout"
+  pack_prefix: "NS"
+  language: "pt-BR"
+  related_workflows:
+    - "wf-niche-scan.yaml — Scan completo de nicho (quando não se conhece o perfil)"
+  triggers:
+    - "*deep-dive [@handle]"
+    - "analisar perfil"
+    - "mergulho profundo"
+    - "investigar @"

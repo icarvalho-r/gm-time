@@ -1,0 +1,197 @@
+# ═══════════════════════════════════════════════════════════════
+# BRIEF DE COPY — Template Método Derick
+# ═══════════════════════════════════════════════════════════════
+# Este é o documento central que conecta todas as fases do processo.
+# Preencha cada seção conforme avança no pipeline.
+
+brief:
+  nicho: ""
+  data_criacao: ""
+  status: "em_andamento"  # em_andamento | completo
+
+# ═══════════════════════════════════════════════════════════════
+# FASE 1: MERCADO
+# ═══════════════════════════════════════════════════════════════
+mercado:
+  descricao: ""  # Ex: "Emagrecimento feminino 40+"
+  desejo_principal: ""  # Ex: "Perder peso e ter corpo magro"
+
+  tendencia_conteudo:
+    # O que as pessoas estão consumindo no YouTube, TikTok, etc.
+    temas_virais: []
+    # Ex: ["banana emagrece", "chá de canela", "psyllium"]
+    fontes: []
+
+  tendencia_consumo:
+    # O que as pessoas estão comprando (Amazon, Mercado Livre, Google Trends)
+    produtos_em_alta: []
+    # Ex: ["psyllium", "creatina", "vitamina B12"]
+    formato_preferido: ""  # Ex: "suplemento", "aplicativo", "ebook"
+
+  tendencia_marketing:
+    # Como a galera que faz marketing nesse nicho está operando
+    formatos_escalando: []
+    # Ex: ["entrevista com especialista de jaleco", "VSL formato documentário"]
+    elementos_recorrentes: []
+    # Ex: ["pergunta paradoxal sobre japonesas", "bactéria intestinal"]
+    referencias_passado: []
+    referencias_presente: []
+
+  nivel_consciencia_alvo: ""
+  # Ex: "Consciente do problema, buscando solução"
+
+# ═══════════════════════════════════════════════════════════════
+# FASE 2: MECANISMO
+# ═══════════════════════════════════════════════════════════════
+mecanismo:
+  mecanismos_campeoes:
+    # Lista de mecanismos que já deram certo no mercado
+    - nome: ""
+      problema: ""  # POR QUÊ — causa real do problema
+      funcao: ""    # O QUÊ — o que precisa ser feito
+      solucao: ""   # COMO — solução específica
+      fonte: ""     # De qual VSL/copy veio
+      ano: ""
+
+  combo_escolhido:
+    nome: ""
+    problema: ""
+    # Ex: "Uma bactéria no intestino reduz o fluxo sanguíneo, impedindo o metabolismo de queimar gordura"
+    funcao: ""
+    # Ex: "Eliminar essa bactéria para restaurar o fluxo sanguíneo"
+    solucao: ""
+    # Ex: "Uma combinação de 6 ervas consumidas antes do banho"
+    justificativa_combo: ""
+    # Ex: "Bactéria (tendência atual) + fluxo sanguíneo (campeão 2022) + ervas no banho (formato validado)"
+
+# ═══════════════════════════════════════════════════════════════
+# FASE 3: BIG IDEA
+# ═══════════════════════════════════════════════════════════════
+big_idea:
+  tipo: ""  # "pergunta_paradoxal" ou "grande_conspiracao"
+
+  pergunta_paradoxal:
+    texto: ""
+    # Ex: "Como as celebridades conseguem ter um corpo magro mesmo com rotina agitada e sem tempo para dieta?"
+    entidade_grupo: ""
+    # Ex: "celebridades"
+    resultado_especifico: ""
+    # Ex: "corpo magro e sexy"
+    habito_controverso: ""
+    # Ex: "rotina agitada, sem tempo para dieta ou exercício"
+
+  perguntas_alternativas: []
+  # Lista de outras perguntas paradoxais consideradas
+
+  nome_chiclete: ""
+  # Ex: "Truque do Banho"
+  nomes_alternativos: []
+
+# ═══════════════════════════════════════════════════════════════
+# FASE 4: BIG OFFER
+# ═══════════════════════════════════════════════════════════════
+oferta:
+  tipo_produto: ""  # "nutra", "infoproduto", "aplicativo"
+  nome_produto: ""
+
+  ingredientes_entregaveis:
+    # Produtos/ingredientes que o mercado JÁ compra organicamente
+    - nome: ""
+      razao: ""  # Por que as pessoas acreditam nele
+
+  objecoes:
+    # Motivos que as pessoas teriam para NÃO comprar → transformados em razões para comprar
+    - objecao: ""
+      # Ex: "Tenho síndrome do ovário policístico"
+      flip: ""
+      # Ex: "Adicionei vitaminas do Complexo B que desinflamam os ovários"
+      ingrediente_posicionado: ""
+
+  beneficios_multiplos:
+    # Eventos/sintomas que despertam o desejo no mercado
+    - beneficio: ""
+      prazo: ""
+    # Ex: {beneficio: "Rosto mais fino, sair bem nas fotos", prazo: "Primeiras 2 semanas"}
+
+  esforco_reduzido: ""
+  # Ex: "Tomar uma cápsula com copo de água morna pela manhã"
+
+  reason_why: ""
+  # Ex: "Candidatura ao Prêmio Nobel — precisa de 10 mil pessoas com resultado"
+
+  ancoragem:
+    preco_percebido: ""  # Ex: "R$400 (comprando ingredientes individualmente)"
+    preco_real: ""       # Ex: "R$197"
+    preco_kit: ""        # Ex: "R$147 cada (kit 3 frascos)"
+
+  escassez: ""
+  # Ex: "Apenas 89 caixas reservadas"
+
+  garantia:
+    prazo: ""  # Ex: "6 meses"
+    tipo: ""   # Ex: "Devolução integral, sem perguntas"
+
+  bonus:
+    - nome: ""
+      descricao: ""
+      valor_percebido: ""
+    # Ex: {nome: "Livro Receitas Emagrecedoras", descricao: "50 receitas de vitaminas que aceleram metabolismo", valor_percebido: "R$297"}
+
+  presente_surpresa: ""
+  # Descrição interna (não revelada ao prospect)
+
+# ═══════════════════════════════════════════════════════════════
+# FASE 5: STORYTELLING
+# ═══════════════════════════════════════════════════════════════
+historia:
+  background_story:
+    tipo: ""  # "guru" ou "pessoa_comum"
+    spokesperson:
+      nome: ""
+      titulo: ""
+      credenciais: []
+      # Ex: ["Especialista em endocrinologia", "18 anos de experiência", "Autor do livro X"]
+
+  emotional_story:
+    personagem: ""
+    # Ex: "Esposa do doutor — Kátia"
+    relacao_com_spokesperson: ""
+    # Ex: "Esposa há 20 anos"
+    problema: ""
+    solucoes_que_tentou: []
+    frustracoes: []
+    fundo_do_poco: ""
+    # Ex: "Acordei de madrugada e vi ela chorando com o travesseiro na cabeça"
+    motivacao_heroi: ""
+
+  discovery_story:
+    tipo: ""  # "viagem", "pesquisa" ou "pessoa_misteriosa"
+    resumo: ""
+    # Ex: "Pesquisando na internet, encontrou entrevista do Dr. Robert Benson revelando o hábito das celebridades"
+    conexao_pergunta_paradoxal: ""
+
+# ═══════════════════════════════════════════════════════════════
+# FASES 7-8: ESCRITA (preenchido durante a escrita)
+# ═══════════════════════════════════════════════════════════════
+escrita:
+  tese_marketing:
+    status: ""  # "pendente" | "em_andamento" | "completa"
+    argumento_causa: ""
+    argumento_funcao: ""
+    argumento_solucao: ""
+
+  product_build_up:
+    status: ""
+
+  bloco_oferta:
+    status: ""
+
+  close:
+    status: ""
+
+  historias_escritas:
+    status: ""
+
+  leads:
+    status: ""
+    quantidade: 0  # Idealmente 4 leads com ganchos diferentes

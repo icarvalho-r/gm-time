@@ -1,0 +1,151 @@
+# Workflow: Pipeline Perpetuo White
+# Fluxo completo de implementacao do modelo Lucas Ramos
+
+workflow:
+  name: "Pipeline Perpetuo White"
+  version: "1.0.0"
+  description: "Pipeline completo para criar e escalar um perpetuo white com VSL + trafego direto + ascensoes"
+  source: "Framework Lucas Ramos (Segredos da Escala #140)"
+
+  phases:
+    - id: "FASE_1"
+      name: "Escada de Produtos"
+      agent: "offer-architect"
+      duration: "Semana 1-2"
+      inputs:
+        - "Produto principal existente (curso/mentoria)"
+        - "Nicho e publico-alvo"
+        - "Metodo/mecanismo do expert"
+      outputs:
+        - "Front-end definido (R$150-300)"
+        - "Upsell PRONTO definido (R$400-600)"
+        - "Back-end como programa de acompanhamento"
+        - "High-end (se aplicavel)"
+        - "Cashback entre niveis"
+      checkpoint:
+        criterios:
+          - "Front resolve 1 problema especifico"
+          - "Upsell e algo PRONTO (nao curso)"
+          - "Back-end tem triada (conhecimento + recomendacao + acompanhamento)"
+          - "Cada produto gera necessidade para o proximo"
+        veto:
+          - "Front-end acima de R$300 (muito caro para publico frio)"
+          - "Upsell e mais um curso (converter menos)"
+          - "Nao tem checklist de 7 dias"
+
+    - id: "FASE_2"
+      name: "VSL White"
+      agent: "vsl-architect"
+      duration: "Semana 2-4"
+      depends_on: "FASE_1"
+      inputs:
+        - "Escada de produtos definida"
+        - "Metodo do expert"
+        - "Pesquisa de mercado (3 perguntas)"
+      outputs:
+        - "VSL completa (15-25 min)"
+        - "5 leads para teste"
+        - "VSL de upsell"
+      checkpoint:
+        criterios:
+          - "4 blocos completos (lead + mec. problema + mec. solucao + oferta)"
+          - "5 leads escritas e gravadas"
+          - "Bonus urgencia 60seg configurado"
+          - "Botao desconto 15-20% configurado"
+          - "Mecanismo e logico (nao mirabolante)"
+        veto:
+          - "Menos de 5 leads"
+          - "Mecanismo mirabolante/fantasioso"
+          - "VSL > 30 minutos sem justificativa"
+          - "Sem pesquisa de mercado"
+
+    - id: "FASE_3"
+      name: "Funil Imediato"
+      agent: "offer-architect + ascension-builder"
+      duration: "Semana 3-4"
+      depends_on: "FASE_2"
+      inputs:
+        - "VSL gravada"
+        - "Upsell PRONTO definido"
+      outputs:
+        - "Checkout configurado"
+        - "Upsell + downsell funcionando"
+        - "Formulario de matricula"
+        - "Automacao ManyChat + Make"
+        - "Aula de boas-vindas"
+      checkpoint:
+        criterios:
+          - "Fluxo completo testado: compra → upsell → formulario → convite webinario"
+          - "API WhatsApp funcionando"
+          - "IA de suporte treinada"
+        veto:
+          - "Sem upsell imediato"
+          - "Sem formulario de matricula"
+
+    - id: "FASE_4"
+      name: "Criativos + Trafego"
+      agent: "creative-engineer + traffic-scaler"
+      duration: "Semana 4-6"
+      depends_on: "FASE_3"
+      inputs:
+        - "VSL rodando na VTurb"
+        - "Funil configurado"
+      outputs:
+        - "10+ criativos produzidos"
+        - "ABO Gaveta configurada"
+        - "Primeiros criativos validados"
+        - "CBO pre-escala rodando"
+      checkpoint:
+        criterios:
+          - "Minimo 2-3 criativos vendendo com ROI"
+          - "ROI front >= 1.3"
+          - "1 lead validada de 5 testadas"
+          - "Volume estavel por 3+ dias"
+        veto:
+          - "Menos de 10 criativos testados antes de culpar VSL"
+          - "Duplicar campanhas em vez de escalar gradualmente"
+
+    - id: "FASE_5"
+      name: "Ascensoes"
+      agent: "ascension-builder"
+      duration: "Semana 6-12"
+      depends_on: "FASE_4"
+      inputs:
+        - "Funil rodando com ROI positivo"
+        - "Base de alunos crescendo"
+      outputs:
+        - "Webinario diario ativo"
+        - "Workshop semanal rodando"
+        - "Time comercial abordando leads"
+        - "Lancamento planejado"
+      checkpoint:
+        criterios:
+          - "ROI subindo para 2.5+ com ascensoes"
+          - "Webinario diario com 40%+ comparecimento"
+          - "Workshop com 10%+ conversao"
+        veto:
+          - "Escalar trafego sem ascensoes = dinheiro na mesa"
+
+    - id: "FASE_6"
+      name: "Otimizacao Continua"
+      agent: "todos"
+      duration: "Ongoing"
+      depends_on: "FASE_5"
+      inputs:
+        - "Funil completo rodando"
+        - "Metricas estabilizadas"
+      outputs:
+        - "ROI crescendo incrementalmente"
+        - "Volume escalando 20-30%/dia"
+        - "Novos criativos constantemente"
+        - "Leads VSL melhorando"
+      checkpoint:
+        criterios:
+          - "ROI final >= 3.0"
+          - "10 criativos/dia em teste"
+          - "5 leads testadas a cada 15 dias"
+          - "Worldwide ativo"
+        meta_final: "R$50-100K lucro/dia"
+
+  fluxo_unidirecional: true
+  nota: "Nao voltar para fase anterior. Se problema detectado, resolver DENTRO da fase atual."

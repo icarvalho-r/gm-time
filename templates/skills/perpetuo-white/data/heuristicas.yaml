@@ -1,0 +1,217 @@
+# Heuristicas do Framework Lucas Ramos
+# Regras SE/ENTAO extraidas do podcast Segredos da Escala #140
+# Formato: ID, regra, estrutura logica, contexto, excecoes
+
+heuristicas:
+
+  # === PRODUTO/OFERTA ===
+  produto:
+    - id: "PW_PRD_001"
+      regra: "Produto mais barato DEVE ser o de maior satisfacao"
+      estrutura: "SE front-end ENTAO qualidade maxima (custo-beneficio)"
+      contexto: "Satisfacao no front = ascensao para back-end"
+      veto: "Front-end de baixa qualidade = ascensao zero"
+
+    - id: "PW_PRD_002"
+      regra: "Cada produto gera um PROBLEMA que o proximo resolve"
+      estrutura: "SE pessoa completa front ENTAO nova necessidade surge para back-end"
+      contexto: "Escada natural de necessidades crescentes"
+      exemplo: "Aprendeu basico de investir → quer carteira personalizada → quer acompanhamento"
+
+    - id: "PW_PRD_003"
+      regra: "Upsell imediato deve ser algo PRONTO, nao mais curso"
+      estrutura: "SE upsell = curso ENTAO conversao 5%. SE upsell = algo pronto ENTAO conversao 15%"
+      contexto: "Triplicou conversao ao mudar de curso para carteira pronta"
+      veto: "NUNCA oferecer mais curso como upsell imediato"
+
+    - id: "PW_PRD_004"
+      regra: "Renomear curso para programa de acompanhamento dobra conversao"
+      estrutura: "SE renomear + criar triada (conhecimento + recomendacoes + acompanhamento) ENTAO conversao 2x"
+      contexto: "Framing muda percepcao: 'curso' = sozinho, 'programa' = alguem cuida de mim"
+
+    - id: "PW_PRD_005"
+      regra: "Cashback em todos os upgrades"
+      estrutura: "SE pessoa ja pagou X nos niveis anteriores ENTAO desconta X do proximo nivel"
+      contexto: "Remove objecao 'ja paguei, vou pagar de novo?'"
+
+    - id: "PW_PRD_006"
+      regra: "Mesmo produto pode ser vendido 4x mais caro com VSL"
+      estrutura: "SE produto de R$50 com pagina ENTAO ROI 1.3 + ascensao zero. SE mesmo produto a R$200 com VSL ENTAO ROI 1.7 + ascensao MUITO maior"
+      contexto: "Nao mude o produto — mude a forma de vender"
+
+    - id: "PW_PRD_007"
+      regra: "Na duvida sobre o nicho, faz — porque encaixa"
+      estrutura: "SE duvida se perpetuo funciona no nicho ENTAO faz, pouquissimos nao encaixam"
+      contexto: "Ja fez em croche, artesanato, investimentos, marketing digital"
+      excecao: "Nichos muito pequenos podem limitar escala (nao a viabilidade)"
+
+    - id: "PW_PRD_008"
+      regra: "Bonus devem ajudar o aluno E ajudar na ascensao"
+      estrutura: "SE bonus = util para aluno + gera oportunidade de ascensao ENTAO bonus ideal"
+      exemplo: "Checklist 7 dias: ultimo item = chamar suporte = ascensao"
+
+    - id: "PW_PRD_009"
+      regra: "Order bump pode REDUZIR conversao de checkout"
+      estrutura: "SE order bump vende item que parecia incluso ENTAO pessoa desconfia e abandona"
+      contexto: "Testar com e sem antes de decidir. Upsell pos-checkout e indiscutivel."
+
+  # === VSL ===
+  vsl:
+    - id: "PW_VSL_001"
+      regra: "Lead e 80/20 da VSL"
+      estrutura: "SE lead boa ENTAO 80% do resultado com 20% do tempo"
+      contexto: "Primeiros 1.5-2 minutos determinam tudo"
+
+    - id: "PW_VSL_002"
+      regra: "Testar minimo 5 leads antes de declarar VSL invalida"
+      estrutura: "SE <5 leads testadas ENTAO nao da para saber se VSL e boa ou ruim"
+      contexto: "VSL que vende R$3M/mes validou 1 de 5 leads. Se testasse 3, teria jogado fora."
+      veto: "NUNCA descartar VSL com menos de 5 leads testadas"
+
+    - id: "PW_VSL_003"
+      regra: "Testar leads na VTurb, NAO no trafego"
+      estrutura: "SE teste AB no trafego ENTAO clusters diferentes = resultado enganoso"
+      contexto: "Lead que parecia morta no trafego era a melhor quando testada na VTurb"
+
+    - id: "PW_VSL_004"
+      regra: "Escrever VSL na ordem: Oferta → Mecanismo Problema → Mecanismo Solucao → Lead"
+      estrutura: "SE escrever lead primeiro ENTAO falta material para extrair angulos"
+      contexto: "Apos escrever mecanismos, tem varios pontos disponiveis para leads"
+
+    - id: "PW_VSL_005"
+      regra: "Ganhar SIMs sequenciais ate o SIM da compra"
+      estrutura: "SE cada afirmacao logica = 1 SIM ENTAO acumular SIMs ate compra ser inevitavel"
+      contexto: "Nao convenca com 1 argumento forte — convenca com 50 irrecusaveis"
+
+    - id: "PW_VSL_006"
+      regra: "Mecanismo simples + logica > mecanismo mirabolante"
+      estrutura: "SE nicho white ENTAO usar verdade logica do expert, NAO inventar descobertas"
+      contexto: "Mirabolante = ceticismo. Expert da credibilidade, nao precisa pirueta."
+      veto: "NUNCA criar mecanismo tipo 'descoberta de monge tibetano' para nicho white"
+
+    - id: "PW_VSL_007"
+      regra: "Mecanismo preso ao metodo real do expert"
+      estrutura: "SE expert defende metodo X ENTAO VSL defende metodo X (nao inventar Y)"
+      contexto: "Se expert tem bom mecanismo, ele tem bons seguidores e depoimentos"
+
+    - id: "PW_VSL_008"
+      regra: "Bonus de urgencia 60 segundos pos-preco"
+      estrutura: "SE timer 60seg com bonus (workshop/imersao) ENTAO conversao aumenta muito"
+      contexto: "Todo mundo ganha o bonus, mas urgencia funciona. Bonus = canal de ascensao."
+
+    - id: "PW_VSL_009"
+      regra: "Botao desconto 15-20% apos 1.5-2min do pitch"
+      estrutura: "SE botao desconto aparece apos pitch ENTAO 50% das vendas acontecem ali"
+      contexto: "Configurar na VTurb. Thumbnail de pausa muda para mostrar cupom."
+
+    - id: "PW_VSL_010"
+      regra: "7+ minutos extras de fechamento apos pitch aumenta conversao"
+      estrutura: "SE adicionar repeat de garantia, entregaveis, bonus apos pitch ENTAO conversao sobe"
+      contexto: "VSL saiu de 18 para 25 minutos. Mais conteudo pos-pitch = mais vendas."
+
+  # === CRIATIVOS ===
+  criativos:
+    - id: "PW_CRV_001"
+      regra: "Criativo organico viral + CTA = criativo pago validado"
+      estrutura: "SE conteudo viral organico ENTAO cortar + CTA = alta chance de validar"
+      contexto: "Ja validou hook e retencao no organico. Teste gratis."
+
+    - id: "PW_CRV_002"
+      regra: "Frankenstein: Hook bom + Body bom = criativo melhor"
+      estrutura: "SE hook rate alto + body com ROI alto ENTAO juntar = resultado superior"
+      contexto: "10 hooks bons + 30 bodies bons = 300 combinacoes possiveis"
+
+    - id: "PW_CRV_003"
+      regra: "10 criativos minimo para validar oferta"
+      estrutura: "SE 3 nao validaram ENTAO pode ser VSL ruim. SE 10 nao validaram ENTAO quase certeza VSL ruim"
+      contexto: "Volume de teste e necessario para diagnosticar problema"
+
+    - id: "PW_CRV_004"
+      regra: "Criativos morrem rapido no Meta"
+      estrutura: "SE criativo >1-2 meses ENTAO provavelmente morreu. SEMPRE produzir novos."
+      contexto: "Poucos criativos duram mais de 2 meses. Sao lenha que mantem o fogo."
+
+    - id: "PW_CRV_005"
+      regra: "Teleprompter pra camera NAO funciona em criativos"
+      estrutura: "SE formato teleprompter ENTAO hook rate baixo. SE formato variado ENTAO hook rate alto"
+      contexto: "Imprevisibilidade visual mantem atencao"
+      excecao: "Na VSL, teleprompter funciona (corpo). So na lead testar formatos."
+
+    - id: "PW_CRV_006"
+      regra: "Cada expert tem SEU formato que funciona"
+      estrutura: "SE expert X ENTAO testar todos os formatos ate descobrir qual escala mais"
+      contexto: "Tem expert que escala com narrado, outro com dialogo, outro com caixinha"
+
+    - id: "PW_CRV_007"
+      regra: "Congruencia criativo-lead e essencial"
+      estrutura: "SE criativos sobre tema X ENTAO lead da VSL sobre tema X"
+      contexto: "Falta de congruencia = pessoa clica esperando uma coisa, ve outra"
+
+  # === TRAFEGO ===
+  trafego:
+    - id: "PW_TRF_001"
+      regra: "Teste com meio ticket, mata com 1 ticket sem venda"
+      estrutura: "SE gastou 1 ticket sem vender ENTAO desativa. EXCECAO: metricas boas = +1 dia"
+      contexto: "Custo de oportunidade: nao pode deixar criativo ruim gastando"
+
+    - id: "PW_TRF_002"
+      regra: "Escalar max 20-30% por dia"
+      estrutura: "SE campanha com ROI ENTAO aumentar 20-30%/dia, NUNCA mais"
+      contexto: "Estabilidade > velocidade. Juros compostos fazem o trabalho."
+
+    - id: "PW_TRF_003"
+      regra: "Publico aberto (broad) funciona melhor"
+      estrutura: "SE 2026 Meta ENTAO deixar aberto, confiar no algoritmo"
+      contexto: "Nao excluir publico quente. Broad performa melhor."
+
+    - id: "PW_TRF_004"
+      regra: "Worldwide em portugues aumenta escala"
+      estrutura: "SE campanha validada ENTAO duplicar como worldwide (tirar Singapura/Taiwa/Indonesia)"
+      contexto: "Idioma portugues + mundo todo = escala extra significativa"
+
+    - id: "PW_TRF_005"
+      regra: "NAO duplicar campanhas pos-Andromeda"
+      estrutura: "SE white + pos-Andromeda ENTAO 1 campanha estavel > 100 duplicadas"
+      contexto: "Day trade de campanhas nao funciona mais em white"
+
+    - id: "PW_TRF_006"
+      regra: "Meta de Custo por Resultado para escala grande"
+      estrutura: "SE campanha validada em CBO ENTAO subir com Meta de Custo para aceitar orcamento maior"
+      contexto: "Ir baixando meta de custo ate encontrar ponto otimo de gasto + ROI"
+
+  # === ASCENSAO ===
+  ascensao:
+    - id: "PW_ASC_001"
+      regra: "Quanto mais perto da compra o convite, maior o comparecimento"
+      estrutura: "SE convite no mesmo dia ENTAO 40-50%. SE 15 dias depois ENTAO muito menos"
+      contexto: "Pessoas esfriam rapido. Webinario diario resolve isso."
+
+    - id: "PW_ASC_002"
+      regra: "Formulario de matricula = mina de ouro de leads qualificados"
+      estrutura: "SE formulario apos compra ENTAO dados = segmentacao para comercial"
+      contexto: "Copy: 'Preencha para atendermos voce melhor'. Alta taxa de preenchimento."
+
+    - id: "PW_ASC_003"
+      regra: "Workshop ao vivo: pitch curto > pitch longo para alunos"
+      estrutura: "SE alunos ENTAO pitch direto. NAO encher de depoimentos."
+      contexto: "Pitch longo com provas = pior que pitch rapido e direto para quem ja comprou"
+
+    - id: "PW_ASC_004"
+      regra: "IA treinada no suporte detecta leads para ascensao"
+      estrutura: "SE aluno menciona produto avancado para IA ENTAO redirecionar para comercial"
+      contexto: "400 conversas/dia. Zero custo de time humano para basico."
+
+    - id: "PW_ASC_005"
+      regra: "Headline urgente na API WhatsApp = 3x mais CTR"
+      estrutura: "SE headline 'comunicado oficial'/'notificacao urgente' ENTAO 50% CTR. SE headline normal ENTAO 15% CTR"
+      contexto: "Diferenca massiva na taxa de abertura e clique"
+
+    - id: "PW_ASC_006"
+      regra: "Aula de boas-vindas mata reembolso E gera leads de ascensao"
+      estrutura: "SE video pos-compra com depoimentos + escada de produtos ENTAO menos reembolso + mais leads"
+      contexto: "Mata dois coelhos: retencao do aluno + oportunidade de venda"
+
+    - id: "PW_ASC_007"
+      regra: "Parar webinario diario 2-3 dias antes do workshop"
+      estrutura: "SE workshop na segunda ENTAO parar webinario sexta/sabado"
+      contexto: "Evita saturacao — temas diferentes mas mesmo publico"

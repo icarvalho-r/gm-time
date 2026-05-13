@@ -1,0 +1,206 @@
+# Metricas Benchmark — Framework Lucas Ramos
+# Fonte: Podcast Segredos da Escala #140 (2026)
+# Contexto: R$2M+/mes lucro, nicho investimentos, 15K alunos/mes
+
+metricas_front:
+  cac:
+    valor: 90
+    moeda: BRL
+    descricao: "Custo de aquisicao de cliente no front-end"
+    benchmark:
+      excelente: "<80"
+      bom: "80-100"
+      atencao: "100-120"
+      critico: ">120"
+
+  ticket_medio_trafego:
+    valor: 260
+    moeda: BRL
+    descricao: "Ticket medio no trafego (front + variacao de preco)"
+
+  ticket_medio_final:
+    valor: 300
+    moeda: BRL
+    descricao: "Ticket medio mensal incluindo ascensoes"
+
+  conversao_vsl:
+    valor: 4.8
+    unidade: "%"
+    descricao: "Taxa de conversao da VSL (visitantes que compram)"
+    benchmark:
+      excepcional: ">4%"
+      bom: "2-4%"
+      medio: "1.5-2%"
+      precisa_melhorar: "<1.5%"
+
+  retencao_1min:
+    valor_minimo: 70
+    valor_maximo: 81
+    unidade: "%"
+    descricao: "Retencao no primeiro minuto da VSL (lead)"
+    benchmark:
+      excelente: ">75%"
+      bom: "65-75%"
+      medio: "55-65%"
+      lead_ruim: "<55%"
+
+  play_rate:
+    descricao: "% de visitantes que dao play na VSL"
+    benchmark:
+      bom: ">60%"
+      medio: "40-60%"
+      problema_headline: "<40%"
+
+  roi_front:
+    valor: 1.7
+    descricao: "ROI apenas do front-end (sem upsell)"
+    benchmark:
+      excelente: ">1.8"
+      bom: "1.5-1.8"
+      operacional: "1.2-1.5"
+      critico: "<1.2"
+
+  roi_front_upsell:
+    valor: 2.3
+    descricao: "ROI do front + upsell imediato"
+    benchmark:
+      excelente: ">2.5"
+      bom: "2.0-2.5"
+      medio: "1.5-2.0"
+      precisa_melhorar: "<1.5"
+
+  roi_final:
+    valor: 3.3
+    descricao: "ROI com todas as ascensoes (front + upsell + workshop + webinario + comercial + lancamento)"
+    benchmark:
+      excepcional: ">3.5"
+      excelente: "3.0-3.5"
+      bom: "2.5-3.0"
+      medio: "2.0-2.5"
+      precisa_melhorar: "<2.0"
+
+metricas_upsell:
+  conversao_upsell_pronto:
+    valor: 15
+    unidade: "%"
+    descricao: "Conversao do upsell PRONTO (carteira, funil, plano)"
+    nota: "Triplicou vs upsell de curso (5%)"
+
+  conversao_upsell_curso:
+    valor: 5
+    unidade: "%"
+    descricao: "Conversao quando upsell era mais um curso (ANTES)"
+    nota: "NAO usar mais — substituir por algo PRONTO"
+
+metricas_ascensao:
+  taxa_ascensao_total:
+    valor: 25
+    unidade: "%"
+    descricao: "% dos alunos do front que ascendem para back-end"
+    meta_com_upsell: 35
+
+  workshop_presentes:
+    valor: 1000
+    descricao: "Media de presentes por workshop semanal"
+
+  workshop_conversao:
+    valor: 12
+    unidade: "%"
+    descricao: "Conversao do workshop (dos presentes)"
+
+  webinario_comparecimento:
+    valor: 45
+    unidade: "%"
+    descricao: "Comparecimento no webinario diario (mesmo dia)"
+
+  ctr_api_whatsapp:
+    headline_normal: 15
+    headline_urgente: 50
+    pos_compra: 95
+    unidade: "%"
+    descricao: "CTR das mensagens por API oficial WhatsApp"
+
+  formulario_matricula:
+    descricao: "Taxa de preenchimento do formulario de matricula"
+    benchmark: "Alta (copy: 'preencha para atendermos voce')"
+
+metricas_criativos:
+  hook_rate:
+    descricao: "% que para nos primeiros 3 segundos"
+    benchmark:
+      excelente: ">50%"
+      bom: "35-50%"
+      medio: "20-35%"
+      fraco: "<20%"
+    hack: "React/tela dividida dobra ou triplica hook rate (20% → 60%)"
+
+  criativos_teste_dia:
+    valor: 10
+    descricao: "Quantidade de criativos novos em teste por dia"
+
+  criativos_gravacao_semana:
+    valor: 12
+    descricao: "Quantidade de copias novas gravadas por semana com expert (10-15)"
+
+  taxa_validacao:
+    valor: 40
+    unidade: "%"
+    descricao: "De 10-15 gravados por semana, validam 4-5"
+
+  vida_util_criativo:
+    valor: "1-2 meses"
+    descricao: "Tempo medio que um criativo performa bem no Meta"
+
+metricas_trafego:
+  investimento_diario:
+    valor: 50000
+    moeda: BRL
+    descricao: "Investimento diario em trafego pago"
+
+  faturamento_diario:
+    valor: 150000
+    moeda: BRL
+    descricao: "Faturamento diario do front + upsell"
+
+  lucro_diario:
+    range: "50000-100000"
+    moeda: BRL
+    descricao: "Lucro diario (varia com ascensoes)"
+
+  alunos_dia:
+    valor: 500
+    descricao: "Alunos novos por dia no front-end"
+
+  alunos_mes:
+    valor: 15000
+    descricao: "Alunos novos por mes no front-end"
+
+  margem:
+    valor: "60-70"
+    unidade: "%"
+    descricao: "Margem de lucro do negocio como um todo"
+
+escada_produtos:
+  front:
+    ticket: 197
+    moeda: BRL
+    ticket_com_desconto: 150
+    descricao: "Produto de entrada via VSL"
+
+  upsell_pronto:
+    ticket: 600
+    moeda: BRL
+    descricao: "Produto PRONTO (carteira, funil, plano)"
+
+  backend:
+    ticket: 1300
+    moeda: BRL
+    descricao: "Programa de acompanhamento (triada)"
+
+  high_end:
+    ticket: 10000
+    moeda: BRL
+    descricao: "Mentoria com expert"
+
+  cashback: true
+  cashback_regra: "Cada nivel desconta o que ja pagou nos anteriores"

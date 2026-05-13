@@ -1,0 +1,241 @@
+# =============================================================================
+# DERICK METHOD CORE — Shared Reference Data
+# =============================================================================
+# Arquivo de referencia compartilhado entre todos os agentes do squad derick-vsl.
+# Contem a filosofia central, fases do pipeline, ordens de escrita e leitura,
+# e os principios fundamentais do metodo Derick para criacao de VSLs.
+#
+# USO: Este arquivo e carregado como contexto por agentes que precisam
+# entender o metodo completo. NAO e um agente — e dados de referencia.
+# =============================================================================
+
+philosophy:
+  core_statement: "Copy e um processo, nao e criatividade."
+  elaboration: |
+    O Derick repete isso o tempo todo e e a base de tudo. Nao existe
+    "inspiracao" pra escrever VSL. Existe processo. Segue o processo,
+    preenche cada fase, e a VSL sai. Ponto.
+    Criatividade e consequencia do processo, nao pre-requisito.
+  corollaries:
+    - "Nao e criacao, nao e criatividade, voce nao ta criando algo do zero, ta seguindo o processo."
+    - "Reviver coisas do passado usando coisas que estao funcionando agora."
+    - "Quando voce segue o processo, a matematica trabalha a seu favor."
+
+# =============================================================================
+# AS 6 FASES DA PSICOLOGIA (Planejamento)
+# =============================================================================
+planning_phases:
+  name: "Psicologia"
+  description: |
+    As 6 fases do planejamento sao executadas em sequencia.
+    Cada fase alimenta a proxima. Pular fase = VSL fraca.
+  phases:
+    - phase: 1
+      name: "Mercado"
+      agent: market-scout
+      description: "Entender tendencias de conteudo, consumo e marketing"
+      output: "Relatorio de mercado com 3 tendencias mapeadas"
+
+    - phase: 2
+      name: "Mecanismo"
+      agent: mechanism-engineer
+      description: "Listar mecanismos, decompor, combar — criar mecanismo unico"
+      output: "Mecanismo combo definido (problema + funcao + solucao)"
+
+    - phase: 3
+      name: "Big Idea"
+      agent: idea-architect
+      description: "Criar a pergunta paradoxal + nome chiclete"
+      output: "Pergunta paradoxal + nome chiclete definidos"
+
+    - phase: 4
+      name: "Big Offer"
+      agent: offer-designer
+      description: "Montar oferta irresistivel com 9 elementos"
+      output: "Oferta completa com 9 elementos"
+
+    - phase: 5
+      name: "Storytelling"
+      agent: story-builder
+      description: "Criar as 3 historias (Background, Emotional, Discovery)"
+      output: "3 historias estruturadas"
+
+    - phase: 6
+      name: "Brief"
+      agent: derick-chief
+      description: "Compilar tudo num documento central"
+      output: "Brief completo e coerente"
+
+# =============================================================================
+# ORDEM DE ESCRITA (Bloco 2 — Comunicacao)
+# =============================================================================
+writing_order:
+  description: |
+    Depois do Brief pronto, a escrita acontece nesta ordem especifica,
+    que e DIFERENTE da ordem de apresentacao (leitura) final.
+    O Lead e escrito por ultimo porque ele precisa vender o conteudo
+    que vem depois. Sem saber o conteudo, o Lead fica generico.
+  sequence:
+    - step: 1
+      name: "Tese de Marketing"
+      agent: thesis-writer
+      rationale: "Centro de tudo — define os mecanismos e a logica de compra"
+
+    - step: 2
+      name: "Product Build Up (PBU)"
+      agent: vsl-assembler
+      rationale: "Constroi valor emocional e narrativo antes de revelar o produto"
+
+    - step: 3
+      name: "Bloco de Oferta"
+      agent: vsl-assembler
+      rationale: "Define o que esta sendo vendido — sem oferta, nao ha close"
+
+    - step: 4
+      name: "Close"
+      agent: vsl-assembler
+      rationale: "Amarra tudo — sem ele, nao ha conversao"
+
+    - step: 5
+      name: "Historias (Background, Emotional, Discovery)"
+      agent: vsl-assembler
+      rationale: "Precisam dos mecanismos ja definidos para conectar emocionalmente"
+
+    - step: 6
+      name: "Lead"
+      agent: vsl-assembler
+      rationale: "E o trailer — precisa de TODO o conteudo ja pronto para criar previas"
+
+# =============================================================================
+# AS 3 VENDAS
+# =============================================================================
+three_sales:
+  description: |
+    Uma VSL nao vende so o produto. Ela faz 3 vendas distintas.
+    Se qualquer uma dessas vendas falhar, a pessoa sai.
+  sales:
+    - name: "Venda do Conteudo"
+      responsible_block: "Lead"
+      question: "Por que eu deveria assistir esse video?"
+      objective: "Convencer a pessoa a ASSISTIR o video ate o final"
+      mental_questions:
+        - "Por que eu deveria parar o que estou fazendo pra assistir isso?"
+        - "O que eu vou ganhar assistindo ate o final?"
+        - "Por que isso e diferente do que eu ja tentei?"
+
+    - name: "Venda da Esperanca"
+      responsible_blocks:
+        - "Background Story"
+        - "Emotional Story"
+        - "Discovery Story"
+        - "Tese de Marketing"
+      question: "Por que isso vai funcionar para mim?"
+      objective: "Convencer a pessoa de que a SUA SOLUCAO e a unica que pode resolver o problema dela"
+      mental_questions:
+        - "Por que eu deveria confiar em voce?"
+        - "Por que voce pode me ajudar?"
+        - "Como voce descobriu isso?"
+        - "O que realmente causa meu problema?"
+        - "O que eu preciso fazer pra resolver?"
+        - "Como eu consigo fazer isso?"
+      rule: "Se voce nao vender a esperanca, o cara nao vai comprar. Essa e a parte CENTRAL."
+
+    - name: "Venda do Valor"
+      responsible_blocks:
+        - "Product Build Up"
+        - "Big Offer"
+        - "Close"
+      question: "Por que eu deveria comprar?"
+      objective: "Mostrar que o PRODUTO vale mais do que o preco que a pessoa vai pagar"
+      mental_questions:
+        - "O que voce tem pra me oferecer?"
+        - "O que eu ganho comprando isso?"
+        - "Quanto preciso pagar?"
+        - "Quais riscos eu corro?"
+        - "Por que eu deveria agir agora?"
+      rule: "Uma vez que voce vende a esperanca, vender o valor e a parte mais facil."
+
+# =============================================================================
+# PRINCIPIOS FUNDAMENTAIS
+# =============================================================================
+core_principles:
+
+  thesis_is_center:
+    statement: "A Tese de Marketing e o centro de tudo"
+    detail: |
+      A Tese de Marketing e o argumento central da VSL. Sem ela, nada funciona.
+      Ela responde: "Por que ESSE mecanismo e a solucao real pro problema?"
+      E composta por 3 argumentos que constroem a logica de compra.
+      Tudo na VSL gira em torno da Tese — historias, PBU, oferta, lead.
+
+  brief_is_central:
+    statement: "O Brief e o documento central que conecta todas as fases"
+    detail: |
+      O Brief e o output do planejamento. Ele contem:
+        - Analise de mercado
+        - Mecanismo unico combado
+        - Big Idea (pergunta paradoxal + nome chiclete)
+        - Big Offer completa (9 elementos)
+        - 3 Historias estruturadas
+        - Direcionamento para escrita
+      Sem Brief completo, nao se comeca a escrever. Ponto final.
+
+  mechanism_combo:
+    statement: "Mecanismo combado e mais forte que mecanismo simples"
+    detail: |
+      O Derick ensina a listar varios mecanismos do nicho e depois "combar"
+      (combinar) eles pra criar um mecanismo unico que ninguem mais tem.
+      Isso gera diferenciacao e curiosidade. O mecanismo combado vira o
+      coracao da Big Idea.
+
+  paradoxical_question:
+    statement: "A Big Idea e uma pergunta paradoxal com nome chiclete"
+    detail: |
+      A Big Idea nao e um slogan. E uma pergunta que cria paradoxo na mente
+      do avatar. O "nome chiclete" e o nome memoravel do mecanismo/metodo.
+      A Big Idea precisa ser algo que a pessoa pensa "isso nao faz sentido,
+      preciso entender como funciona".
+
+# =============================================================================
+# PIPELINE — AGENTES E FLUXO DE DADOS
+# =============================================================================
+pipeline_data_flow: |
+  market-scout -> mechanism-engineer -> idea-architect -> offer-designer
+       |                                                        |
+  Relatorio de                                            Big Offer
+  Mercado                                                     |
+       |                                                story-builder
+       |                                                      |
+       +------------------ BRIEF (Chief) --------------------+
+                              |
+                        thesis-writer
+                              |
+                        vsl-assembler
+                              |
+                        VSL COMPLETA
+
+agent_assignments:
+  orchestrator: derick-chief
+  planning:
+    - agent: market-scout
+      phase: "Mercado"
+    - agent: mechanism-engineer
+      phase: "Mecanismo"
+    - agent: idea-architect
+      phase: "Big Idea"
+    - agent: offer-designer
+      phase: "Big Offer"
+    - agent: story-builder
+      phase: "Storytelling"
+    - agent: derick-chief
+      phase: "Brief (compilacao)"
+  writing:
+    - agent: thesis-writer
+      phase: "Tese de Marketing"
+    - agent: vsl-assembler
+      phases:
+        - "Product Build Up"
+        - "Bloco de Oferta"
+        - "Close"
+        - "Historias"
+        - "Lead"

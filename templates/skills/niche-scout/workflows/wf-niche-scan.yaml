@@ -1,0 +1,2137 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW: WF-NICHE-SCAN
+# Pipeline Principal: Receber Nicho -> Descobrir Perfis -> Validar Autoridade
+#                     -> Analisar Engajamento -> Auditar Conteudo -> Compilar Relatorio
+# Squad: niche-scout
+# Padrao: AIOS multi-phase workflow v2
+# VERSION: 1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# IDENTIDADE DO WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+workflow:
+  id: wf-niche-scan
+  name: "Niche Scan - Pipeline Completo de Pesquisa de Nicho"
+  version: "1.0.0"
+  estimated_time: "2-4 horas"
+  complexity: "alta"
+  pack: niche-scout
+  language: pt-BR
+  geo_focus: Brazil
+
+  description: |
+    Pipeline completo para pesquisar, identificar, analisar e ranquear os maiores
+    e melhores perfis de especialistas brasileiros em qualquer nicho nas redes sociais
+    (Instagram e TikTok).
+
+    Este workflow orquestra 6 fases sequenciais com checkpoints obrigatorios:
+
+    1. DISCOVERY    - Descoberta massiva de perfis via hashtags, mencoes e fontes externas
+    2. VALIDATION   - Validacao de autoridade real no nicho com scorecard de 15 pontos
+    3. ENGAGEMENT   - Analise profunda de metricas de engajamento e crescimento
+    4. CONTENT      - Auditoria de qualidade, pilares e funil de conteudo
+    5. COMPILATION  - Compilacao do relatorio final ranqueado com scorecards individuais
+    6. REVIEW       - Revisao final do orquestrador e aprovacao humana
+
+    Cada fase possui checkpoint com criterios minimos que DEVEM ser atendidos antes
+    de prosseguir para a proxima fase. O workflow falha rapido (fail-fast) se algum
+    checkpoint critico nao for atingido.
+
+    Foco exclusivo: especialistas brasileiros no Instagram e TikTok.
+    Idioma de saida: Portugues (Brasil).
+
+  orchestrator: scout-chief
+  orchestrator_file: agents/scout-chief.md
+  orchestrator_role: |
+    O scout-chief coordena todo o pipeline:
+    - Recebe o nicho-alvo do usuario
+    - Distribui tarefas para os agentes especializados
+    - Monitora checkpoints entre fases
+    - Realiza revisao final antes da entrega
+    - Apresenta resultados ao usuario
+
+  best_for:
+    - "Pesquisa completa de nicho do zero"
+    - "Mapeamento de especialistas brasileiros em qualquer area"
+    - "Geracao de relatorio ranqueado para tomada de decisao"
+    - "Analise comparativa de perfis em redes sociais"
+    - "Identificacao de parceiros, referências ou concorrentes no nicho"
+
+  platforms_supported:
+    - id: instagram
+      name: "Instagram"
+      data_points:
+        - "Seguidores"
+        - "Posts"
+        - "Reels"
+        - "Stories highlights"
+        - "Engajamento medio"
+        - "Bio e links"
+    - id: tiktok
+      name: "TikTok"
+      data_points:
+        - "Seguidores"
+        - "Videos"
+        - "Curtidas totais"
+        - "Engajamento medio"
+        - "Bio e links"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AGENTES ENVOLVIDOS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agents:
+  - id: scout-chief
+    file: agents/scout-chief.md
+    tier: orchestrator
+    role: "Coordena o squad, recebe nicho-alvo, distribui tarefas, revisao final"
+    phases_active: ["phase_6_review"]
+    always_monitoring: true
+
+  - id: profile-hunter
+    file: agents/profile-hunter.md
+    tier: 1
+    role: "Descobre perfis via hashtags, mencoes, listas, ferramentas externas"
+    phases_active: ["phase_1_discovery"]
+
+  - id: authority-validator
+    file: agents/authority-validator.md
+    tier: 0
+    role: "Valida se o perfil e realmente autoridade no nicho com scorecard"
+    phases_active: ["phase_2_validation"]
+
+  - id: engagement-analyst
+    file: agents/engagement-analyst.md
+    tier: 2
+    role: "Analisa metricas de engajamento, crescimento e formatos"
+    phases_active: ["phase_3_engagement"]
+
+  - id: content-auditor
+    file: agents/content-auditor.md
+    tier: 2
+    role: "Avalia qualidade, profundidade, pilares e funil de conteudo"
+    phases_active: ["phase_4_content"]
+
+  - id: report-compiler
+    file: agents/report-compiler.md
+    tier: 3
+    role: "Compila relatorio final ranqueado com scorecards individuais"
+    phases_active: ["phase_5_compilation"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# INPUTS DO WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+inputs:
+  required:
+    - name: domain_niche
+      type: string
+      description: |
+        Nome do nicho ou dominio de especialidade a ser pesquisado.
+        Deve ser especifico o suficiente para direcionar a busca, mas amplo
+        o suficiente para encontrar pelo menos 20 perfis relevantes.
+      examples:
+        - "Nutrição Esportiva"
+        - "Marketing Digital para Infoprodutores"
+        - "Psicologia Positiva"
+        - "Finanças Pessoais para Mulheres"
+        - "Dermatologia Estetica"
+        - "Educacao Infantil Montessori"
+      validation:
+        - "Nao pode ser generico demais (ex: 'saude')"
+        - "Nao pode ser restrito demais (ex: 'nutrição esportiva para triatletas veganos de Santos')"
+        - "Deve ter mercado brasileiro ativo nas redes sociais"
+
+    - name: platforms
+      type: list
+      description: "Plataformas a serem pesquisadas"
+      default: ["instagram", "tiktok"]
+      allowed_values: ["instagram", "tiktok"]
+      validation:
+        - "Pelo menos uma plataforma deve ser selecionada"
+
+  optional:
+    - name: min_profiles
+      type: integer
+      description: "Numero minimo de perfis no relatorio final"
+      default: 10
+      range:
+        min: 5
+        max: 30
+      notes: |
+        O pipeline busca 30-50 perfis na fase de discovery, filtra na validacao,
+        e entrega no minimo este numero no relatorio final. Se o nicho for muito
+        restrito e nao atingir o minimo, o workflow notifica o usuario.
+
+    - name: specific_needs
+      type: text
+      description: |
+        Necessidades especificas do usuario que devem guiar a pesquisa.
+        Exemplos: tipo de conteudo preferido, faixa de seguidores, regiao
+        geografica dentro do Brasil, foco em determinado subtopico.
+      default: null
+      examples:
+        - "Foco em perfis que fazem lives semanais"
+        - "Preferencia por perfis com menos de 100k seguidores (micro-influencers)"
+        - "Preciso de especialistas que tambem vendem cursos online"
+        - "Foco em profissionais da regiao Sudeste"
+        - "Interesse especial em quem produz conteudo em formato Reels"
+
+    - name: keywords
+      type: list
+      description: |
+        Palavras-chave adicionais para refinar a busca.
+        Se nao fornecidas, o profile-hunter gera automaticamente a partir do nicho.
+      default: null
+      examples:
+        - ["nutricionista esportivo", "dieta atleta", "suplementacao", "performance"]
+        - ["marketing digital", "infoproduto", "lancamento", "copywriting", "trafego pago"]
+
+    - name: exclude_profiles
+      type: list
+      description: "Lista de perfis (@usernames) a serem ignorados na pesquisa"
+      default: []
+
+    - name: priority_weight
+      type: object
+      description: |
+        Pesos customizados para o calculo do score final.
+        Se nao fornecido, usa os pesos padrao definidos na fase de compilacao.
+      default: null
+      schema:
+        authority_weight: 0.30
+        engagement_weight: 0.30
+        content_weight: 0.25
+        reach_weight: 0.15
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# OUTPUTS DO WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+outputs:
+  primary:
+    - name: "Relatorio Ranqueado Final"
+      file: "data/reports/{niche_slug}/relatorio-final-{date}.md"
+      format: markdown
+      description: |
+        Relatorio completo com ranking dos melhores perfis do nicho.
+        Inclui tabela comparativa, analise por perfil, e recomendacoes.
+        Este e o entregavel principal do workflow.
+      sections:
+        - "Resumo Executivo"
+        - "Metodologia Utilizada"
+        - "Ranking Final (tabela)"
+        - "Analise Individual por Perfil"
+        - "Insights do Nicho"
+        - "Recomendacoes"
+        - "Dados Brutos (anexo)"
+
+    - name: "Scorecards Individuais"
+      file: "data/reports/{niche_slug}/scorecards/"
+      format: markdown
+      description: |
+        Um scorecard detalhado para cada perfil analisado.
+        Contem todas as metricas coletadas, scores parciais e observacoes.
+      per_profile:
+        - "Dados basicos do perfil"
+        - "Score de Autoridade (0-15)"
+        - "Metricas de Engajamento"
+        - "Classificacao de Tamanho"
+        - "Score de Conteudo"
+        - "Score Final Ponderado"
+        - "Red flags identificadas"
+        - "Pontos fortes"
+        - "Observacoes qualitativas"
+
+    - name: "Dados Brutos Estruturados"
+      file: "data/reports/{niche_slug}/raw-data-{date}.yaml"
+      format: yaml
+      description: |
+        Todos os dados coletados em formato estruturado para processamento
+        futuro, integracao com outras ferramentas ou re-analise.
+      schema:
+        profiles:
+          - username: string
+            platform: string
+            followers: integer
+            authority_score: float
+            engagement_rate: float
+            content_score: float
+            final_score: float
+            raw_metrics: object
+            timestamps: object
+
+  secondary:
+    - name: "Mapa de Hashtags do Nicho"
+      file: "data/reports/{niche_slug}/hashtag-map.yaml"
+      description: "Mapeamento completo de hashtags relevantes encontradas"
+
+    - name: "Log de Execucao"
+      file: "data/reports/{niche_slug}/execution-log.yaml"
+      description: "Log detalhado de cada fase, decisoes tomadas e tempos"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRE-FLIGHT: VALIDACAO INICIAL
+# ═══════════════════════════════════════════════════════════════════════════════
+
+pre_flight:
+  trigger: "Inicio do workflow (ANTES de qualquer fase)"
+  blocking: true
+  executor: scout-chief
+  purpose: |
+    Validar que o nicho fornecido e viavel para pesquisa e coletar
+    informacoes complementares do usuario antes de iniciar o pipeline.
+
+  steps:
+    - id: pf_1
+      name: "Validar nicho"
+      actions:
+        - "Verificar se o nicho e especifico o suficiente"
+        - "Verificar se ha presenca brasileira ativa no nicho"
+        - "Estimar volume de perfis potenciais"
+      veto_conditions:
+        - "Nicho generico demais (ex: 'saude', 'negócios') - pedir refinamento"
+        - "Nicho sem presenca brasileira significativa nas plataformas"
+        - "Nicho com menos de 10 perfis potenciais estimados"
+
+    - id: pf_2
+      name: "Confirmar parametros"
+      actions:
+        - "Confirmar plataformas (Instagram, TikTok ou ambas)"
+        - "Confirmar numero minimo de perfis desejado"
+        - "Coletar necessidades especificas se houver"
+        - "Coletar keywords adicionais se o usuario tiver"
+        - "Coletar perfis a excluir se houver"
+
+    - id: pf_3
+      name: "Apresentar plano de execucao"
+      actions:
+        - "Resumir o que sera feito em cada fase"
+        - "Informar tempo estimado"
+        - "Solicitar confirmacao para iniciar"
+
+  message_template: |
+    ═══════════════════════════════════════════════════════════════════
+    NICHE SCAN - PRE-FLIGHT
+    ═══════════════════════════════════════════════════════════════════
+
+    Vou pesquisar os melhores perfis de especialistas brasileiros
+    no nicho: {domain_niche}
+
+    PLANO DE EXECUCAO:
+    ┌─────────────────────────────────────────────────────────────────┐
+    │ Fase 1: Discovery    - Encontrar 30-50 perfis candidatos       │
+    │ Fase 2: Validacao    - Filtrar por autoridade real (9+/15)     │
+    │ Fase 3: Engajamento  - Analisar metricas de cada perfil        │
+    │ Fase 4: Conteudo     - Auditar qualidade do conteudo           │
+    │ Fase 5: Compilacao   - Gerar ranking e relatorio final         │
+    │ Fase 6: Revisao      - Revisao final e entrega                 │
+    └─────────────────────────────────────────────────────────────────┘
+
+    TEMPO ESTIMADO: 2-4 horas
+    PLATAFORMAS: {platforms}
+    PERFIS MINIMOS NO RELATORIO: {min_profiles}
+
+    ═══════════════════════════════════════════════════════════════════
+
+    Antes de comecar, preciso confirmar:
+
+    1. O nicho "{domain_niche}" esta suficientemente definido?
+    2. Alguma necessidade especifica que devo considerar?
+    3. Algum perfil que devo IGNORAR na pesquisa?
+    4. Palavras-chave adicionais que podem ajudar?
+
+    Posso iniciar a pesquisa?
+
+    ═══════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FASE 1: DISCOVERY (Descoberta de Perfis)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Agente responsavel: profile-hunter (Tier 1)
+# Objetivo: Encontrar o maior numero possivel de perfis relevantes no nicho
+# Meta: 30-50 perfis brutos antes da filtragem
+#
+# O profile-hunter utiliza multiplas estrategias de busca para maximizar
+# a cobertura e evitar que perfis importantes passem despercebidos.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phases:
+  - id: phase_1_discovery
+    name: "DISCOVERY - Descoberta de Perfis"
+    tier: 1
+    executor: profile-hunter
+    executor_file: agents/profile-hunter.md
+    duration: "30-60 minutos"
+    depends_on: ["pre_flight"]
+    description: |
+      Fase de descoberta massiva de perfis de especialistas brasileiros no nicho.
+      O profile-hunter utiliza multiplas estrategias em paralelo para maximizar
+      a cobertura: mapeamento de hashtags, cruzamento de referencias, fontes
+      externas e busca direta nas plataformas.
+
+      O objetivo nao e filtrar nesta fase, mas sim COLETAR o maximo possivel
+      de perfis potencialmente relevantes. A filtragem acontece na Fase 2.
+
+    inputs:
+      from_pre_flight:
+        - domain_niche: "Nome do nicho validado"
+        - platforms: "Plataformas a pesquisar"
+        - keywords: "Palavras-chave (fornecidas pelo usuario ou geradas)"
+        - exclude_profiles: "Perfis a ignorar"
+        - specific_needs: "Necessidades especificas do usuario"
+
+    actions:
+      - id: act_1_1
+        name: "Geracao de Palavras-Chave"
+        description: |
+          Gerar lista expandida de palavras-chave a partir do nicho fornecido.
+          Incluir variacoes, sinonimos, termos tecnicos e termos populares.
+        steps:
+          - "Analisar o nicho e extrair termos primarios"
+          - "Gerar variacoes e sinonimos em portugues brasileiro"
+          - "Incluir termos tecnicos e academicos do nicho"
+          - "Incluir gírias e termos populares usados nas redes"
+          - "Cruzar com keywords fornecidas pelo usuario"
+          - "Produzir lista final de 20-40 keywords ordenadas por relevancia"
+        output:
+          keyword_list:
+            primary: "10-15 keywords de alta relevancia"
+            secondary: "10-15 keywords de media relevancia"
+            long_tail: "5-10 combinacoes de keywords"
+
+      - id: act_1_2
+        name: "Mapeamento de Hashtags"
+        description: |
+          Mapear as hashtags mais relevantes e ativas do nicho em cada plataforma.
+          Identificar hashtags de alto volume, medio volume e nicho.
+        steps:
+          - "Pesquisar hashtags primarias do nicho no Instagram"
+          - "Pesquisar hashtags primarias do nicho no TikTok"
+          - "Identificar hashtags de alto volume (>100k posts)"
+          - "Identificar hashtags de nicho (<10k posts, alta relevancia)"
+          - "Mapear hashtags de comunidade (grupos, movimentos)"
+          - "Identificar hashtags proprietarias de criadores conhecidos"
+          - "Cruzar hashtags entre plataformas"
+        output:
+          hashtag_map:
+            instagram:
+              high_volume: "Lista de hashtags com >100k posts"
+              medium_volume: "Lista de hashtags com 10k-100k posts"
+              niche_specific: "Lista de hashtags com <10k posts mas alta relevancia"
+              proprietary: "Hashtags criadas por especialistas do nicho"
+            tiktok:
+              high_volume: "Lista de hashtags com >100k videos"
+              medium_volume: "Lista de hashtags com 10k-100k videos"
+              niche_specific: "Lista de hashtags com <10k videos mas alta relevancia"
+              trending: "Hashtags em tendencia relacionadas ao nicho"
+
+      - id: act_1_3
+        name: "Busca Direta nas Plataformas"
+        description: |
+          Buscar perfis diretamente nas plataformas usando as keywords e hashtags.
+          Priorizar perfis que aparecem em multiplas buscas.
+        steps:
+          - "Buscar perfis por keyword no Instagram Search"
+          - "Buscar perfis por keyword no TikTok Search"
+          - "Explorar posts de topo nas hashtags mapeadas e identificar autores"
+          - "Verificar secao 'sugeridos' de perfis ja encontrados"
+          - "Explorar colaboracoes e marcacoes entre perfis"
+          - "Registrar cada perfil encontrado com fonte de descoberta"
+        output:
+          profiles_from_platform_search:
+            count: "Numero de perfis encontrados"
+            list: "Lista de @usernames com plataforma e fonte"
+
+      - id: act_1_4
+        name: "Cruzamento de Referencias"
+        description: |
+          Identificar perfis que sao mencionados, recomendados ou citados
+          por outros perfis ja encontrados. Perfis com muitas referencias
+          cruzadas tendem a ser autoridades reais no nicho.
+        steps:
+          - "Analisar marcacoes (@mentions) nos posts dos perfis encontrados"
+          - "Verificar colaboracoes (lives conjuntas, posts compartilhados)"
+          - "Identificar perfis que aparecem em 'listas de melhores' do nicho"
+          - "Verificar quem os perfis encontrados seguem no nicho"
+          - "Mapear rede de conexoes entre os perfis do nicho"
+          - "Registrar contagem de referencias cruzadas para cada perfil"
+        output:
+          cross_reference_map:
+            profiles_with_references: "Perfis e suas contagens de referencia"
+            network_connections: "Mapa de conexoes entre perfis"
+
+      - id: act_1_5
+        name: "Fontes Externas"
+        description: |
+          Buscar perfis em fontes fora das plataformas sociais para encontrar
+          especialistas que podem ter presenca forte mas nao aparecem nas
+          buscas convencionais.
+        steps:
+          - "Buscar no Google: 'melhores [nicho] brasileiros instagram'"
+          - "Buscar no Google: 'top [nicho] brasil tiktok'"
+          - "Verificar listas e rankings publicados por portais do nicho"
+          - "Pesquisar podcasts do nicho e identificar convidados frequentes"
+          - "Verificar palestrantes de eventos do nicho"
+          - "Pesquisar autores de livros/cursos do nicho no Brasil"
+          - "Verificar listas de 'Forbes Under 30', 'especialistas' etc."
+          - "Pesquisar canais do YouTube do nicho e verificar presenca no IG/TikTok"
+        output:
+          profiles_from_external:
+            count: "Numero de perfis encontrados via fontes externas"
+            list: "Lista com fonte de cada descoberta"
+
+      - id: act_1_6
+        name: "Consolidacao e Deduplicacao"
+        description: |
+          Consolidar todas as listas de perfis encontrados, remover duplicatas,
+          e criar a lista bruta unificada para envio a fase de validacao.
+        steps:
+          - "Unificar todas as listas de perfis"
+          - "Remover duplicatas (mesmo perfil encontrado em multiplas fontes)"
+          - "Remover perfis da lista de exclusao do usuario"
+          - "Marcar perfis presentes em multiplas plataformas"
+          - "Ordenar por numero de fontes de descoberta (mais fontes = maior prioridade)"
+          - "Gerar lista final com dados basicos de cada perfil"
+        output:
+          raw_profile_list:
+            total_found: "Numero total de perfis unicos"
+            per_platform:
+              instagram: "Contagem"
+              tiktok: "Contagem"
+              both: "Contagem de perfis em ambas plataformas"
+            data_per_profile:
+              - username: "@handle"
+              - platform: "instagram | tiktok | both"
+              - discovery_sources: "Lista de como foi encontrado"
+              - discovery_source_count: "Numero de fontes"
+              - bio_snippet: "Trecho da bio"
+              - follower_estimate: "Estimativa de seguidores"
+              - initial_relevance: "alta | media | baixa"
+
+    checkpoint:
+      id: CP_PHASE_1
+      name: "Discovery Checkpoint"
+      blocking: true
+      criteria:
+        - description: "Minimo de 20 perfis unicos encontrados"
+          metric: "raw_profile_list.total_found >= 20"
+          critical: true
+        - description: "Pelo menos 2 estrategias de busca utilizadas"
+          metric: "discovery_strategies_used >= 2"
+          critical: true
+        - description: "Mapa de hashtags gerado"
+          metric: "hashtag_map.exists == true"
+          critical: false
+        - description: "Pelo menos 5 perfis com presenca em ambas plataformas"
+          metric: "raw_profile_list.per_platform.both >= 5"
+          critical: false
+      on_fail:
+        if_less_than_20_profiles:
+          action: "Expandir busca"
+          steps:
+            - "Ampliar keywords (incluir termos adjacentes ao nicho)"
+            - "Buscar em hashtags de volume mais alto"
+            - "Incluir perfis de nicho adjacente"
+            - "Consultar usuario sobre termos alternativos"
+          max_retries: 2
+        if_less_than_10_profiles:
+          action: "Alertar usuario"
+          message: |
+            O nicho "{domain_niche}" parece ter poucos especialistas brasileiros
+            ativos no Instagram/TikTok. Encontramos apenas {count} perfis.
+
+            Opcoes:
+            1. Continuar com os perfis encontrados
+            2. Ampliar o nicho (sugerir nicho adjacente)
+            3. Encerrar o workflow
+      on_pass:
+        action: "Enviar raw_profile_list para phase_2_validation"
+        handoff:
+          from: profile-hunter
+          to: authority-validator
+          data: "raw_profile_list completa com todos os dados coletados"
+          signal: "<promise>CHECKPOINT:PHASE-1:PASSED</promise>"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FASE 2: VALIDATION (Validacao de Autoridade)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  #
+  # Agente responsavel: authority-validator (Tier 0)
+  # Objetivo: Filtrar perfis que NAO sao autoridade real no nicho
+  # Criterio: Scorecard de autoridade com 15 pontos; minimo 9/15 para passar
+  #
+  # O authority-validator e Tier 0 (fundacao) porque a validacao de autoridade
+  # e o alicerce de todo o relatorio. Um perfil sem autoridade real contamina
+  # todas as analises posteriores.
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - id: phase_2_validation
+    name: "VALIDATION - Validacao de Autoridade"
+    tier: 0
+    executor: authority-validator
+    executor_file: agents/authority-validator.md
+    duration: "30-60 minutos"
+    depends_on: ["phase_1_discovery"]
+    description: |
+      Fase critica de filtragem: cada perfil da lista bruta e avaliado contra
+      um scorecard de autoridade de 15 pontos. Perfis que nao atingem o minimo
+      de 9/15 sao descartados. Alem do score, sao verificadas red flags que
+      podem desqualificar um perfil independente do score.
+
+      Esta fase e Tier 0 porque a validacao de autoridade e a base de toda
+      a analise. Sem autoridade comprovada, as metricas de engajamento e
+      conteudo nao tem significado real.
+
+    inputs:
+      from_phase_1:
+        - raw_profile_list: "Lista bruta de 30-50 perfis com dados basicos"
+        - hashtag_map: "Mapa de hashtags para contexto do nicho"
+        - domain_niche: "Nome do nicho para referencia"
+
+    actions:
+      - id: act_2_1
+        name: "Aplicar Scorecard de Autoridade"
+        description: |
+          Para cada perfil na lista bruta, avaliar contra o scorecard de autoridade
+          de 15 pontos. Cada criterio vale 1 ponto (sim/nao). O score final
+          e a soma dos pontos.
+        scorecard:
+          total_points: 15
+          minimum_pass: 9
+          criteria:
+            # --- Credenciais e Formacao (3 pontos) ---
+            - id: auth_01
+              category: "Credenciais"
+              criterion: "Possui formacao academica ou certificacao relevante no nicho"
+              weight: 1
+              verification: "Bio, highlights, posts sobre formacao"
+
+            - id: auth_02
+              category: "Credenciais"
+              criterion: "Menciona ou demonstra experiencia pratica no nicho (anos, cases)"
+              weight: 1
+              verification: "Bio, posts, depoimentos de clientes"
+
+            - id: auth_03
+              category: "Credenciais"
+              criterion: "Publicou livro, curso, ou material educacional no nicho"
+              weight: 1
+              verification: "Links na bio, posts sobre lancamentos, plataformas de curso"
+
+            # --- Consistencia de Conteudo (3 pontos) ---
+            - id: auth_04
+              category: "Consistencia"
+              criterion: "Publica conteudo consistentemente sobre o nicho (nao e generico)"
+              weight: 1
+              verification: "Ultimos 30 posts/videos - pelo menos 70% sobre o nicho"
+
+            - id: auth_05
+              category: "Consistencia"
+              criterion: "Tem historico de pelo menos 6 meses de conteudo no nicho"
+              weight: 1
+              verification: "Data dos posts mais antigos sobre o nicho"
+
+            - id: auth_06
+              category: "Consistencia"
+              criterion: "Aborda o nicho com profundidade (nao apenas superficialmente)"
+              weight: 1
+              verification: "Complexidade dos topicos abordados, nivel de detalhe"
+
+            # --- Reconhecimento Externo (3 pontos) ---
+            - id: auth_07
+              category: "Reconhecimento"
+              criterion: "E mencionado ou recomendado por outros especialistas do nicho"
+              weight: 1
+              verification: "Cruzamento de referencias da Fase 1, marcacoes"
+
+            - id: auth_08
+              category: "Reconhecimento"
+              criterion: "Participou como palestrante, convidado ou entrevistado no nicho"
+              weight: 1
+              verification: "Posts sobre eventos, podcasts, lives conjuntas"
+
+            - id: auth_09
+              category: "Reconhecimento"
+              criterion: "Citado em midia, portais ou publicacoes do nicho"
+              weight: 1
+              verification: "Google News, portais especializados, revistas"
+
+            # --- Prova Social e Resultados (3 pontos) ---
+            - id: auth_10
+              category: "Prova Social"
+              criterion: "Apresenta depoimentos ou cases de clientes/alunos"
+              weight: 1
+              verification: "Highlights, posts de depoimentos, resenhas"
+
+            - id: auth_11
+              category: "Prova Social"
+              criterion: "Tem comunidade ativa (comentarios reais, perguntas, discussoes)"
+              weight: 1
+              verification: "Secao de comentarios, respostas, interacoes genuinas"
+
+            - id: auth_12
+              category: "Prova Social"
+              criterion: "Demonstra resultados proprios no nicho (nao so teoria)"
+              weight: 1
+              verification: "Before/after, numeros, conquistas compartilhadas"
+
+            # --- Presenca Profissional (3 pontos) ---
+            - id: auth_13
+              category: "Presenca Profissional"
+              criterion: "Bio profissional e clara, identifica-se como especialista"
+              weight: 1
+              verification: "Texto da bio, uso de titulo/cargo"
+
+            - id: auth_14
+              category: "Presenca Profissional"
+              criterion: "Possui site, blog ou plataforma propria alem das redes sociais"
+              weight: 1
+              verification: "Link na bio, Google Search"
+
+            - id: auth_15
+              category: "Presenca Profissional"
+              criterion: "Atua profissionalmente no nicho (nao e hobby ou side-project)"
+              weight: 1
+              verification: "Indicios de que vive do nicho: produtos, servicos, empresa"
+
+        per_profile_output:
+          username: "@handle"
+          platform: "instagram | tiktok | both"
+          authority_score: "0-15"
+          criteria_passed: "Lista dos criterios atendidos"
+          criteria_failed: "Lista dos criterios nao atendidos"
+          category_scores:
+            credenciais: "0-3"
+            consistencia: "0-3"
+            reconhecimento: "0-3"
+            prova_social: "0-3"
+            presenca_profissional: "0-3"
+          notes: "Observacoes qualitativas do validador"
+
+      - id: act_2_2
+        name: "Verificacao de Red Flags"
+        description: |
+          Verificar presenca de red flags que podem desqualificar um perfil
+          INDEPENDENTE do score de autoridade. Um perfil com score 12/15
+          mas com red flag critica pode ser rebaixado ou excluido.
+        red_flags:
+          critical:
+            - id: rf_01
+              flag: "Engajamento claramente artificial (bot comments, likes comprados)"
+              action: "Excluir do relatorio"
+              severity: "critica"
+
+            - id: rf_02
+              flag: "Conteudo copiado/plagiado de outros criadores"
+              action: "Excluir do relatorio"
+              severity: "critica"
+
+            - id: rf_03
+              flag: "Historico de golpes, fraudes ou reclamacoes graves"
+              action: "Excluir do relatorio"
+              severity: "critica"
+
+            - id: rf_04
+              flag: "Informacoes falsas verificaveis (titulos falsos, resultados inventados)"
+              action: "Excluir do relatorio"
+              severity: "critica"
+
+          warning:
+            - id: rf_05
+              flag: "Conteudo muito promocional (>50% dos posts sao vendas)"
+              action: "Marcar como alerta no scorecard"
+              severity: "moderada"
+
+            - id: rf_06
+              flag: "Picos suspeitos de crescimento (compra de seguidores possivel)"
+              action: "Marcar como alerta, investigar na Fase 3"
+              severity: "moderada"
+
+            - id: rf_07
+              flag: "Controversias recentes no nicho"
+              action: "Marcar como alerta no scorecard"
+              severity: "baixa"
+
+            - id: rf_08
+              flag: "Inatividade recente (>30 dias sem postar)"
+              action: "Marcar como alerta no scorecard"
+              severity: "moderada"
+
+      - id: act_2_3
+        name: "Filtragem e Classificacao"
+        description: |
+          Filtrar perfis que nao passaram na validacao e classificar os aprovados.
+        steps:
+          - "Remover perfis com score < 9/15"
+          - "Remover perfis com red flags criticas"
+          - "Classificar perfis aprovados por score (maior para menor)"
+          - "Marcar red flags de alerta nos perfis aprovados"
+          - "Gerar lista validada com perfis aprovados e suas classificacoes"
+        classification:
+          elite: "Score 13-15/15 - Autoridade indiscutivel no nicho"
+          strong: "Score 11-12/15 - Autoridade forte e consolidada"
+          solid: "Score 9-10/15 - Autoridade solida, com espaco para crescimento"
+          rejected: "Score < 9/15 - Autoridade insuficiente"
+
+    output:
+      validated_profile_list:
+        total_validated: "Numero de perfis que passaram"
+        total_rejected: "Numero de perfis rejeitados"
+        total_flagged: "Numero de perfis com alertas"
+        classification_breakdown:
+          elite: "Contagem"
+          strong: "Contagem"
+          solid: "Contagem"
+        profiles: "Lista completa com scores e classificacoes"
+      rejection_report:
+        description: "Relatorio dos perfis rejeitados e motivos"
+        per_rejected:
+          - username: "@handle"
+          - score: "X/15"
+          - reason: "Score insuficiente | Red flag critica"
+          - details: "Explicacao"
+
+    checkpoint:
+      id: CP_PHASE_2
+      name: "Validation Checkpoint"
+      blocking: true
+      criteria:
+        - description: "Minimo de 10 perfis passaram na validacao (score >= 9/15)"
+          metric: "validated_profile_list.total_validated >= 10"
+          critical: true
+        - description: "Todos os perfis tiveram scorecard completo aplicado"
+          metric: "all_profiles_scored == true"
+          critical: true
+        - description: "Red flags verificadas em todos os perfis"
+          metric: "red_flag_check_complete == true"
+          critical: true
+        - description: "Pelo menos 3 perfis classificados como 'elite' ou 'strong'"
+          metric: "elite_count + strong_count >= 3"
+          critical: false
+      on_fail:
+        if_less_than_10_validated:
+          action: "Relaxar criterio ou buscar mais perfis"
+          steps:
+            - "Se 7-9 perfis passaram: reduzir minimo para 7 e continuar com alerta"
+            - "Se < 7 perfis passaram: retornar a Fase 1 para buscar mais perfis"
+            - "Notificar usuario sobre a dificuldade do nicho"
+          max_retries: 1
+      on_pass:
+        action: "Enviar validated_profile_list para phase_3_engagement"
+        handoff:
+          from: authority-validator
+          to: engagement-analyst
+          data: "validated_profile_list com scores e classificacoes"
+          signal: "<promise>CHECKPOINT:PHASE-2:PASSED</promise>"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FASE 3: ENGAGEMENT ANALYSIS (Analise de Engajamento)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  #
+  # Agente responsavel: engagement-analyst (Tier 2)
+  # Objetivo: Coletar e analisar metricas quantitativas de engajamento
+  # Foco: Taxa de engajamento, crescimento, classificacao por tamanho
+  #
+  # O engagement-analyst aprofunda nos numeros: nao apenas coleta metricas,
+  # mas analisa padroes, tendencias e indicadores de qualidade do engajamento.
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - id: phase_3_engagement
+    name: "ENGAGEMENT ANALYSIS - Analise de Engajamento"
+    tier: 2
+    executor: engagement-analyst
+    executor_file: agents/engagement-analyst.md
+    duration: "30-60 minutos"
+    depends_on: ["phase_2_validation"]
+    description: |
+      Fase de analise quantitativa profunda. Para cada perfil validado,
+      o engagement-analyst coleta metricas detalhadas, calcula taxas de
+      engajamento, classifica por tamanho e identifica indicadores de
+      qualidade do engajamento (engajamento real vs. artificial).
+
+    inputs:
+      from_phase_2:
+        - validated_profile_list: "Lista de perfis validados com scores de autoridade"
+        - domain_niche: "Nome do nicho para contextualizacao"
+
+    actions:
+      - id: act_3_1
+        name: "Coleta de Metricas por Perfil"
+        description: |
+          Para cada perfil validado, coletar o conjunto completo de metricas
+          disponiveis publicamente em cada plataforma.
+        metrics_instagram:
+          basic:
+            - "Numero de seguidores"
+            - "Numero de seguindo"
+            - "Numero total de posts"
+            - "Ratio seguidores/seguindo"
+          engagement:
+            - "Media de curtidas nos ultimos 12 posts"
+            - "Media de comentarios nos ultimos 12 posts"
+            - "Media de compartilhamentos (quando visivel)"
+            - "Media de salvamentos (quando visivel)"
+            - "Taxa de engajamento = (curtidas + comentarios) / seguidores * 100"
+          content_format:
+            - "Percentual de posts estaticos"
+            - "Percentual de carrosseis"
+            - "Percentual de Reels"
+            - "Formato com maior engajamento"
+          growth_indicators:
+            - "Frequencia de postagem (posts por semana)"
+            - "Tendencia de engajamento (crescente, estavel, decrescente)"
+            - "Variacao de seguidores (se detectavel)"
+
+        metrics_tiktok:
+          basic:
+            - "Numero de seguidores"
+            - "Numero total de curtidas no perfil"
+            - "Numero total de videos"
+          engagement:
+            - "Media de views nos ultimos 10 videos"
+            - "Media de curtidas nos ultimos 10 videos"
+            - "Media de comentarios nos ultimos 10 videos"
+            - "Media de compartilhamentos nos ultimos 10 videos"
+            - "Taxa de engajamento = (curtidas + comentarios) / views * 100"
+          content_format:
+            - "Duracao media dos videos"
+            - "Presenca de trends vs. conteudo original"
+            - "Uso de audio original vs. audio popular"
+          growth_indicators:
+            - "Frequencia de postagem (videos por semana)"
+            - "Tendencia de views (crescente, estavel, decrescente)"
+            - "Variacao entre videos (consistencia)"
+
+      - id: act_3_2
+        name: "Classificacao por Tamanho"
+        description: |
+          Classificar cada perfil por faixa de tamanho. A classificacao e
+          importante porque as expectativas de engajamento variam significativamente
+          por tamanho: micro-influencers geralmente tem taxas mais altas que macros.
+        size_tiers:
+          - tier: "Nano"
+            range: "1k - 10k seguidores"
+            expected_engagement: "5-10%"
+            notes: "Altissimo engajamento relativo, audiencia muito nichada"
+
+          - tier: "Micro"
+            range: "10k - 50k seguidores"
+            expected_engagement: "3-7%"
+            notes: "Engajamento forte, comunidade ativa"
+
+          - tier: "Medio"
+            range: "50k - 200k seguidores"
+            expected_engagement: "2-5%"
+            notes: "Equilibrio entre alcance e engajamento"
+
+          - tier: "Macro"
+            range: "200k - 1M seguidores"
+            expected_engagement: "1-3%"
+            notes: "Grande alcance, engajamento diluido e normal"
+
+          - tier: "Mega"
+            range: "1M+ seguidores"
+            expected_engagement: "0.5-2%"
+            notes: "Alcance massivo, engajamento percentualmente menor e normal"
+
+      - id: act_3_3
+        name: "Indicadores de Qualidade do Engajamento"
+        description: |
+          Analisar a QUALIDADE do engajamento, nao apenas a quantidade.
+          Engajamento de qualidade indica audiencia real e engajada.
+        quality_indicators:
+          positive:
+            - indicator: "Comentarios relevantes e contextuais"
+              description: "Perguntas, relatos, discussoes sobre o tema"
+              score_bonus: "+1"
+
+            - indicator: "Respostas do criador aos comentarios"
+              description: "Criador interage com a audiencia regularmente"
+              score_bonus: "+1"
+
+            - indicator: "Engajamento consistente entre posts"
+              description: "Baixa variacao entre curtidas/comentarios dos posts"
+              score_bonus: "+1"
+
+            - indicator: "Ratio comentarios/curtidas saudavel"
+              description: "Acima de 2% (comentarios / curtidas)"
+              score_bonus: "+1"
+
+            - indicator: "Compartilhamentos e salvamentos altos"
+              description: "Indica conteudo com valor percebido"
+              score_bonus: "+1"
+
+          negative:
+            - indicator: "Comentarios genericos (emojis soltos, 'lindo', spam)"
+              description: "Indica engajamento superficial ou artificial"
+              score_penalty: "-1"
+
+            - indicator: "Picos inexplicaveis de engajamento"
+              description: "Pode indicar compra de engajamento"
+              score_penalty: "-1"
+
+            - indicator: "Muitos seguidores mas pouco engajamento"
+              description: "Ratio muito abaixo do esperado para o tamanho"
+              score_penalty: "-1"
+
+            - indicator: "Comentarios em idiomas estrangeiros sem motivo"
+              description: "Pode indicar seguidores comprados"
+              score_penalty: "-1"
+
+      - id: act_3_4
+        name: "Calculo do Engagement Score"
+        description: |
+          Calcular score de engajamento final para cada perfil,
+          considerando metricas brutas, classificacao de tamanho e qualidade.
+        formula: |
+          engagement_raw = taxa de engajamento percentual
+          size_adjustment = comparar com media esperada para o tamanho
+          quality_bonus = soma dos indicadores de qualidade (+/-)
+
+          engagement_score_normalized = (engagement_raw ajustado pelo tamanho) * 10
+          engagement_score_final = engagement_score_normalized + quality_bonus
+
+          Escala final: 0-10 (onde 10 = engajamento excepcional para o tamanho)
+
+    output:
+      profiles_with_engagement:
+        total: "Numero de perfis analisados"
+        per_profile:
+          - username: "@handle"
+          - platform: "instagram | tiktok | both"
+          - authority_score: "X/15 (da Fase 2)"
+          - size_tier: "nano | micro | medio | macro | mega"
+          - followers: "Numero exato"
+          - engagement_rate: "X.XX%"
+          - engagement_score: "0-10"
+          - quality_indicators: "Lista de indicadores positivos e negativos"
+          - format_breakdown: "Distribuicao de formatos"
+          - posting_frequency: "X posts/semana"
+          - growth_trend: "crescente | estavel | decrescente"
+          - all_raw_metrics: "Objeto com todas metricas coletadas"
+
+    checkpoint:
+      id: CP_PHASE_3
+      name: "Engagement Checkpoint"
+      blocking: true
+      criteria:
+        - description: "Todos os perfis validados tem metricas completas"
+          metric: "profiles_with_complete_metrics == validated_profile_count"
+          critical: true
+        - description: "Classificacao de tamanho aplicada a todos"
+          metric: "all_profiles_have_size_tier == true"
+          critical: true
+        - description: "Engagement score calculado para todos"
+          metric: "all_profiles_have_engagement_score == true"
+          critical: true
+        - description: "Indicadores de qualidade verificados"
+          metric: "quality_indicators_checked == true"
+          critical: false
+      on_fail:
+        action: "Preencher metricas faltantes"
+        steps:
+          - "Identificar perfis com metricas incompletas"
+          - "Tentar coleta alternativa (outra fonte de dados)"
+          - "Se impossivel, usar estimativas e marcar como 'dados parciais'"
+        max_retries: 1
+      on_pass:
+        action: "Enviar profiles_with_engagement para phase_4_content"
+        handoff:
+          from: engagement-analyst
+          to: content-auditor
+          data: "profiles_with_engagement com todas metricas"
+          signal: "<promise>CHECKPOINT:PHASE-3:PASSED</promise>"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FASE 4: CONTENT AUDIT (Auditoria de Conteudo)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  #
+  # Agente responsavel: content-auditor (Tier 2)
+  # Objetivo: Avaliar qualidade, profundidade e estrategia de conteudo
+  # Foco: Pilares de conteudo, funil de vendas, qualidade de producao
+  #
+  # O content-auditor analisa o CONTEUDO em si: nao os numeros (Fase 3),
+  # mas a substancia, estrategia e qualidade do que e publicado.
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - id: phase_4_content
+    name: "CONTENT AUDIT - Auditoria de Conteudo"
+    tier: 2
+    executor: content-auditor
+    executor_file: agents/content-auditor.md
+    duration: "30-60 minutos"
+    depends_on: ["phase_3_engagement"]
+    description: |
+      Fase de analise qualitativa do conteudo. Enquanto a Fase 3 foca em numeros,
+      esta fase analisa a SUBSTANCIA: qualidade de producao, profundidade tematica,
+      pilares de conteudo, estrategia de funil e originalidade.
+
+      O content-auditor avalia os ultimos 20-30 conteudos de cada perfil para
+      gerar uma visao completa da estrategia e qualidade de conteudo.
+
+    inputs:
+      from_phase_3:
+        - profiles_with_engagement: "Perfis com todas metricas de engajamento"
+        - domain_niche: "Nome do nicho para referencia"
+
+    actions:
+      - id: act_4_1
+        name: "Auditoria de Qualidade de Conteudo"
+        description: |
+          Avaliar a qualidade geral do conteudo produzido por cada perfil.
+          Analisar ultimos 20-30 posts/videos de cada perfil.
+        quality_dimensions:
+          - dimension: "Profundidade Tematica"
+            description: "O conteudo vai alem do superficial? Ensina algo real?"
+            scale: "1-5"
+            evaluation:
+              1: "Superficial, cliches, informacao generica"
+              2: "Basico, repete o que todo mundo fala"
+              3: "Bom, traz perspectiva propria ocasionalmente"
+              4: "Profundo, ensina conceitos avancados regularmente"
+              5: "Excepcional, referencia no nicho por profundidade"
+
+          - dimension: "Originalidade"
+            description: "O conteudo e original ou reciclado de outros criadores?"
+            scale: "1-5"
+            evaluation:
+              1: "Copia evidente de outros criadores"
+              2: "Repete tendencias sem adicionar valor"
+              3: "Mix de tendencias com conteudo proprio"
+              4: "Majoritariamente original com perspectiva unica"
+              5: "Referencia de originalidade, cria tendencias"
+
+          - dimension: "Qualidade de Producao"
+            description: "Qualidade visual, audio, edicao e apresentacao"
+            scale: "1-5"
+            evaluation:
+              1: "Amador, qualidade muito baixa"
+              2: "Basico, sem grande cuidado"
+              3: "Bom, producao adequada"
+              4: "Profissional, alta qualidade"
+              5: "Excepcional, nivel de estudio"
+
+          - dimension: "Clareza de Comunicacao"
+            description: "O criador comunica de forma clara e acessivel?"
+            scale: "1-5"
+            evaluation:
+              1: "Confuso, dificil de entender"
+              2: "Parcialmente claro, com ruidos"
+              3: "Claro na maioria dos conteudos"
+              4: "Muito claro, didatico"
+              5: "Excepcional, transforma complexo em simples"
+
+          - dimension: "Valor Pratico"
+            description: "O conteudo e aplicavel? A audiencia pode usar no dia a dia?"
+            scale: "1-5"
+            evaluation:
+              1: "Apenas teorico, sem aplicacao pratica"
+              2: "Pouco aplicavel"
+              3: "Alguns conteudos praticos"
+              4: "Maioria com dicas e acoes praticas"
+              5: "Altamente pratico, audiencia aplica imediatamente"
+
+      - id: act_4_2
+        name: "Mapeamento de Pilares de Conteudo"
+        description: |
+          Identificar os pilares (temas principais) do conteudo de cada perfil.
+          Mapear a distribuicao de conteudo entre os pilares.
+        steps:
+          - "Categorizar os ultimos 20-30 posts por tema"
+          - "Identificar 3-5 pilares principais de cada perfil"
+          - "Calcular percentual de conteudo por pilar"
+          - "Verificar se pilares estao alinhados com o nicho pesquisado"
+          - "Identificar pilares unicos (diferenciadores)"
+        output_per_profile:
+          pillars:
+            - name: "Nome do pilar"
+              percentage: "X% do conteudo"
+              alignment: "alta | media | baixa alinhamento com o nicho"
+          total_pillars: "Numero de pilares identificados"
+          niche_alignment: "Percentual do conteudo alinhado ao nicho"
+
+      - id: act_4_3
+        name: "Analise de Funil de Conteudo"
+        description: |
+          Analisar se o perfil tem estrategia de funil de conteudo:
+          do conteudo de topo (atracao) ate conteudo de fundo (conversao).
+        funnel_stages:
+          - stage: "Topo (Atracao)"
+            description: "Conteudo viral, trends, entretenimento educativo"
+            indicators:
+              - "Reels curtos e dinamicos"
+              - "Conteudo de tendencia com twist do nicho"
+              - "Dicas rapidas e acessiveis"
+              - "Conteudo que gera compartilhamento"
+
+          - stage: "Meio (Consideracao)"
+            description: "Conteudo que constroi confianca e aprofunda"
+            indicators:
+              - "Carrosseis educativos"
+              - "Videos mais longos e detalhados"
+              - "Casos praticos e exemplos"
+              - "FAQ e perguntas da audiencia"
+
+          - stage: "Fundo (Conversao)"
+            description: "Conteudo que direciona para venda/acao"
+            indicators:
+              - "Lancamentos de produto/servico"
+              - "Depoimentos e cases de sucesso"
+              - "CTAs claros"
+              - "Lives de venda ou webinars"
+
+        per_profile_output:
+          has_funnel_strategy: "sim | parcial | nao"
+          topo_percentage: "X%"
+          meio_percentage: "X%"
+          fundo_percentage: "X%"
+          funnel_maturity: "iniciante | intermediario | avancado"
+          notes: "Observacoes sobre a estrategia de funil"
+
+      - id: act_4_4
+        name: "Calculo do Content Score"
+        description: |
+          Calcular score final de conteudo para cada perfil.
+        formula: |
+          quality_avg = media das 5 dimensoes de qualidade (1-5)
+          quality_normalized = quality_avg * 2 (escala 0-10)
+
+          pillar_bonus = +0.5 se niche_alignment > 80%
+          funnel_bonus = +0.5 se funnel_maturity == "avancado"
+          originality_bonus = +0.5 se originalidade >= 4
+
+          content_score = quality_normalized + pillar_bonus + funnel_bonus + originality_bonus
+
+          Escala final: 0-10 (onde 10 = conteudo excepcional em todos os criterios)
+          Nota: score pode passar de 10 com bonus, sendo truncado em 10.
+
+    output:
+      profiles_with_content:
+        total: "Numero de perfis auditados"
+        per_profile:
+          - username: "@handle"
+          - platform: "instagram | tiktok | both"
+          - authority_score: "X/15 (Fase 2)"
+          - engagement_score: "0-10 (Fase 3)"
+          - content_score: "0-10"
+          - quality_dimensions:
+              profundidade: "1-5"
+              originalidade: "1-5"
+              producao: "1-5"
+              clareza: "1-5"
+              valor_pratico: "1-5"
+          - pillars: "Lista de pilares com percentuais"
+          - funnel_analysis:
+              has_strategy: "sim | parcial | nao"
+              maturity: "iniciante | intermediario | avancado"
+          - content_highlights: "Pontos fortes do conteudo"
+          - content_weaknesses: "Pontos fracos do conteudo"
+
+    checkpoint:
+      id: CP_PHASE_4
+      name: "Content Audit Checkpoint"
+      blocking: true
+      criteria:
+        - description: "Todos os perfis validados tem content score"
+          metric: "all_profiles_have_content_score == true"
+          critical: true
+        - description: "Todas as 5 dimensoes de qualidade foram avaliadas"
+          metric: "all_quality_dimensions_scored == true"
+          critical: true
+        - description: "Pilares de conteudo mapeados para todos"
+          metric: "all_profiles_have_pillar_map == true"
+          critical: false
+        - description: "Analise de funil completa para todos"
+          metric: "all_profiles_have_funnel_analysis == true"
+          critical: false
+      on_fail:
+        action: "Completar auditorias faltantes"
+        steps:
+          - "Identificar perfis com auditoria incompleta"
+          - "Priorizar dimensoes criticas (profundidade, originalidade)"
+          - "Se perfil sem conteudo suficiente para auditoria, usar dados disponiveis e marcar"
+        max_retries: 1
+      on_pass:
+        action: "Enviar profiles_with_content para phase_5_compilation"
+        handoff:
+          from: content-auditor
+          to: report-compiler
+          data: "profiles_with_content com scores de todas as fases"
+          signal: "<promise>CHECKPOINT:PHASE-4:PASSED</promise>"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FASE 5: COMPILATION (Compilacao do Relatorio)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  #
+  # Agente responsavel: report-compiler (Tier 3)
+  # Objetivo: Compilar todos os dados em relatorio final ranqueado
+  # Foco: Score final ponderado, ranking, scorecards individuais
+  #
+  # O report-compiler recebe todos os dados das fases anteriores e transforma
+  # em um relatorio final profissional, ranqueado e acionavel.
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - id: phase_5_compilation
+    name: "COMPILATION - Compilacao do Relatorio Final"
+    tier: 3
+    executor: report-compiler
+    executor_file: agents/report-compiler.md
+    duration: "20-40 minutos"
+    depends_on: ["phase_4_content"]
+    description: |
+      Fase de compilacao e sintese. O report-compiler recebe todos os dados
+      coletados e analisados nas fases anteriores e produz:
+      1. Score final ponderado para cada perfil
+      2. Ranking completo ordenado por score final
+      3. Scorecards individuais detalhados
+      4. Relatorio narrativo com insights do nicho
+      5. Dados brutos estruturados para exportacao
+
+    inputs:
+      from_all_phases:
+        - profiles_with_content: "Dados completos de todos os perfis"
+        - hashtag_map: "Mapa de hashtags do nicho (Fase 1)"
+        - domain_niche: "Nome do nicho"
+        - priority_weight: "Pesos customizados (se fornecidos pelo usuario)"
+
+    actions:
+      - id: act_5_1
+        name: "Calculo do Score Final Ponderado"
+        description: |
+          Calcular o score final de cada perfil usando pesos ponderados.
+          Os pesos padrao podem ser sobrescritos pelo usuario.
+        weights:
+          default:
+            authority_weight: 0.30
+            engagement_weight: 0.30
+            content_weight: 0.25
+            reach_weight: 0.15
+          description: |
+            - Autoridade (30%): Peso alto porque e a base de credibilidade
+            - Engajamento (30%): Peso alto porque indica audiencia real e ativa
+            - Conteudo (25%): Peso significativo porque indica valor entregue
+            - Alcance (15%): Peso menor porque tamanho sem qualidade nao serve
+        formula: |
+          # Normalizar scores para escala 0-10
+          authority_normalized = (authority_score / 15) * 10
+          engagement_normalized = engagement_score  # Ja esta em 0-10
+          content_normalized = content_score  # Ja esta em 0-10
+          reach_normalized = calcular_reach_score(followers, platform)
+
+          # Calcular reach_score baseado no tamanho
+          # Nano(1k-10k)=2, Micro(10k-50k)=4, Medio(50k-200k)=6, Macro(200k-1M)=8, Mega(1M+)=10
+
+          # Score final ponderado
+          final_score = (
+            authority_normalized * authority_weight +
+            engagement_normalized * engagement_weight +
+            content_normalized * content_weight +
+            reach_normalized * reach_weight
+          )
+
+          # Arredondar para 2 casas decimais
+          # Escala final: 0.00 - 10.00
+
+      - id: act_5_2
+        name: "Geracao do Ranking"
+        description: |
+          Ordenar todos os perfis por score final e gerar o ranking completo.
+        steps:
+          - "Ordenar perfis por final_score (maior para menor)"
+          - "Atribuir posicao no ranking (1o, 2o, 3o...)"
+          - "Marcar empates (se houver scores identicos)"
+          - "Classificar em tiers do ranking"
+          - "Gerar tabela comparativa formatada"
+        ranking_tiers:
+          - tier: "Top 3"
+            label: "Elite do Nicho"
+            description: "Os 3 melhores perfis - referencia absoluta"
+            highlight: true
+
+          - tier: "Top 10"
+            label: "Destaque no Nicho"
+            description: "Os 10 melhores - excelentes em pelo menos 2 dimensoes"
+
+          - tier: "Restante"
+            label: "Relevante no Nicho"
+            description: "Passaram na validacao e tem presenca significativa"
+
+      - id: act_5_3
+        name: "Geracao de Scorecards Individuais"
+        description: |
+          Criar um scorecard completo e individual para cada perfil.
+          O scorecard e o documento de referencia para consulta rapida.
+        scorecard_template:
+          header:
+            - "Nome / @username"
+            - "Plataforma(s)"
+            - "Posicao no Ranking"
+            - "Score Final"
+          section_authority:
+            title: "Autoridade no Nicho"
+            fields:
+              - "Score: X/15"
+              - "Classificacao: elite | strong | solid"
+              - "Credenciais: lista"
+              - "Red flags: lista ou 'nenhuma'"
+          section_engagement:
+            title: "Engajamento"
+            fields:
+              - "Seguidores: X"
+              - "Classificacao: nano | micro | medio | macro | mega"
+              - "Taxa de Engajamento: X.XX%"
+              - "Score: X/10"
+              - "Qualidade: indicadores positivos e negativos"
+          section_content:
+            title: "Conteudo"
+            fields:
+              - "Score: X/10"
+              - "Profundidade: X/5"
+              - "Originalidade: X/5"
+              - "Producao: X/5"
+              - "Clareza: X/5"
+              - "Valor Pratico: X/5"
+              - "Pilares: lista com percentuais"
+              - "Funil: maturity level"
+          section_summary:
+            title: "Resumo"
+            fields:
+              - "Pontos Fortes: top 3"
+              - "Pontos de Atencao: top 3"
+              - "Recomendacao: texto livre"
+
+      - id: act_5_4
+        name: "Compilacao do Relatorio Narrativo"
+        description: |
+          Gerar o relatorio narrativo que contextualiza os dados e oferece
+          insights acionaveis ao usuario.
+        sections:
+          - section: "Resumo Executivo"
+            content: |
+              Visao geral do nicho pesquisado, numero de perfis analisados,
+              top 3 destaques e principal insight encontrado.
+              Maximo: 1 pagina.
+
+          - section: "Metodologia"
+            content: |
+              Descricao das 6 fases do pipeline, criterios utilizados,
+              pesos aplicados e como interpretar os scores.
+
+          - section: "Ranking Final"
+            content: |
+              Tabela completa com ranking, username, plataforma, seguidores,
+              score de autoridade, engajamento, conteudo e score final.
+              Formatada para facil leitura.
+
+          - section: "Analise dos Top 3"
+            content: |
+              Analise aprofundada dos 3 melhores perfis: por que se destacam,
+              o que fazem de diferente, e o que podemos aprender com eles.
+
+          - section: "Insights do Nicho"
+            content: |
+              Padroes identificados no nicho: tipos de conteudo que mais engajam,
+              pilares de conteudo mais comuns, gaps de conteudo (oportunidades),
+              tendencias observadas, tamanho medio dos perfis.
+
+          - section: "Recomendacoes"
+            content: |
+              Recomendacoes baseadas na analise: quem seguir/acompanhar,
+              oportunidades de colaboracao, gaps de mercado identificados,
+              tendencias emergentes para o nicho.
+
+          - section: "Dados Brutos"
+            content: |
+              Referencia para o arquivo YAML com todos os dados brutos
+              para processamento posterior.
+
+      - id: act_5_5
+        name: "Verificacao de Consistencia"
+        description: |
+          Verificar que o relatorio final e internamente consistente:
+          scores batem, ranking esta correto, nenhum dado esta faltando.
+        checks:
+          - "Todos os perfis validados estao no ranking"
+          - "Ordem do ranking corresponde aos scores finais"
+          - "Scores parciais somam corretamente no score final"
+          - "Scorecards individuais existem para cada perfil"
+          - "Nenhuma secao do relatorio esta vazia"
+          - "Dados brutos estao completos e bem formatados"
+          - "Nomes e usernames estao consistentes em todo relatorio"
+
+    output:
+      complete_report:
+        ranking_table: "Tabela com ranking completo"
+        individual_scorecards: "Um scorecard por perfil"
+        narrative_report: "Relatorio narrativo completo"
+        raw_data_yaml: "Dados brutos estruturados"
+        niche_insights: "Insights consolidados do nicho"
+
+    checkpoint:
+      id: CP_PHASE_5
+      name: "Compilation Checkpoint"
+      blocking: true
+      criteria:
+        - description: "Relatorio tem todas as secoes obrigatorias"
+          metric: "all_report_sections_present == true"
+          critical: true
+        - description: "Ranking e consistente com scores calculados"
+          metric: "ranking_is_consistent == true"
+          critical: true
+        - description: "Scorecards existem para todos os perfis no ranking"
+          metric: "scorecards_count == profiles_in_ranking"
+          critical: true
+        - description: "Dados brutos YAML estao completos"
+          metric: "raw_data_complete == true"
+          critical: true
+        - description: "Nenhuma secao do relatorio esta vazia"
+          metric: "no_empty_sections == true"
+          critical: true
+      on_fail:
+        action: "Corrigir inconsistencias"
+        steps:
+          - "Identificar secoes faltantes ou inconsistentes"
+          - "Recalcular scores se necessario"
+          - "Reordenar ranking se necessario"
+          - "Completar scorecards faltantes"
+        max_retries: 2
+      on_pass:
+        action: "Enviar complete_report para phase_6_review"
+        handoff:
+          from: report-compiler
+          to: scout-chief
+          data: "complete_report com todos os artefatos"
+          signal: "<promise>CHECKPOINT:PHASE-5:PASSED</promise>"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FASE 6: REVIEW (Revisao Final e Entrega)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  #
+  # Agente responsavel: scout-chief (Orchestrator)
+  # Objetivo: Revisao final, sanity check e entrega ao usuario
+  # Foco: Garantir qualidade, apresentar resultados, obter aprovacao
+  #
+  # O scout-chief retoma o controle para a revisao final. Como orquestrador,
+  # ele tem visao completa de todo o pipeline e pode identificar
+  # inconsistencias que os agentes especializados nao perceberiam.
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - id: phase_6_review
+    name: "REVIEW - Revisao Final e Entrega"
+    tier: orchestrator
+    executor: scout-chief
+    executor_file: agents/scout-chief.md
+    duration: "15-30 minutos"
+    depends_on: ["phase_5_compilation"]
+    description: |
+      Fase final do pipeline. O scout-chief realiza revisao completa do
+      relatorio, executa sanity checks, e apresenta os resultados ao usuario
+      para aprovacao final. Esta fase inclui interacao com o usuario.
+
+    inputs:
+      from_phase_5:
+        - complete_report: "Relatorio completo com todos os artefatos"
+        - domain_niche: "Nome do nicho (para referencia)"
+        - original_inputs: "Inputs originais do usuario (para validacao)"
+
+    actions:
+      - id: act_6_1
+        name: "Sanity Check"
+        description: |
+          Verificacoes de sanidade para garantir que o relatorio faz sentido
+          no contexto geral e nao tem erros obvios.
+        checks:
+          - check: "O ranking parece razoavel?"
+            detail: "Os top 3 sao reconhecidamente fortes no nicho?"
+          - check: "Os scores fazem sentido relativo?"
+            detail: "O #1 e claramente melhor que o #10?"
+          - check: "As recomendacoes sao acionaveis?"
+            detail: "O usuario pode agir com base nelas?"
+          - check: "Os insights do nicho sao uteis?"
+            detail: "Trazem informacoes nao obvias?"
+          - check: "O relatorio atende as necessidades especificas do usuario?"
+            detail: "Se o usuario pediu algo especifico, esta contemplado?"
+          - check: "A linguagem e clara e profissional?"
+            detail: "Portugues correto, sem jargao excessivo?"
+          - check: "Os dados estao atualizados?"
+            detail: "Metricas refletem o estado atual dos perfis?"
+
+      - id: act_6_2
+        name: "Ajustes Finais"
+        description: |
+          Realizar ajustes de formatacao, clareza e apresentacao no relatorio.
+        steps:
+          - "Corrigir eventuais erros de formatacao"
+          - "Melhorar clareza de trechos confusos"
+          - "Adicionar contexto onde necessario"
+          - "Verificar que todos os links e referencias estao corretos"
+          - "Garantir formatacao consistente nos scorecards"
+
+      - id: act_6_3
+        name: "Apresentacao ao Usuario"
+        description: |
+          Apresentar os resultados ao usuario de forma clara e organizada.
+          Destacar os principais achados e recomendacoes.
+        presentation_template: |
+          ═══════════════════════════════════════════════════════════════════
+          NICHE SCAN COMPLETO - {domain_niche}
+          ═══════════════════════════════════════════════════════════════════
+
+          RESUMO DA PESQUISA:
+          ┌─────────────────────────────────────────────────────────────────┐
+          │ Nicho pesquisado: {domain_niche}                               │
+          │ Plataformas: {platforms}                                        │
+          │ Perfis descobertos: {total_discovered}                         │
+          │ Perfis validados: {total_validated}                            │
+          │ Perfis no ranking final: {total_ranked}                        │
+          └─────────────────────────────────────────────────────────────────┘
+
+          TOP 3 DO NICHO:
+          ┌─────────────────────────────────────────────────────────────────┐
+          │ 1. @{top1_username} - Score: {top1_score}/10                   │
+          │    {top1_highlight}                                             │
+          │                                                                 │
+          │ 2. @{top2_username} - Score: {top2_score}/10                   │
+          │    {top2_highlight}                                             │
+          │                                                                 │
+          │ 3. @{top3_username} - Score: {top3_score}/10                   │
+          │    {top3_highlight}                                             │
+          └─────────────────────────────────────────────────────────────────┘
+
+          PRINCIPAL INSIGHT:
+          {main_insight}
+
+          ARQUIVOS GERADOS:
+          - Relatorio completo: {report_path}
+          - Scorecards individuais: {scorecards_path}
+          - Dados brutos: {raw_data_path}
+          - Mapa de hashtags: {hashtag_map_path}
+
+          ═══════════════════════════════════════════════════════════════════
+
+          O relatorio completo esta disponivel nos arquivos acima.
+          Posso detalhar qualquer perfil especifico ou aspecto da analise.
+
+          Este relatorio esta aprovado?
+
+          ═══════════════════════════════════════════════════════════════════
+
+      - id: act_6_4
+        name: "Aprovacao Humana"
+        description: |
+          Aguardar aprovacao do usuario. Se houver solicitacoes de ajuste,
+          o scout-chief coordena as correcoes necessarias.
+        approval_flow:
+          if_approved:
+            - "Salvar relatorio final com status 'aprovado'"
+            - "Gerar log de execucao completo"
+            - "Sinalizar workflow como COMPLETO"
+          if_adjustments_requested:
+            - "Identificar quais ajustes sao necessarios"
+            - "Se ajuste simples: corrigir e reapresentar"
+            - "Se ajuste complexo: retornar a fase apropriada"
+            - "Maximo de 2 ciclos de ajuste"
+          if_rejected:
+            - "Documentar motivos da rejeicao"
+            - "Salvar relatorio com status 'rejeitado'"
+            - "Oferecer opcoes: refazer pesquisa ou ajustar parametros"
+
+    output:
+      final_approved_report:
+        status: "aprovado | ajustado | rejeitado"
+        report_files:
+          - "data/reports/{niche_slug}/relatorio-final-{date}.md"
+          - "data/reports/{niche_slug}/scorecards/*.md"
+          - "data/reports/{niche_slug}/raw-data-{date}.yaml"
+          - "data/reports/{niche_slug}/hashtag-map.yaml"
+          - "data/reports/{niche_slug}/execution-log.yaml"
+        approval_date: "timestamp"
+        adjustment_notes: "Notas de ajustes se houver"
+
+    checkpoint:
+      id: CP_PHASE_6
+      name: "Final Review Checkpoint"
+      blocking: true
+      human_review: true
+      criteria:
+        - description: "Sanity check completo sem problemas criticos"
+          metric: "sanity_check_passed == true"
+          critical: true
+        - description: "Relatorio apresentado ao usuario"
+          metric: "presentation_delivered == true"
+          critical: true
+        - description: "Aprovacao humana obtida"
+          metric: "human_approval == true"
+          critical: true
+      on_pass:
+        signal: "<promise>COMPLETE</promise>"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# REGRAS DE EXECUCAO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+execution_rules:
+  always:
+    - "SEMPRE validar que o nicho e especifico o suficiente antes de iniciar"
+    - "SEMPRE usar portugues brasileiro em todos os outputs e comunicacoes"
+    - "SEMPRE focar exclusivamente em especialistas BRASILEIROS"
+    - "SEMPRE coletar dados publicos - nunca acessar dados privados"
+    - "SEMPRE aplicar o scorecard completo de autoridade (15 pontos) - sem atalhos"
+    - "SEMPRE verificar red flags antes de incluir um perfil no relatorio"
+    - "SEMPRE calcular engagement score ajustado pelo tamanho do perfil"
+    - "SEMPRE gerar scorecards individuais para cada perfil no ranking"
+    - "SEMPRE incluir dados brutos em formato YAML para processamento futuro"
+    - "SEMPRE obter aprovacao humana antes de finalizar o relatorio"
+    - "SEMPRE respeitar os checkpoints entre fases - nao pular para a proxima sem passar"
+    - "SEMPRE documentar decisoes tomadas durante o pipeline no execution-log"
+    - "SEMPRE informar o usuario sobre progresso entre fases"
+    - "SEMPRE priorizar qualidade sobre velocidade"
+
+  never:
+    - "NUNCA incluir perfis sem validacao de autoridade (score < 9/15)"
+    - "NUNCA ignorar red flags criticas (engajamento fake, plagio, fraude)"
+    - "NUNCA pular fases do pipeline - a ordem e sequencial e obrigatoria"
+    - "NUNCA inventar metricas ou dados - se nao conseguir coletar, marcar como indisponivel"
+    - "NUNCA incluir perfis que nao sejam brasileiros"
+    - "NUNCA incluir perfis de plataformas nao solicitadas"
+    - "NUNCA modificar os pesos de calculo sem aprovacao do usuario"
+    - "NUNCA entregar relatorio sem revisao final do scout-chief"
+    - "NUNCA usar dados desatualizados sem alertar"
+    - "NUNCA incluir informacoes privadas ou confidenciais nos relatorios"
+    - "NUNCA copiar bio ou conteudo sem atribuicao"
+    - "NUNCA fazer julgamentos subjetivos sem embasamento em criterios definidos"
+    - "NUNCA apresentar o relatorio sem o ranking estar consistente com os scores"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# GARANTIAS DE QUALIDADE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+quality_guarantees:
+  coverage:
+    description: "Cobertura minima de perfis relevantes no nicho"
+    guarantee: |
+      O pipeline utiliza no minimo 3 estrategias de busca diferentes
+      (hashtags, cruzamento de referencias, fontes externas) para minimizar
+      a chance de deixar perfis importantes de fora.
+    metric: "discovery_strategies >= 3"
+
+  authority_validation:
+    description: "Validacao rigorosa de autoridade"
+    guarantee: |
+      Todo perfil no relatorio final passou por um scorecard de 15 pontos
+      com nota minima de 9/15. Perfis com red flags criticas sao excluidos
+      independente do score.
+    metric: "all_profiles_authority_score >= 9/15"
+
+  data_completeness:
+    description: "Completude dos dados coletados"
+    guarantee: |
+      Todo perfil no relatorio final tem metricas de engajamento completas
+      e auditoria de conteudo realizada. Dados parciais sao claramente
+      identificados no scorecard.
+    metric: "all_profiles_have_complete_data == true"
+
+  ranking_consistency:
+    description: "Consistencia do ranking final"
+    guarantee: |
+      O ranking final e 100% baseado nos scores ponderados calculados.
+      Nao ha favorecimento manual. Empates sao desfeitos pelo score de
+      autoridade (maior autoridade = melhor posicao).
+    metric: "ranking_matches_calculated_scores == true"
+
+  report_quality:
+    description: "Qualidade do relatorio final"
+    guarantee: |
+      O relatorio final e revisado pelo scout-chief (orquestrador) com
+      sanity checks antes da apresentacao ao usuario. O usuario tem a
+      oportunidade de solicitar ajustes antes da aprovacao.
+    metric: "sanity_check_passed AND human_approved == true"
+
+  reproducibility:
+    description: "Reprodutibilidade da analise"
+    guarantee: |
+      Todos os dados brutos sao exportados em formato YAML estruturado.
+      A metodologia e criterios sao documentados no relatorio. A analise
+      pode ser reproduzida ou atualizada usando os mesmos criterios.
+    metric: "raw_data_yaml_complete == true"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRATAMENTO DE ERROS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+error_handling:
+  phase_failure:
+    on_discovery_failure:
+      condition: "Menos de 10 perfis encontrados apos retries"
+      actions:
+        - "Notificar usuario com contagem encontrada"
+        - "Sugerir nicho alternativo ou mais amplo"
+        - "Oferecer continuar com perfis encontrados"
+      max_retries: 2
+      escalation: "Consulta ao usuario"
+
+    on_validation_failure:
+      condition: "Menos de 7 perfis passaram na validacao"
+      actions:
+        - "Verificar se criterios estao muito rigidos para o nicho"
+        - "Considerar reduzir minimo para 7/15 com alerta"
+        - "Voltar a Fase 1 para buscar mais perfis"
+      max_retries: 1
+      escalation: "Consulta ao usuario"
+
+    on_engagement_failure:
+      condition: "Impossivel coletar metricas de algum perfil"
+      actions:
+        - "Tentar fonte alternativa de dados"
+        - "Marcar como 'dados parciais' no scorecard"
+        - "Nao excluir perfil por falta de dados - apenas sinalizar"
+      max_retries: 1
+      escalation: "Continuar com dados parciais"
+
+    on_content_failure:
+      condition: "Perfil com poucos posts para auditar"
+      actions:
+        - "Usar posts disponiveis mesmo que menos de 20"
+        - "Marcar como 'amostra reduzida' no scorecard"
+        - "Ajustar confianca do content score"
+      max_retries: 0
+      escalation: "Continuar com nota de amostra reduzida"
+
+    on_compilation_failure:
+      condition: "Inconsistencia nos dados ou scores"
+      actions:
+        - "Recalcular scores do zero"
+        - "Validar cada score parcial"
+        - "Regenerar ranking"
+      max_retries: 2
+      escalation: "Revisar manualmente"
+
+    on_review_rejection:
+      condition: "Usuario rejeita o relatorio"
+      actions:
+        - "Documentar motivos da rejeicao"
+        - "Classificar tipo: ajuste simples, parcial ou total"
+        - "Se ajuste simples: corrigir e reapresentar"
+        - "Se ajuste parcial: retornar a fase relevante"
+        - "Se rejeicao total: oferecer refazer com parametros diferentes"
+      max_retries: 2
+      escalation: "Encerrar workflow com status 'rejeitado'"
+
+  general:
+    on_timeout:
+      action: "Salvar progresso parcial, notificar usuario, oferecer retomada"
+    on_unexpected_error:
+      action: "Log detalhado do erro, salvar estado atual, alertar scout-chief"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SINAIS DE COMUNICACAO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+signals:
+  completion: "<promise>COMPLETE</promise>"
+  checkpoint_pass: "<promise>CHECKPOINT:{PHASE_ID}:PASSED</promise>"
+  checkpoint_fail: "<promise>CHECKPOINT:{PHASE_ID}:FAILED</promise>"
+  blocked: "<promise>BLOCKED:{PHASE_ID}:{REASON}</promise>"
+  retry: "<promise>RETRY:{PHASE_ID}:{ATTEMPT}</promise>"
+  escalation: "<promise>ESCALATION:{PHASE_ID}:{TO_WHOM}</promise>"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TEMPLATE DO OUTPUT FINAL
+# ═══════════════════════════════════════════════════════════════════════════════
+
+final_output_template: |
+  # Relatorio Niche Scan: {domain_niche}
+  ## Data: {execution_date}
+  ## Squad: niche-scout | Workflow: wf-niche-scan v1.0.0
+
+  ---
+
+  ## 1. Resumo Executivo
+
+  Pesquisa completa de especialistas brasileiros no nicho **{domain_niche}**
+  nas plataformas {platforms}.
+
+  | Metrica | Valor |
+  |---------|-------|
+  | Perfis descobertos | {total_discovered} |
+  | Perfis validados | {total_validated} |
+  | Perfis no ranking | {total_ranked} |
+  | Score medio | {average_score}/10 |
+  | Tempo de execucao | {execution_time} |
+
+  **Principal achado:** {main_finding}
+
+  ---
+
+  ## 2. Metodologia
+
+  Este relatorio foi gerado pelo pipeline Niche Scan que consiste em 6 fases:
+
+  1. **Discovery** - Busca massiva usando hashtags, cruzamento de referencias e fontes externas
+  2. **Validacao** - Scorecard de autoridade com 15 criterios (minimo 9/15 para inclusao)
+  3. **Engajamento** - Coleta completa de metricas e calculo de engagement score
+  4. **Conteudo** - Auditoria de qualidade em 5 dimensoes + mapeamento de pilares e funil
+  5. **Compilacao** - Score final ponderado: Autoridade ({w_auth}%), Engajamento ({w_eng}%), Conteudo ({w_cont}%), Alcance ({w_reach}%)
+  6. **Revisao** - Sanity check pelo orquestrador e aprovacao humana
+
+  ---
+
+  ## 3. Ranking Final
+
+  | # | Perfil | Plataforma | Seguidores | Autoridade | Engajamento | Conteudo | Score Final |
+  |---|--------|------------|------------|------------|-------------|----------|-------------|
+  {ranking_table_rows}
+
+  ---
+
+  ## 4. Analise dos Top 3
+
+  ### 1o Lugar: @{top1_username}
+  {top1_analysis}
+
+  ### 2o Lugar: @{top2_username}
+  {top2_analysis}
+
+  ### 3o Lugar: @{top3_username}
+  {top3_analysis}
+
+  ---
+
+  ## 5. Insights do Nicho
+
+  ### Padroes Identificados
+  {niche_patterns}
+
+  ### Gaps e Oportunidades
+  {niche_gaps}
+
+  ### Tendencias Observadas
+  {niche_trends}
+
+  ---
+
+  ## 6. Recomendacoes
+
+  {recommendations}
+
+  ---
+
+  ## 7. Anexos
+
+  - **Scorecards Individuais:** {scorecards_path}
+  - **Dados Brutos (YAML):** {raw_data_path}
+  - **Mapa de Hashtags:** {hashtag_map_path}
+  - **Log de Execucao:** {execution_log_path}
+
+  ---
+
+  *Relatorio gerado automaticamente pelo Niche Scout Squad v1.0.0*
+  *Pipeline: wf-niche-scan | Orquestrador: scout-chief*
+  *Data de geracao: {execution_date}*
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ATRIBUICAO DE AGENTES POR FASE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agents_by_phase:
+  pre_flight:
+    primary: "scout-chief"
+    secondary: []
+    notes: "Scout-chief valida inputs e confirma parametros com o usuario"
+
+  phase_1_discovery:
+    primary: "profile-hunter"
+    secondary: []
+    notes: "Profile-hunter trabalha autonomamente na busca de perfis"
+
+  phase_2_validation:
+    primary: "authority-validator"
+    secondary: []
+    notes: "Authority-validator aplica scorecard sem interferencia"
+
+  phase_3_engagement:
+    primary: "engagement-analyst"
+    secondary: []
+    notes: "Engagement-analyst coleta e analisa metricas independentemente"
+
+  phase_4_content:
+    primary: "content-auditor"
+    secondary: []
+    notes: "Content-auditor realiza auditoria qualitativa independente"
+
+  phase_5_compilation:
+    primary: "report-compiler"
+    secondary: []
+    notes: "Report-compiler sintetiza dados de todas as fases"
+
+  phase_6_review:
+    primary: "scout-chief"
+    secondary: []
+    notes: "Scout-chief faz revisao final e apresenta ao usuario"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CHECKLIST DE QUALIDADE FINAL
+# ═══════════════════════════════════════════════════════════════════════════════
+
+quality_checklist:
+  discovery:
+    - "[ ] Minimo 20 perfis encontrados na lista bruta"
+    - "[ ] Pelo menos 3 estrategias de busca utilizadas"
+    - "[ ] Mapa de hashtags gerado"
+    - "[ ] Lista deduplicada e consolidada"
+    - "[ ] Perfis excluidos pelo usuario foram removidos"
+
+  validation:
+    - "[ ] Scorecard de 15 pontos aplicado a todos os perfis"
+    - "[ ] Minimo 10 perfis passaram na validacao (9+/15)"
+    - "[ ] Red flags criticas verificadas em todos os perfis"
+    - "[ ] Classificacao de autoridade atribuida (elite/strong/solid)"
+    - "[ ] Relatorio de rejeicao gerado para perfis excluidos"
+
+  engagement:
+    - "[ ] Metricas completas coletadas para todos os perfis validados"
+    - "[ ] Classificacao por tamanho aplicada"
+    - "[ ] Engagement score calculado (0-10) ajustado por tamanho"
+    - "[ ] Indicadores de qualidade do engajamento verificados"
+    - "[ ] Tendencia de crescimento identificada"
+
+  content:
+    - "[ ] 5 dimensoes de qualidade avaliadas (1-5 cada)"
+    - "[ ] Pilares de conteudo mapeados"
+    - "[ ] Analise de funil realizada"
+    - "[ ] Content score calculado (0-10)"
+    - "[ ] Pontos fortes e fracos identificados"
+
+  compilation:
+    - "[ ] Score final ponderado calculado para todos"
+    - "[ ] Ranking ordenado por score final"
+    - "[ ] Scorecards individuais gerados para todos"
+    - "[ ] Relatorio narrativo completo com todas secoes"
+    - "[ ] Dados brutos exportados em YAML"
+    - "[ ] Consistencia verificada (scores batem com ranking)"
+
+  review:
+    - "[ ] Sanity check completo sem problemas criticos"
+    - "[ ] Formatacao e clareza revisadas"
+    - "[ ] Resultados apresentados ao usuario"
+    - "[ ] Aprovacao humana obtida"
+    - "[ ] Arquivos finais salvos nos caminhos corretos"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# METRICAS DE PERFORMANCE DO WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metrics:
+  track:
+    - metric: "duracao_total"
+      unit: "minutos"
+      description: "Tempo total do pipeline do inicio ao fim"
+
+    - metric: "duracao_por_fase"
+      unit: "minutos"
+      description: "Tempo gasto em cada fase individualmente"
+
+    - metric: "perfis_descobertos"
+      unit: "contagem"
+      description: "Total de perfis encontrados na fase de discovery"
+
+    - metric: "perfis_validados"
+      unit: "contagem"
+      description: "Total de perfis que passaram na validacao"
+
+    - metric: "taxa_validacao"
+      unit: "percentual"
+      description: "Percentual de perfis que passaram (validados/descobertos)"
+
+    - metric: "perfis_no_ranking"
+      unit: "contagem"
+      description: "Total de perfis no ranking final"
+
+    - metric: "score_medio_final"
+      unit: "0-10"
+      description: "Media do score final de todos os perfis no ranking"
+
+    - metric: "checkpoints_passados"
+      unit: "contagem"
+      description: "Numero de checkpoints que passaram de primeira"
+
+    - metric: "retries_necessarios"
+      unit: "contagem"
+      description: "Numero de tentativas adicionais em checkpoints"
+
+    - metric: "estrategias_discovery"
+      unit: "contagem"
+      description: "Numero de estrategias de busca utilizadas"
+
+  report_at_end: true
+  save_to: "data/reports/{niche_slug}/execution-log.yaml"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# METADATA DO WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  version: "1.0.0"
+  created: "2026-02-09"
+  last_updated: "2026-02-09"
+  author: "Squad Architect"
+  pack: "niche-scout"
+  framework: "aios-workflow-v2"
+  language: "pt-BR"
+  geo_focus: "Brazil"
+  min_lines_target: 500
+  actual_lines: "750+"
+  quality_standard: "aios-workflow-v2"
+
+  dependencies:
+    agents:
+      - "agents/scout-chief.md"
+      - "agents/profile-hunter.md"
+      - "agents/authority-validator.md"
+      - "agents/engagement-analyst.md"
+      - "agents/content-auditor.md"
+      - "agents/report-compiler.md"
+    templates: []
+    checklists: []
+    data:
+      - "data/reports/{niche_slug}/"
+
+  changelog:
+    - version: "1.0.0"
+      date: "2026-02-09"
+      changes:
+        - "Versao inicial do workflow wf-niche-scan"
+        - "6 fases com checkpoints blocking"
+        - "Scorecard de autoridade com 15 criterios"
+        - "Red flags criticas e de alerta"
+        - "Classificacao por tamanho com 5 tiers"
+        - "5 dimensoes de qualidade de conteudo"
+        - "Score final ponderado com 4 componentes"
+        - "Template completo do relatorio final"
+        - "Tratamento de erros por fase"
+        - "Garantias de qualidade documentadas"
+        - "Checklist de qualidade final por fase"
+
+  related_workflows:
+    - id: "wf-profile-deep-dive"
+      file: "workflows/wf-profile-deep-dive.yaml"
+      description: "Analise profunda de um perfil especifico (complementar)"
+      relationship: "O wf-profile-deep-dive pode ser acionado apos o niche-scan para aprofundar em perfis de interesse"
+
+  usage_notes: |
+    Este workflow e o pipeline PRINCIPAL do squad niche-scout.
+    Deve ser acionado quando o usuario quer pesquisar um nicho completo.
+
+    Para analise de um perfil especifico (ja conhecido), usar wf-profile-deep-dive.
+
+    O workflow e sequencial: cada fase depende da anterior. Nao e possivel
+    pular fases ou executar fora de ordem.
+
+    O tempo estimado (2-4 horas) varia conforme:
+    - Tamanho do nicho (mais perfis = mais tempo)
+    - Disponibilidade de dados publicos
+    - Numero de ajustes solicitados na revisao

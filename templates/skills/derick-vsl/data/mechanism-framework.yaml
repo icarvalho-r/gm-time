@@ -1,0 +1,346 @@
+# =============================================================================
+# MECHANISM FRAMEWORK — Shared Reference Data
+# =============================================================================
+# Arquivo de referencia compartilhado com o framework completo de mecanismos
+# do metodo Derick. Contem definicao, triade de componentes, regras de combo,
+# processo de decomposicao, criterios de validacao e exemplos-chave.
+#
+# USO: Carregado por mechanism-engineer, thesis-writer, idea-architect e
+# qualquer agente que precise entender como mecanismos funcionam.
+# NAO inclui o processo completo de 6 etapas de selecao (que fica no agent).
+# =============================================================================
+
+# =============================================================================
+# DEFINICAO DE MECANISMO
+# =============================================================================
+definition:
+  what: |
+    Mecanismo = a explicacao do PORQUE que a pessoa nao conseguiu resolver
+    o problema + COMO ela vai resolver agora. E a espinha dorsal de toda
+    VSL de alta conversao. Sem mecanismo forte, nao ha VSL que converta.
+  principle: |
+    O mecanismo unico e o que diferencia uma VSL generica de uma VSL
+    milionaria. Ele da ao espectador uma NOVA explicacao para o problema
+    dele e uma NOVA solucao que ele ainda nao tentou. A chave e que o
+    mecanismo precisa parecer novo, mesmo sendo construido a partir de
+    elementos ja validados.
+
+# =============================================================================
+# TRIADE DO MECANISMO (3 Componentes)
+# =============================================================================
+triad:
+  description: "Por que, o que e como — essa e a triade do mecanismo."
+
+  # ---------------------------------------------------------------------------
+  # COMPONENTE 1: POR QUE (Problema)
+  # ---------------------------------------------------------------------------
+  problem:
+    label: "Mecanismo do Problema"
+    question: "POR QUE a pessoa nao conseguiu resolver o problema ate agora?"
+    role: |
+      Explica a causa REAL do problema. Apresenta uma razao que a pessoa
+      nunca ouviu ou nunca considerou. Isso cria o efeito de "revelacao"
+      que prende a atencao e gera credibilidade.
+    characteristics:
+      - "Deve soar como uma descoberta — algo que a pessoa nao sabia"
+      - "Precisa ser especifico — nomes, termos tecnicos, dados"
+      - "Deve invalidar as tentativas anteriores da pessoa"
+      - "Cria o efeito 'entao era isso o tempo todo!'"
+      - "Quanto mais tangivel e nomeavel, mais poderoso"
+
+  # ---------------------------------------------------------------------------
+  # COMPONENTE 2: O QUE (Funcao)
+  # ---------------------------------------------------------------------------
+  function:
+    label: "Mecanismo da Funcao"
+    question: "O QUE precisa ser feito para resolver o problema?"
+    role: |
+      Define a FUNCAO que precisa acontecer no corpo/mente/vida da pessoa
+      para que o problema seja resolvido. E a ponte logica entre o
+      problema e a solucao. Sem essa ponte, a solucao nao faz sentido.
+    characteristics:
+      - "Deve ser a consequencia logica do problema apresentado"
+      - "Precisa soar como a unica coisa que faz sentido fazer"
+      - "Deve ser simples de entender — uma acao clara"
+      - "Cria o efeito 'faz total sentido!'"
+      - "Conecta problema e solucao de forma inevitavel"
+
+  # ---------------------------------------------------------------------------
+  # COMPONENTE 3: COMO (Solucao)
+  # ---------------------------------------------------------------------------
+  solution:
+    label: "Mecanismo da Solucao"
+    question: "COMO exatamente a pessoa vai resolver isso?"
+    role: |
+      Apresenta a SOLUCAO ESPECIFICA que realiza a funcao necessaria.
+      E o produto, ingrediente, metodo ou ritual que resolve o problema.
+      Deve ser concreto, nomeavel e parecer unico.
+    characteristics:
+      - "Deve ter um nome ou identidade propria"
+      - "Quanto mais especifico e inusitado, mais poderoso"
+      - "Precisa parecer acessivel — algo que a pessoa pode fazer/tomar"
+      - "Deve soar como algo que a pessoa nunca tentou antes"
+      - "Cria o efeito 'preciso experimentar isso!'"
+
+# =============================================================================
+# REGRAS DE COMBO (R001–R010)
+# =============================================================================
+combo_rules:
+
+  - id: "R001"
+    rule: "NUNCA criar mecanismo do zero"
+    explanation: |
+      Sempre combar mecanismos que ja deram certo. Mecanismo inventado
+      e aposta. Mecanismo combinado e certeza. O mercado ja fez o
+      teste por voce — use isso a seu favor.
+
+  - id: "R002"
+    rule: "Mecanismo nao e aposta, e certeza"
+    explanation: |
+      Cada componente do combo deve ter historico de performance.
+      Se a bacteria Firmicutes ja vendeu milhoes, ela vai funcionar
+      como componente de problema no seu combo. Nao arrisque com
+      elementos nao testados.
+
+  - id: "R003"
+    rule: "Combo de mecanismos e mais forte que mecanismo individual"
+    explanation: |
+      Um mecanismo combo pega o melhor de varios mundos. O problema
+      mais impactante, a funcao mais logica, a solucao mais curiosa.
+      Isso cria algo mais poderoso do que qualquer mecanismo individual.
+
+  - id: "R004"
+    rule: "Mecanismo que deu certo no passado vai dar certo de novo"
+    explanation: |
+      As pessoas que ja acreditaram em um mecanismo vao acreditar no
+      combo. Se Firmicutes convenceu milhoes de pessoas, ele vai
+      convencer de novo como componente de um combo novo.
+
+  - id: "R004b"
+    rule: "O combo DEVE misturar algo ATUAL com algo do PASSADO"
+    explanation: |
+      Regra temporal obrigatoria: o combo sempre junta uma tendencia
+      que esta funcionando AGORA com um elemento campeao do PASSADO
+      (1-2 anos atras). Isso e o que o Derick chama de "reviver coisas
+      do passado usando coisas que estao funcionando agora."
+      O elemento atual garante relevancia. O elemento do passado garante
+      que ja foi testado e funcionou.
+
+  - id: "R004c"
+    rule: "Mecanismo NAO satura — o combo o torna novo"
+    explanation: |
+      Derick e explicito: mecanismo nao satura. A pessoa que ja viu
+      o mecanismo da bacteria pode achar familiar se voce repetir
+      igualzinho. Mas quando voce combina com algo novo, ela pensa:
+      "ah, entao a bacteria TEM relacao com meu peso, mas nao e da
+      forma que eu pensava." O elemento familiar ancora. O elemento
+      novo diferencia.
+
+  - id: "R004d"
+    rule: "Entenda POR QUE combos funcionam psicologicamente"
+    explanation: |
+      Ha 3 cenarios de publico e o combo funciona em TODOS:
+      1. Pessoa que ja viu um dos mecanismos e acreditou — elemento
+         familiar ancora, combo renova o interesse.
+      2. Pessoa que ja viu mas nao lembra — cada componente ja foi
+         validado individualmente.
+      3. Pessoa que nunca viu nenhum — componentes ja convenceram
+         milhoes antes, juntos sao ainda mais fortes.
+
+  - id: "R005"
+    rule: "Decomponha ANTES de combinar"
+    explanation: |
+      Nunca tente combinar mecanismos inteiros. Primeiro decomponha
+      cada um em POR QUE / O QUE / COMO. Depois combine componente
+      por componente. Isso garante que o combo faca sentido logico.
+
+  - id: "R006"
+    rule: "O combo deve soar NOVO"
+    explanation: |
+      Mesmo sendo feito de partes conhecidas, o combo precisa parecer
+      algo que o mercado nunca viu. Se o combo parece familiar demais,
+      nao vai gerar curiosidade suficiente.
+
+  - id: "R007"
+    rule: "A narrativa precisa ser coerente"
+    explanation: |
+      Se o Problema nao leva logicamente a Funcao, ou se a Funcao nao
+      e resolvida pela Solucao, o combo falha. Coerencia narrativa e
+      inegociavel. Teste: Problema -> portanto -> Funcao -> portanto -> Solucao.
+
+  - id: "R008"
+    rule: "Sempre justifique com dados do mercado"
+    explanation: |
+      Cada recomendacao deve vir acompanhada de evidencia: quanto tempo
+      a VSL original ficou no ar, estimativa de vendas, por que aquele
+      componente especifico foi escolhido. Sem dados, nao ha recomendacao.
+
+  - id: "R009"
+    rule: "Priorize componentes de nichos adjacentes"
+    explanation: |
+      Mecanismos do mesmo nicho tendem a criar combos que parecem
+      familiares. Pegar componentes de nichos adjacentes (ex: saude
+      intestinal + beleza + energia) cria combos mais inusitados e
+      com maior novidade percebida.
+
+  - id: "R010"
+    rule: "Teste multiplos combos, nao se apegue a um so"
+    explanation: |
+      Sempre gere pelo menos 5 combos e avalie cada um pelos criterios
+      de validacao. O primeiro combo que parece bom raramente e o melhor.
+
+# =============================================================================
+# DECOMPOSICAO
+# =============================================================================
+decomposition:
+  name: "Decomposicao Triadica"
+  description: |
+    Decompor cada mecanismo campeao nos seus 3 componentes:
+    POR QUE (Problema), O QUE (Funcao), COMO (Solucao).
+    Registrar em formato tabular para facilitar combinacao.
+  process:
+    - "Para cada mecanismo, extrair o componente de Problema"
+    - "Para cada mecanismo, extrair o componente de Funcao"
+    - "Para cada mecanismo, extrair o componente de Solucao"
+    - "Registrar em formato tabular para facilitar combinacao"
+    - "Identificar quais componentes individuais sao mais fortes"
+  output_format: "Tabela de decomposicao com todos os mecanismos em 3 colunas"
+
+# =============================================================================
+# CRITERIOS DE VALIDACAO
+# =============================================================================
+validation_criteria:
+  description: |
+    Cada combo e avaliado contra 5 criterios. Cada criterio recebe nota
+    de 1-10, multiplicada pelo peso. Total maximo: 1000.
+
+  criteria:
+    - criterion: "Coerencia Narrativa"
+      question: "O combo conta uma historia logica do inicio ao fim?"
+      weight: 25
+
+    - criterion: "Novidade Percebida"
+      question: "O combo soa novo para quem ja viu os mecanismos individuais?"
+      weight: 25
+
+    - criterion: "Credibilidade"
+      question: "O combo e crivel? A pessoa vai acreditar?"
+      weight: 20
+
+    - criterion: "Simplicidade"
+      question: "O combo e facil de entender em 30 segundos?"
+      weight: 15
+
+    - criterion: "Potencial Emocional"
+      question: "O combo gera emocao (raiva, esperanca, curiosidade)?"
+      weight: 15
+
+  scoring: "Nota de 1-10 por criterio x peso. Total maximo: 1000."
+  minimum_for_approval: 700
+
+# =============================================================================
+# EXEMPLOS-CHAVE DE MECANISMOS
+# =============================================================================
+key_examples:
+
+  - name: "Bacterias Firmicutes"
+    niche: "Emagrecimento"
+    problem: |
+      "Seu intestino esta cheio de bacterias acumuladoras de gordura
+      chamadas Firmicutes. Enquanto elas estiverem la, nada que voce
+      faca vai funcionar."
+    function: "Eliminar as bacterias do organismo"
+    solution: "Epigalocatequina do cha verde"
+    why_it_works: |
+      Nomeia um vilao especifico (Firmicutes), usa linguagem cientifica
+      acessivel, invalida todas as dietas anteriores de uma vez.
+
+  - name: "Temperatura Corporal Baixa"
+    niche: "Emagrecimento"
+    problem: |
+      "Sua temperatura corporal esta abaixo do ideal, e isso esta
+      fazendo seu metabolismo funcionar em camera lenta."
+    function: "Elevar temperatura corporal interna"
+    solution: "Psilio — fibra natural que eleva temperatura com agua morna"
+    why_it_works: |
+      Conceito simples de entender, facil de verificar (termometro),
+      explica porque nada funcionou antes.
+
+  - name: "Figado Sobrecarregado"
+    niche: "Emagrecimento"
+    problem: |
+      "Seu figado esta tao sobrecarregado de toxinas que ele nao
+      consegue mais processar gordura."
+    function: "Desintoxicar o figado"
+    solution: "Vitamina detox caseira de 5 ingredientes"
+    why_it_works: |
+      Personifica o orgao, cria empatia com o corpo, da uma razao
+      logica e emocional para o fracasso.
+
+  - name: "Cortisol Noturno"
+    niche: "Emagrecimento / Sono"
+    problem: |
+      "Seu corpo esta liberando cortisol durante a noite enquanto
+      voce dorme, e isso esta sabotando todo o esforco que voce
+      faz durante o dia."
+    function: "Regular cortisol noturno"
+    solution: "Ritual de 2 minutos antes de dormir com ingrediente barato"
+    why_it_works: |
+      Revela um sabotador invisivel, cria urgencia (acontece
+      sem voce saber), explica frustracao diurna.
+
+  - name: "Inflamacao Silenciosa"
+    niche: "Saude Geral"
+    problem: |
+      "Existe uma inflamacao silenciosa no seu corpo que bloqueia
+      a absorcao de nutrientes e impede a queima de gordura."
+    function: "Eliminar inflamacao sistemica"
+    solution: "Especiaria dourada milenar (medicina ayurvedica)"
+    why_it_works: |
+      "Silenciosa" cria misterio e urgencia, explica falha de
+      multiplas abordagens.
+
+# =============================================================================
+# EXEMPLO DE COMBO COMPLETO
+# =============================================================================
+combo_example:
+  title: "Exemplo Classico de Combo de Mecanismos"
+  description: |
+    Demonstra como pegar elementos de 3 mecanismos diferentes
+    e criar um combo inedito que soa totalmente novo.
+
+  source_mechanisms:
+    - name: "Mecanismo Firmicutes"
+      problem: "Bacterias Firmicutes no intestino acumulam gordura"
+      function: "Eliminar as bacterias do organismo"
+      solution: "Epigalocatequina do cha verde"
+
+    - name: "Mecanismo Circulatorio"
+      problem: "Fluxo sanguineo comprometido impede queima de gordura"
+      function: "Restaurar fluxo sanguineo para areas de gordura acumulada"
+      solution: "Exercicio de 7 minutos pela manha"
+
+    - name: "Mecanismo do Banho"
+      problem: "Pele nao absorve nutrientes que ajudam no emagrecimento"
+      function: "Abrir os poros para absorcao transdermica"
+      solution: "Ervas aplicadas antes do banho"
+
+  combo_result:
+    name: "Combo Bacteria-Fluxo-Ervas"
+    problem: "Bacterias Firmicutes (do Mecanismo 1 — NOVO, impactante)"
+    function: "Restaurar fluxo sanguineo (do Mecanismo 2 — LOGICO, conhecido)"
+    solution: "Ervas antes do banho (do Mecanismo 3 — INUSITADO, curioso)"
+    narrative: |
+      "Cientistas descobriram que bacterias chamadas Firmicutes no seu
+      intestino estao bloqueando o fluxo sanguineo para as areas onde
+      a gordura se acumula. Sem fluxo de sangue adequado, seu corpo
+      simplesmente nao consegue queimar essa gordura. A solucao? Um
+      ritual simples com ervas naturais que voce aplica antes do banho,
+      e que penetram pela pele, eliminando essas bacterias e restaurando
+      o fluxo de sangue para as areas criticas."
+    why_it_works:
+      - "Problema (Firmicutes) e novo e impactante — gera curiosidade"
+      - "Funcao (fluxo sanguineo) e logica e familiar — gera confianca"
+      - "Solucao (ervas antes do banho) e inusitada — gera desejo de testar"
+      - "A narrativa conecta os 3 de forma coerente e crivel"
+      - "Ninguem no mercado usou essa combinacao exata antes"

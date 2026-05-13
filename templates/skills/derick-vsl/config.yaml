@@ -1,0 +1,177 @@
+squad:
+  name: derick-vsl
+  title: "Pipeline End-to-End de Criação de VSL — Método Derick"
+  description: |
+    Squad que executa o processo completo de criação de VSL do Derick,
+    da análise de mercado até a VSL final escrita. Baseado no curso
+    completo com frameworks documentados em 50.000+ palavras.
+  domain: vsl-copywriting
+  language: pt-BR
+  version: 2.0.0
+  entry_agent: derick-chief
+
+  philosophy: |
+    "Copy é um processo, não é criatividade."
+    Seguir o processo garante acerto. Não é aposta, é certeza.
+    Reviver coisas do passado usando coisas que estão funcionando agora.
+
+  three_sales:
+    - name: "Venda do Conteúdo"
+      block: Lead
+      question: "Por que eu deveria assistir esse vídeo?"
+    - name: "Venda da Esperança"
+      blocks: [Background Story, Emotional Story, Discovery Story, Tese de Marketing]
+      question: "Por que isso vai funcionar para mim?"
+    - name: "Venda do Valor"
+      blocks: [Product Build Up, Big Offer, Close]
+      question: "Por que eu deveria comprar?"
+
+  pipeline:
+    strategy:
+      - phase: 1
+        name: "Mercado"
+        agent: market-scout
+        task: tasks/market-scout-execute.md
+        output: "Relatório de mercado com 3 tendências"
+      - phase: 2
+        name: "Mecanismo"
+        agent: mechanism-engineer
+        task: tasks/mechanism-engineer-execute.md
+        input: "Relatório de mercado"
+        output: "Mecanismo combo (problema + função + solução)"
+      - phase: 3
+        name: "Big Idea"
+        agent: idea-architect
+        task: tasks/idea-architect-execute.md
+        input: "Mecanismo escolhido"
+        output: "Pergunta paradoxal + nome chiclete"
+      - phase: 4
+        name: "Big Offer"
+        agent: offer-designer
+        task: tasks/offer-designer-execute.md
+        input: "Mecanismo + mercado"
+        output: "Oferta completa (9 elementos)"
+      - phase: 5
+        name: "Storytelling"
+        agent: story-builder
+        task: tasks/story-builder-execute.md
+        input: "Mecanismo + Big Idea + mercado"
+        output: "3 histórias (background, emotional, discovery)"
+      - phase: 6
+        name: "Brief"
+        agent: derick-chief
+        task: tasks/compile-brief.md
+        input: "Outputs de todas as fases anteriores"
+        output: "Brief completo compilado"
+        quality_gate: checklists/brief-completeness-checklist.md
+
+    writing:
+      - phase: 7
+        name: "Tese de Marketing"
+        agent: thesis-writer
+        task: tasks/thesis-writer-execute.md
+        input: "Brief completo"
+        output: "Tese de marketing (3 argumentos)"
+      - phase: 8
+        name: "VSL Completa"
+        agent: vsl-assembler
+        task: tasks/vsl-assembler-execute.md
+        input: "Brief + Tese de Marketing"
+        output: "VSL final (Lead, PBU, Oferta, Close, Histórias)"
+        quality_gate: checklists/vsl-quality-checklist.md
+
+  writing_order:
+    - "1. Tese de Marketing (centro de tudo)"
+    - "2. Product Build Up"
+    - "3. Bloco de Oferta"
+    - "4. Close"
+    - "5. Histórias (Background, Emotional, Discovery)"
+    - "6. Lead (por último — como um trailer do filme)"
+
+agents:
+  orchestrator: derick-chief
+  tier_0:
+    - market-scout
+  tier_1:
+    - mechanism-engineer
+    - idea-architect
+    - offer-designer
+    - story-builder
+    - thesis-writer
+    - vsl-assembler
+
+commands:
+  - "*pipeline {nicho} - Pipeline completo de criação de VSL"
+  - "*mercado {nicho} - Apenas análise de mercado"
+  - "*mecanismo - Seleção e combo de mecanismo"
+  - "*bigidea - Criação de pergunta paradoxal + nome chiclete"
+  - "*oferta - Design da Big Offer (9 elementos)"
+  - "*historias - Criação das 3 histórias"
+  - "*brief - Compilar/exibir brief"
+  - "*tese - Escrever Tese de Marketing"
+  - "*vsl - Montar VSL completa"
+  - "*lead - Escrever leads"
+  - "*status - Status do pipeline"
+  - "*help - Listar comandos"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKSPACE INTEGRATION (v2.0.0)
+# ═══════════════════════════════════════════════════════════════
+workspace_integration:
+  data_files:
+    - data/derick-method-core.yaml
+    - data/mechanism-framework.yaml
+    - data/big-idea-framework.yaml
+    - data/vsl-structure-reference.yaml
+    - data/thesis-argument-templates.yaml
+  checklists:
+    - checklists/vsl-quality-checklist.md
+    - checklists/brief-completeness-checklist.md
+  templates:
+    - templates/brief-template.yaml
+  architecture: ARCHITECTURE.md
+
+pattern_library:
+  agent_pattern: "agents/{name}.md — identidade (~300 linhas) + references a data/"
+  task_pattern: "tasks/{name}-execute.md — logica de execucao com exemplos"
+  data_pattern: "data/{framework}.yaml — frameworks compartilhados entre agents"
+  checklist_pattern: "checklists/{name}-checklist.md — validacao BLOCKING/WARNING"
+
+task_standards:
+  execution_type: "Agent"
+  required_fields:
+    - task_id
+    - execution_type
+    - squad
+    - agent
+    - input
+    - output
+    - quality_gates
+
+quality_gates:
+  pre_writing:
+    id: QG-BRIEF
+    checklist: checklists/brief-completeness-checklist.md
+    trigger: "Apos Phase 6, antes de iniciar escrita"
+  final:
+    id: QG-FINAL
+    checklist: checklists/vsl-quality-checklist.md
+    trigger: "Apos Phase 8, antes de entregar VSL"
+
+source_material:
+  course: "Curso Derick"
+  location: "C:\\Users\\northon\\Downloads\\Curso Derick"
+  modules:
+    psicologia:
+      - "Como Escolher o Seu Mercado Parte 1"
+      - "Como Escolher o Seu Mercado Parte 2"
+      - "Aula Mecanismo Único"
+      - "Aula Big Idea"
+      - "Aula Big Offer"
+      - "Aula Storytelling"
+    comunicacao:
+      - "A Estrutura da VSL"
+      - "Estrutura da Tese de Marketing"
+      - "Estrutura Product Build Up"
+      - "Estrutura dos Blocos de Oferta e Fechamento"
+      - "Como Escrever Boas Leads"

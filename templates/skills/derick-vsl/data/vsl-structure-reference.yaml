@@ -1,0 +1,361 @@
+# =============================================================================
+# VSL STRUCTURE REFERENCE — Shared Reference Data
+# =============================================================================
+# Arquivo de referencia compartilhado com a estrutura canonica de uma VSL
+# do metodo Derick. Contem ordem de leitura, ordem de escrita, descricao de
+# cada bloco, mapeamento das 3 vendas, template do Brief e quality checklist.
+#
+# USO: Carregado por vsl-assembler, derick-chief, thesis-writer e
+# qualquer agente que precise entender a estrutura final da VSL.
+# NAO inclui exemplos de escrita (que ficam nos agents).
+# =============================================================================
+
+# =============================================================================
+# ORDEM CANONICA DE LEITURA (Apresentacao Final)
+# =============================================================================
+presentation_order:
+  description: |
+    Esta e a ordem em que o espectador consome a VSL — a sequencia final
+    do roteiro pronto para gravacao. Cada bloco responde perguntas mentais
+    especificas do espectador.
+
+  blocks:
+    - position: 1
+      name: "Lead"
+      elements:
+        - "Hook (gancho)"
+        - "Promessa do video"
+        - "Inviabilizacao de solucoes comuns"
+        - "Previa do mecanismo do problema"
+        - "Previa da historia de descoberta"
+        - "Previa do mecanismo de solucao"
+        - "Qualificadores"
+        - "Depoimentos (resultados, sem mencao a produto)"
+        - "CTA para assistir (NAO para comprar)"
+        - "Fascinations"
+      answers: "Por que eu deveria assistir esse video?"
+      sale: "Venda do Conteudo"
+      critical_rule: "NUNCA mencionar produto, preco ou venda no Lead"
+      replication_rule: "Apos escrever, criar 4 versoes trocando apenas o gancho"
+
+    - position: 2
+      name: "Background Story"
+      answers: "Por que eu deveria confiar em voce?"
+      sale: "Venda da Esperanca"
+      description: |
+        Historia de contexto do protagonista/porta-voz. Estabelece
+        credibilidade. Pode ser Guru/Autoridade ou Avatar Transformado.
+
+    - position: 3
+      name: "Emotional Story"
+      answers: "Por que voce pode me ajudar?"
+      sale: "Venda da Esperanca"
+      description: |
+        Historia emocional de identificacao. Arco completo:
+        Personagem -> Vida Comum -> Problema -> Sintomas ->
+        Solucoes que Falharam -> Frustracoes/Medos ->
+        Fundo do Poco -> Motivacao do Heroi
+
+    - position: 4
+      name: "Discovery Story"
+      answers: "Como voce descobriu isso?"
+      sale: "Venda da Esperanca"
+      description: |
+        Historia de como a solucao foi encontrada. Conecta com a
+        Pergunta Paradoxal da Big Idea. 3 tipos possiveis:
+        Viagem, Pesquisa, Pessoa Misteriosa.
+
+    - position: 5
+      name: "Tese de Marketing"
+      answers: "O que realmente causa meu problema e como resolver?"
+      sale: "Venda da Esperanca"
+      description: |
+        Centro de toda a VSL. Composta por 3 argumentos sequenciais:
+        - Argumento 1 (Causa): Ponto de Partida -> Peca Faltante
+          -> Crenca Comum -> Grande Pesquisa. Revela a CAUSA OCULTA.
+        - Argumento 2 (Funcao): Conclusao do Estudo + Grande Prova.
+          PROVA que a causa e real.
+        - Argumento 3 (Solucao): Pergunta Paradoxal -> Explicacao
+          -> Evidencias -> Teste -> Grande Resultado. Apresenta a SOLUCAO.
+        Logica: "1, 2, 3, 4 — e somar." Cada passo leva ao proximo.
+
+    - position: 6
+      name: "Product Build Up (PBU)"
+      answers: "Como eu acesso essa solucao?"
+      sale: "Venda do Valor"
+      elements:
+        - "Reforco de escassez (solucao e rara/dificil)"
+        - "Busca dificil (esforco do criador)"
+        - "Prototipo inicial (desenvolvimento)"
+        - "Testes com voluntarios"
+        - "Resultados incriveis"
+        - "Apresentacao do produto (revelacao do nome)"
+      description: |
+        Ponte entre a Tese (teoria) e a Oferta (produto). Constroi
+        valor emocional e narrativo. NAO e ficha tecnica — e narrativa
+        de busca e descoberta.
+
+    - position: 7
+      name: "Bloco de Oferta"
+      answers: "O que eu recebo e quanto custa?"
+      sale: "Venda do Valor"
+      elements:
+        - "O que e o produto (definicao com 3 mecanismos)"
+        - "Beneficios com prazo (marcos temporais)"
+        - "Para quem e (quebra de objecoes)"
+        - "O que vai receber (ingredientes/componentes)"
+        - "Escassez (real e justificada)"
+        - "Ancoragem de preco"
+        - "Revelacao do preco"
+      description: |
+        Bloco mais comercial, mas ainda em tom de conversa. Detalha
+        o produto, especifica beneficios, quebra objecoes e revela preco.
+
+    - position: 8
+      name: "Close"
+      answers: "Por que eu deveria agir AGORA?"
+      sale: "Venda do Valor"
+      elements:
+        - "Por que comprar mais (kits/tratamento completo)"
+        - "Processo de compra (passo a passo)"
+        - "Mais motivos para comprar mais (descontos, frete)"
+        - "Garantia (minimo 30 dias, ideal 180 dias, incondicional)"
+        - "Bonus detalhados (3-5 bonus com nome e valor)"
+        - "Empilhamento expresso (recap de tudo que recebe)"
+        - "Decisao inteligente (logica custo-beneficio)"
+        - "Duas Opcoes (caminho da dor vs caminho da transformacao)"
+        - "Presente surpresa (gatilho final de curiosidade)"
+      description: |
+        Finaliza a venda. Remove ultimas barreiras, cria urgencia
+        para acao imediata. Apresenta garantia, bonus, e contraste
+        emocional entre agir e nao agir.
+
+# =============================================================================
+# ORDEM DE ESCRITA (diferente da leitura)
+# =============================================================================
+writing_order:
+  description: |
+    A ordem de ESCRITA e completamente diferente da ordem de apresentacao.
+    Os blocos centrais (Tese, PBU, Oferta) definem o conteudo que o Lead
+    precisa referenciar. Escrever o Lead primeiro e como fazer um trailer
+    de um filme que ainda nao foi roteirizado.
+  sequence:
+    - step: 1
+      block: "Tese de Marketing"
+      rationale: "Define os mecanismos — sem ela, nao existe argumento logico"
+    - step: 2
+      block: "Product Build Up"
+      rationale: "Constroi o valor — sem ele, a oferta nao faz sentido"
+    - step: 3
+      block: "Bloco de Oferta"
+      rationale: "Define o que esta sendo vendido — sem ela, o Close nao tem o que fechar"
+    - step: 4
+      block: "Close"
+      rationale: "Amarra tudo — sem ele, nao ha conversao"
+    - step: 5
+      block: "Historias (Background, Emotional, Discovery)"
+      rationale: "Precisam dos mecanismos ja definidos para conectar"
+    - step: 6
+      block: "Lead"
+      rationale: "Precisa de TODO o conteudo ja pronto para criar previas"
+
+# =============================================================================
+# MAPEAMENTO: 3 VENDAS -> BLOCOS
+# =============================================================================
+three_sales_to_blocks:
+
+  venda_do_conteudo:
+    objective: "Convencer a pessoa a ASSISTIR o video ate o final"
+    blocks: ["Lead"]
+    key_rule: "O Lead vende a IDEIA de assistir, NAO o produto"
+
+  venda_da_esperanca:
+    objective: "Convencer que a SUA SOLUCAO e a unica que resolve"
+    blocks:
+      - "Background Story"
+      - "Emotional Story"
+      - "Discovery Story"
+      - "Tese de Marketing"
+    key_rule: "Se nao vender a esperanca, nao vende nada. Parte CENTRAL."
+
+  venda_do_valor:
+    objective: "Mostrar que o PRODUTO vale mais do que o preco"
+    blocks:
+      - "Product Build Up"
+      - "Bloco de Oferta"
+      - "Close"
+    key_rule: "Uma vez vendida a esperanca, vender o valor e a parte mais facil."
+
+# =============================================================================
+# BRIEF TEMPLATE — Secoes do Documento Central
+# =============================================================================
+brief_template:
+  sections:
+
+    - section: "DADOS GERAIS"
+      fields:
+        - "Nicho"
+        - "Produto"
+        - "Avatar (quem e, o que sente, o que quer)"
+        - "Ticket (preco do produto)"
+        - "Formato da VSL (tempo estimado)"
+
+    - section: "MERCADO (Fase 1)"
+      fields:
+        - "Tendencias de Conteudo"
+        - "Tendencias de Consumo"
+        - "Tendencias de Marketing"
+        - "Oportunidades identificadas"
+        - "Concorrentes principais e angulos usados"
+
+    - section: "MECANISMO (Fase 2)"
+      fields:
+        - "Mecanismos listados"
+        - "Mecanismo combado (final)"
+        - "Por que o combo funciona"
+        - "Diferenciacao vs. concorrencia"
+
+    - section: "BIG IDEA (Fase 3)"
+      fields:
+        - "Pergunta paradoxal"
+        - "Nome chiclete"
+        - "Variacoes testadas"
+        - "Teste do bar (passa ou nao?)"
+
+    - section: "BIG OFFER (Fase 4)"
+      fields:
+        - "1. Produto que o mercado ja compra"
+        - "2. Feito pra aquela pessoa (avatar)"
+        - "3. Beneficios multiplos"
+        - "4. Prazo pra cada beneficio"
+        - "5. Reduzir esforco"
+        - "6. Reason Why (justificar preco)"
+        - "7. Preco menor que concorrencia"
+        - "8. Bonus que o mercado compraria"
+        - "9. Maximizar seguranca/garantia"
+
+    - section: "STORYTELLING (Fase 5)"
+      fields:
+        - "Background Story (por que confiar em voce?)"
+        - "Emotional Story (por que pode me ajudar?)"
+        - "Discovery Story (como descobriu isso?)"
+        - "Tipo de porta-voz (Guru/Autoridade ou Avatar Transformado)"
+
+    - section: "DIRECIONAMENTO DE ESCRITA"
+      fields:
+        - "Tom de voz da VSL"
+        - "Nivel de consciencia do avatar"
+        - "Objecoes principais a quebrar"
+        - "Emocoes dominantes a explorar"
+        - "Referencias de VSLs similares"
+
+# =============================================================================
+# QUALITY CHECKLIST (9 itens do wf-pipeline-vsl.yaml)
+# =============================================================================
+quality_checklist:
+  description: |
+    Checklist final de qualidade para a VSL completa.
+    Todos os itens devem estar marcados antes de entregar.
+
+  items:
+    - id: 1
+      check: "As 3 vendas estao presentes (conteudo, esperanca, valor)"
+      scope: "VSL completa"
+
+    - id: 2
+      check: "A tese tem os 3 argumentos completos"
+      scope: "Tese de Marketing"
+
+    - id: 3
+      check: "A lead NAO menciona produto ou venda"
+      scope: "Lead"
+
+    - id: 4
+      check: "A oferta tem os 9 elementos da Big Offer"
+      scope: "Bloco de Oferta"
+
+    - id: 5
+      check: "As historias respondem as 3 perguntas (confianca, empatia, descoberta)"
+      scope: "Background + Emotional + Discovery Stories"
+
+    - id: 6
+      check: "O mecanismo e um combo de elementos validados"
+      scope: "Mecanismo"
+
+    - id: 7
+      check: "A pergunta paradoxal tem os 3 elementos"
+      scope: "Big Idea"
+
+    - id: 8
+      check: "O nome chiclete e curto e memoravel"
+      scope: "Big Idea"
+
+    - id: 9
+      check: "A escrita segue a ordem correta (tese primeiro, lead por ultimo)"
+      scope: "Processo"
+
+# =============================================================================
+# QUALITY GATES DO PIPELINE
+# =============================================================================
+quality_gates:
+
+  pre_brief:
+    description: "Antes de compilar o Brief"
+    checks:
+      - "Todas as 5 fases do planejamento estao completas?"
+      - "Cada fase foi validada pelo Chief?"
+      - "O usuario aprovou cada output?"
+      - "Existe coerencia entre as fases (mecanismo -> big idea -> oferta)?"
+
+  pre_writing:
+    description: "Antes de iniciar a escrita"
+    checks:
+      - "O Brief esta 100% completo?"
+      - "O avatar esta claramente definido?"
+      - "O tom de voz esta definido?"
+      - "O mecanismo combado e claro e explicavel?"
+      - "A Big Idea e forte o suficiente?"
+
+  pre_assembly:
+    description: "Antes de montar a VSL final"
+    checks:
+      - "A Tese de Marketing esta completa (3 argumentos)?"
+      - "Os 3 argumentos progridem logicamente?"
+      - "A Tese conecta com o mecanismo e a Big Idea?"
+
+  final_review:
+    description: "Revisao final da VSL completa"
+    checks:
+      - "A VSL faz as 3 vendas (conteudo, esperanca, valor)?"
+      - "O Lead vende o conteudo?"
+      - "As historias vendem a esperanca?"
+      - "A oferta vende o valor?"
+      - "O flow e natural — nao parece 'blocos colados'?"
+      - "A Tese e o fio condutor de tudo?"
+      - "A Big Idea aparece no Lead?"
+      - "O Close tem CTA claro?"
+
+# =============================================================================
+# COMPLETION CRITERIA — Checks estruturais obrigatorios
+# =============================================================================
+completion_criteria:
+
+  structure:
+    - "Todos os 8 blocos estao presentes na ordem correta de apresentacao"
+    - "Ordem de escrita foi respeitada (Tese -> PBU -> Oferta -> Close -> Historias -> Lead)"
+    - "Lead contem todos os 10 elementos"
+    - "PBU contem os 6 elementos em sequencia narrativa"
+    - "Oferta contem os 7 elementos"
+    - "Close contem os 9 elementos"
+
+  content:
+    - "Nenhuma mencao a produto/venda na Lead"
+    - "Hook veio de referencia validada"
+    - "4 versoes de Lead com hooks diferentes"
+    - "Todos os beneficios tem marcos temporais"
+    - "Depoimentos tem nome, idade e detalhe especifico"
+    - "Garantia e de no minimo 30 dias, ideal 180 dias"
+    - "Escassez e justificada e realista"
+    - "Ancoragem de preco usa referencias reais"
+    - "Transicoes entre blocos sao suaves e naturais"
+    - "Tom de conversa mantido do inicio ao fim"

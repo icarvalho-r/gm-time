@@ -1,0 +1,203 @@
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW: Pipeline Completo de Criação de VSL — Método Derick
+# ═══════════════════════════════════════════════════════════════
+# Orquestra todas as fases do processo, da análise de mercado
+# até a VSL final escrita e pronta para produção.
+
+workflow:
+  name: "Pipeline VSL Completo"
+  id: wf-pipeline-vsl
+  squad: derick-vsl
+  description: |
+    Executa o processo completo de criação de VSL em 8 fases sequenciais.
+    Cada fase alimenta a próxima. O Brief é o documento central.
+
+  trigger: "*pipeline {nicho}"
+
+  input:
+    required:
+      - nicho: "Nicho/mercado alvo (ex: emagrecimento, diabetes, ED, rejuvenescimento)"
+    optional:
+      - swipe_files: "Caminho para pasta com VSLs/copies de referência"
+      - produto_existente: "Se já tem produto definido, informar detalhes"
+
+  # ═════════════════════════════════════════════════════════════
+  # BLOCO 1: A PSICOLOGIA (Planejamento Estratégico)
+  # ═════════════════════════════════════════════════════════════
+
+  phases:
+    - phase: 1
+      name: "Análise de Mercado"
+      agent: market-scout
+      description: |
+        Mapear as 3 tendências do mercado escolhido:
+        1. Tendência de conteúdo (o que consomem)
+        2. Tendência de consumo (o que compram)
+        3. Tendência de marketing (como vendem)
+      actions:
+        - "Pesquisar YouTube por palavras-chave do nicho (filtrar por views + data)"
+        - "Pesquisar Google Trends para ingredientes/produtos em alta"
+        - "Pesquisar Amazon/Mercado Livre por bestsellers do nicho"
+        - "Analisar biblioteca de anúncios Meta para VSLs escalando"
+        - "Identificar ciclos de mercado (o que deu certo no passado)"
+      output: "Relatório de mercado com 3 tendências mapeadas"
+      checkpoint:
+        question: "As 3 tendências estão claras e empilháveis?"
+        veto: "Se não encontrar pelo menos 3 tendências de marketing, reconsiderar nicho"
+
+    - phase: 2
+      name: "Seleção de Mecanismo"
+      agent: mechanism-engineer
+      depends_on: [1]
+      description: |
+        Listar mecanismos campeões do mercado, decompor cada um
+        em Problema/Função/Solução, e criar combo.
+      actions:
+        - "Listar 4-6 mecanismos campeões do swipe file"
+        - "Decompor cada um: POR QUÊ / O QUÊ / COMO"
+        - "Identificar oportunidades de combo"
+        - "Criar mecanismo combo (problema de um + função de outro + solução)"
+        - "Validar: combo usa tendência atual + elemento campeão do passado?"
+      output: "Mecanismo combo definido (problema + função + solução)"
+      checkpoint:
+        question: "O combo mistura algo atual com algo que já deu certo?"
+        veto: "Mecanismo 100% novo sem validação anterior"
+
+    - phase: 3
+      name: "Big Idea"
+      agent: idea-architect
+      depends_on: [2]
+      description: |
+        Criar pergunta paradoxal com os 3 elementos obrigatórios
+        e definir nome chiclete.
+      actions:
+        - "Listar 5+ perguntas paradoxais para o nicho"
+        - "Avaliar cada uma: tem entidade + resultado + comportamento controverso?"
+        - "Verificar se alguma já deu certo no passado (priorizar)"
+        - "Escolher a melhor pergunta paradoxal"
+        - "Criar 3+ opções de nome chiclete"
+        - "Validar conexão: pergunta paradoxal ↔ mecanismo"
+      output: "Pergunta paradoxal + nome chiclete definidos"
+      checkpoint:
+        question: "A pergunta tem os 3 elementos? O nome chiclete gruda?"
+        veto: "Pergunta sem entidade específica ou sem comportamento controverso"
+
+    - phase: 4
+      name: "Big Offer"
+      agent: offer-designer
+      depends_on: [1, 2]
+      description: |
+        Montar oferta irresistível usando os 9 elementos do Derick.
+      actions:
+        - "Definir produto (ingredientes/entregáveis que o mercado já compra)"
+        - "Listar objeções e flipar cada uma em razão para comprar"
+        - "Listar benefícios múltiplos com prazos"
+        - "Definir esforço reduzido"
+        - "Criar reason why acreditável"
+        - "Montar ancoragem de preço"
+        - "Definir bônus (produtos que o mercado compraria)"
+        - "Definir garantia (mínimo 30 dias)"
+        - "Criar escassez"
+      output: "Oferta completa com 9 elementos"
+      checkpoint:
+        question: "A oferta parece injusta a favor do cliente?"
+        veto: "Oferta sem bônus ou com garantia menor que 30 dias"
+
+    - phase: 5
+      name: "Storytelling"
+      agent: story-builder
+      depends_on: [2, 3]
+      description: |
+        Criar as 3 histórias que vendem confiança e esperança.
+      actions:
+        - "Definir tipo de background story (guru ou pessoa comum)"
+        - "Criar background story com credenciais/apresentação"
+        - "Criar emotional story (arco completo: personagem → problema → soluções falhas → frustrações → fundo do poço → motivação)"
+        - "Criar discovery story conectada à pergunta paradoxal"
+        - "Validar: as 3 perguntas são respondidas?"
+      output: "3 histórias completas"
+      checkpoint:
+        question: "Background gera confiança? Emotional gera empatia? Discovery gera curiosidade?"
+        veto: "Emotional story sem fundo do poço ou discovery desconectada da big idea"
+
+    - phase: 6
+      name: "Compilação do Brief"
+      agent: derick-chief
+      depends_on: [1, 2, 3, 4, 5]
+      description: |
+        Compilar todos os outputs em um único Brief usando o template.
+      actions:
+        - "Preencher brief-template.yaml com outputs de todas as fases"
+        - "Verificar coerência entre todas as partes"
+        - "Validar que mecanismo, big idea, oferta e histórias se conectam"
+      output: "Brief completo e coerente"
+      checkpoint:
+        question: "Tudo se conecta? Mecanismo sustenta a tese? Big idea sustenta o mecanismo?"
+        veto: "Inconsistência entre mecanismo e história de descoberta"
+
+  # ═════════════════════════════════════════════════════════════
+  # BLOCO 2: A COMUNICAÇÃO (Escrita)
+  # ═════════════════════════════════════════════════════════════
+
+    - phase: 7
+      name: "Tese de Marketing"
+      agent: thesis-writer
+      depends_on: [6]
+      description: |
+        Escrever a tese de marketing com os 3 argumentos.
+        Esta é a parte mais importante e trabalhosa da VSL.
+      actions:
+        - "Escrever Argumento 1: Causa do Problema (ponto de partida → peça faltante → crença comum → grande pesquisa)"
+        - "Escrever Argumento 2: Função (conclusão do estudo + grande prova)"
+        - "Escrever Argumento 3: Solução (pergunta paradoxal → explicação → evidências → teste → resultado)"
+        - "Revisar fluxo lógico: a pessoa consegue acreditar lendo sequencialmente?"
+      output: "Tese de marketing completa (3 argumentos)"
+      checkpoint:
+        question: "Lendo os 3 argumentos, a pessoa inevitavelmente acredita no mecanismo?"
+        veto: "Argumento que pula etapas ou não usa crença comum como âncora"
+
+    - phase: 8
+      name: "VSL Completa"
+      agent: vsl-assembler
+      depends_on: [6, 7]
+      description: |
+        Escrever e montar todos os blocos restantes da VSL.
+        Ordem: Product Build Up → Oferta → Close → Histórias → Lead
+      actions:
+        - "Escrever Product Build Up (escassez → esforço → protótipo → testes → produto)"
+        - "Escrever Bloco de Oferta (produto → benefícios → para quem → depoimentos → ingredientes → escassez → ancoragem → preço)"
+        - "Escrever Close (mais frascos → processo → garantia → bônus → empilhamento → decisão → 2 opções → presente)"
+        - "Escrever histórias na ordem final (background → emotional → discovery)"
+        - "Escrever Lead por último (hook → promessa → inviabilização → prévias → qualificadores → depoimentos → CTA → fascinations)"
+        - "Criar 4 variações de lead (trocando apenas o gancho)"
+        - "Montar VSL na ordem final de leitura"
+      output: "VSL completa pronta para produção"
+      checkpoint:
+        question: "As 3 vendas acontecem? Lead vende conteúdo, tese vende esperança, oferta vende valor?"
+        veto: "Lead que menciona produto/venda, ou tese sem os 3 argumentos completos"
+
+  # ═════════════════════════════════════════════════════════════
+  # ENTREGA FINAL
+  # ═════════════════════════════════════════════════════════════
+
+  output:
+    deliverables:
+      - "Brief completo (brief-template.yaml preenchido)"
+      - "Tese de Marketing (texto completo)"
+      - "VSL completa na ordem de leitura"
+      - "4 variações de Lead"
+      - "Bloco de Oferta isolado (para uso em páginas de venda)"
+    format: |
+      Todos os textos em formato pronto para narração/gravação.
+      Sem marcações técnicas no texto final — apenas o script.
+
+  quality_checklist:
+    - "As 3 vendas estão presentes (conteúdo, esperança, valor)"
+    - "A tese tem os 3 argumentos completos"
+    - "A lead NÃO menciona produto ou venda"
+    - "A oferta tem os 9 elementos da Big Offer"
+    - "As histórias respondem as 3 perguntas (confiança, empatia, descoberta)"
+    - "O mecanismo é um combo de elementos validados"
+    - "A pergunta paradoxal tem os 3 elementos"
+    - "O nome chiclete é curto e memorável"
+    - "A escrita segue a ordem correta (tese primeiro, lead por último)"

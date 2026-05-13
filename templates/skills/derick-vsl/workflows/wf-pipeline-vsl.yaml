@@ -1,0 +1,254 @@
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW: Pipeline Completo de Criação de VSL — Método Derick
+# Version: 2.0.0
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Pipeline VSL Completo"
+  id: wf-pipeline-vsl
+  squad: derick-vsl
+  version: "2.0.0"
+  description: |
+    Executa o processo completo de criação de VSL em 8 fases sequenciais.
+    Cada fase alimenta a próxima. O Brief é o documento central.
+
+  trigger: "*pipeline {nicho}"
+
+  input:
+    required:
+      - nicho: "Nicho/mercado alvo (ex: emagrecimento, diabetes, ED, rejuvenescimento)"
+    optional:
+      - swipe_files: "Caminho para pasta com VSLs/copies de referência"
+      - produto_existente: "Se já tem produto definido, informar detalhes"
+
+  # ═════════════════════════════════════════════════════════════
+  # BLOCO 1: A PSICOLOGIA (Planejamento Estratégico)
+  # ═════════════════════════════════════════════════════════════
+
+  phases:
+    - phase: 1
+      name: "Análise de Mercado"
+      agent: market-scout
+      task: tasks/market-scout-execute.md
+      description: |
+        Mapear as 3 tendências do mercado escolhido:
+        1. Tendência de conteúdo (o que consomem)
+        2. Tendência de consumo (o que compram)
+        3. Tendência de marketing (como vendem)
+      output: "Relatório de mercado com 3 tendências mapeadas"
+      quality_gate:
+        id: QG-1.1
+        name: "Validação de Tendências"
+        checks:
+          - id: QG-1.1a
+            check: "As 3 tendências estão claras e empilháveis?"
+            severity: BLOCKING
+            on_fail: "Reconsiderar nicho ou ampliar pesquisa"
+          - id: QG-1.1b
+            check: "Pelo menos 3 tendências de marketing encontradas?"
+            severity: BLOCKING
+            on_fail: "HALT — nicho pode ser imaturo"
+          - id: QG-1.1c
+            check: "Swipe file com mínimo 5 VSLs catalogadas?"
+            severity: WARNING
+            on_fail: "Recomendar pesquisa adicional"
+
+    - phase: 2
+      name: "Seleção de Mecanismo"
+      agent: mechanism-engineer
+      task: tasks/mechanism-engineer-execute.md
+      depends_on: [1]
+      description: |
+        Listar mecanismos campeões do mercado, decompor cada um
+        em Problema/Função/Solução, e criar combo.
+      output: "Mecanismo combo definido (problema + função + solução)"
+      quality_gate:
+        id: QG-2.1
+        name: "Validação de Mecanismo"
+        checks:
+          - id: QG-2.1a
+            check: "O combo mistura algo atual com algo que já deu certo?"
+            severity: BLOCKING
+            on_fail: "Refazer combo — mecanismo 100% novo sem validação"
+          - id: QG-2.1b
+            check: "Mecanismo decomposto em Problema + Função + Solução?"
+            severity: BLOCKING
+            on_fail: "Completar decomposição antes de avançar"
+
+    - phase: 3
+      name: "Big Idea"
+      agent: idea-architect
+      task: tasks/idea-architect-execute.md
+      depends_on: [2]
+      description: |
+        Criar pergunta paradoxal com os 3 elementos obrigatórios
+        e definir nome chiclete.
+      output: "Pergunta paradoxal + nome chiclete definidos"
+      quality_gate:
+        id: QG-3.1
+        name: "Validação de Big Idea"
+        checks:
+          - id: QG-3.1a
+            check: "Pergunta tem entidade + resultado + comportamento controverso?"
+            severity: BLOCKING
+            on_fail: "Refinar pergunta — elemento faltante"
+          - id: QG-3.1b
+            check: "Nome chiclete é 2-4 palavras e gruda?"
+            severity: WARNING
+            on_fail: "Gerar alternativas de nome chiclete"
+          - id: QG-3.1c
+            check: "Score >= 24/30?"
+            severity: WARNING
+            on_fail: "Considerar gerar mais perguntas"
+
+    - phase: 4
+      name: "Big Offer"
+      agent: offer-designer
+      task: tasks/offer-designer-execute.md
+      depends_on: [1, 2]
+      description: |
+        Montar oferta irresistível usando os 9 elementos do Derick.
+      output: "Oferta completa com 9 elementos"
+      quality_gate:
+        id: QG-4.1
+        name: "Validação de Oferta"
+        checks:
+          - id: QG-4.1a
+            check: "Oferta tem todos os 9 elementos?"
+            severity: BLOCKING
+            on_fail: "Completar elementos faltantes"
+          - id: QG-4.1b
+            check: "Garantia mínimo 30 dias?"
+            severity: BLOCKING
+            on_fail: "Aumentar período de garantia"
+          - id: QG-4.1c
+            check: "A oferta parece injusta a favor do cliente?"
+            severity: WARNING
+            on_fail: "Reforçar valor percebido"
+
+    - phase: 5
+      name: "Storytelling"
+      agent: story-builder
+      task: tasks/story-builder-execute.md
+      depends_on: [2, 3]
+      description: |
+        Criar as 3 histórias que vendem confiança e esperança.
+      output: "3 histórias completas (Background, Emotional, Discovery)"
+      quality_gate:
+        id: QG-5.1
+        name: "Validação de Histórias"
+        checks:
+          - id: QG-5.1a
+            check: "Emotional Story tem fundo do poço com cena detalhada?"
+            severity: BLOCKING
+            on_fail: "Reescrever fundo do poço com detalhes sensoriais"
+          - id: QG-5.1b
+            check: "Discovery Story conecta com Pergunta Paradoxal?"
+            severity: BLOCKING
+            on_fail: "Reescrever Discovery para responder à Big Idea"
+          - id: QG-5.1c
+            check: "Tipo de spokesperson consistente (Guru OU Avatar, não misturado)?"
+            severity: BLOCKING
+            on_fail: "Corrigir inconsistência de tipo"
+
+    - phase: 6
+      name: "Compilação do Brief"
+      agent: derick-chief
+      task: tasks/compile-brief.md
+      depends_on: [1, 2, 3, 4, 5]
+      description: |
+        Compilar todos os outputs em um único Brief.
+      output: "Brief completo e coerente"
+      quality_gate:
+        id: QG-6.1
+        name: "Validação do Brief"
+        checklist: checklists/brief-completeness-checklist.md
+        checks:
+          - id: QG-6.1a
+            check: "Mecanismo sustenta a tese? Big Idea sustenta o mecanismo?"
+            severity: BLOCKING
+            on_fail: "Identificar inconsistência e corrigir fase afetada"
+          - id: QG-6.1b
+            check: "Discovery Story responde a Pergunta Paradoxal?"
+            severity: BLOCKING
+            on_fail: "Ajustar Discovery ou Big Idea"
+
+  # ═════════════════════════════════════════════════════════════
+  # BLOCO 2: A COMUNICAÇÃO (Escrita)
+  # ═════════════════════════════════════════════════════════════
+
+    - phase: 7
+      name: "Tese de Marketing"
+      agent: thesis-writer
+      task: tasks/thesis-writer-execute.md
+      depends_on: [6]
+      description: |
+        Escrever a tese de marketing com os 3 argumentos.
+        Esta é a parte mais importante e trabalhosa da VSL.
+      output: "Tese de marketing completa (3 argumentos)"
+      quality_gate:
+        id: QG-7.1
+        name: "Validação da Tese"
+        checks:
+          - id: QG-7.1a
+            check: "3 argumentos presentes na ordem correta?"
+            severity: BLOCKING
+            on_fail: "Completar argumento faltante"
+          - id: QG-7.1b
+            check: "Lendo sequencialmente, a conclusão é inevitável?"
+            severity: BLOCKING
+            on_fail: "Reforçar cadeia lógica entre argumentos"
+          - id: QG-7.1c
+            check: "Números específicos (não arredondados)?"
+            severity: WARNING
+            on_fail: "Substituir números vagos por específicos"
+          - id: QG-7.1d
+            check: "Mecanismo não definido no brief?"
+            severity: BLOCKING
+            on_fail: "HALT — voltar para fase 2"
+
+    - phase: 8
+      name: "VSL Completa"
+      agent: vsl-assembler
+      task: tasks/vsl-assembler-execute.md
+      depends_on: [6, 7]
+      description: |
+        Escrever e montar todos os blocos restantes da VSL.
+        Ordem: Product Build Up → Oferta → Close → Histórias → Lead
+      output: "VSL completa pronta para produção"
+      quality_gate:
+        id: QG-8.1
+        name: "Validação Final da VSL"
+        checklist: checklists/vsl-quality-checklist.md
+        checks:
+          - id: QG-8.1a
+            check: "As 3 vendas acontecem? (conteúdo, esperança, valor)"
+            severity: BLOCKING
+            on_fail: "Identificar qual venda está faltando"
+          - id: QG-8.1b
+            check: "Lead NÃO menciona produto?"
+            severity: BLOCKING
+            on_fail: "Reescrever Lead removendo menções ao produto"
+          - id: QG-8.1c
+            check: "Tese completa com 3 argumentos?"
+            severity: BLOCKING
+            on_fail: "HALT — voltar para fase 7"
+          - id: QG-8.1d
+            check: "4 variações de Lead criadas?"
+            severity: WARNING
+            on_fail: "Criar variações adicionais"
+
+  # ═════════════════════════════════════════════════════════════
+  # ENTREGA FINAL
+  # ═════════════════════════════════════════════════════════════
+
+  output:
+    deliverables:
+      - "Brief completo (brief-template.yaml preenchido)"
+      - "Tese de Marketing (texto completo)"
+      - "VSL completa na ordem de leitura"
+      - "4 variações de Lead"
+      - "Bloco de Oferta isolado (para uso em páginas de venda)"
+    format: |
+      Todos os textos em formato pronto para narração/gravação.
+      Sem marcações técnicas no texto final — apenas o script.
