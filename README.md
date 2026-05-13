@@ -11,7 +11,7 @@ Kit pra você usar o Claude Code no seu dia a dia no time de marketing da Growth
 Com o Claude Code aberto em qualquer pasta, copie e cole esse prompt:
 
 ```
-Instala pra mim o repositório https://github.com/icarvalhor/gm-time.git na pasta atual, abre ela e roda /setup
+Instala pra mim o repositório https://github.com/icarvalho-r/gm-time.git na pasta atual, abre ela e roda /setup
 ```
 
 O Claude faz tudo: clona o repo, entra na pasta e inicia a configuração.
@@ -19,7 +19,7 @@ O Claude faz tudo: clona o repo, entra na pasta e inicia a configuração.
 ### Opção 2 — Via terminal
 
 ```bash
-git clone https://github.com/icarvalhor/gm-time.git
+git clone https://github.com/icarvalho-r/gm-time.git
 cd gm-time
 code .
 ```
@@ -81,6 +81,20 @@ Leva menos de um minuto.
 - `/proposta-comercial` — proposta em HTML a partir de briefing
 - `/publicar-site` — publica HTML no ar via Cloudflare Pages
 - `/analisar-dados` — analisa CSV/XLSX/PDF e gera resumo executivo
+
+**Pesquisa e descoberta (instaladas via skills.sh):**
+- `/find-skills` — busca e instala skills novas do catálogo skills.sh
+- `/firecrawl-search` — busca na web
+- `/firecrawl-scrape` — raspa o conteúdo de uma página
+
+**Marketing/Conteúdo (instaladas via skills.sh):**
+- `/copywriting` — redação persuasiva
+- `/social-content` — conteúdo pra redes sociais
+- `/content-strategy` — estratégia e planejamento editorial
+- `/email-sequence` — sequências de email (boas-vindas, nutrição, lançamento)
+- `/cold-email` — email frio pra prospecção
+- `/copy-editing` — edição/revisão de copy
+- `/ad-creative` — criativos pra anúncios
 
 ---
 
